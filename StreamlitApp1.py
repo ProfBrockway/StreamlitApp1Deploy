@@ -5,7 +5,7 @@
 # To run this app in a web browser undeployed on the development computer
 # rub the following command in the Anaconda console.
 # streamlit run "G:\My Drive\UConn\1-Subjects\Python\STAT476\CODE\StreamlitApp1\StreamlitApp1.py"
-
+   
 
 import streamlit as st
 from streamlit import session_state as GUI
