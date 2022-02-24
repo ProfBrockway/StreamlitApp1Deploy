@@ -3,8 +3,8 @@
 #  layout.
 
 # To run this app in a web browser undeployed on the development computer
-# rub the following command in the Anaconda console.
-# streamlit run "G:\My Drive\UConn\1-Subjects\Python\STAT476\CODE\StreamlitApp1\StreamlitApp1.py"
+# run the following command in the Anaconda console.
+# streamlit run "G:\My Drive\UConn\1-Subjects\Python\STAT476\CODE\StreamlitApp1Deploy\StreamlitApp1.py"
    
 
 import streamlit as st
