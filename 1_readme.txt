@@ -1,4 +1,4 @@
-This folder is to demonstrate a Streamlit Application.
+This folder is to demonstrate a Streamlit Application. 
 
 The folder includes:
    The python source code.
