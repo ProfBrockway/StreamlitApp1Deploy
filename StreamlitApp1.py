@@ -326,12 +326,12 @@ def Plot_Build():
     if G.ShowData == True:
        st.subheader("The Pandas Data Table You Requested Follows:")
        st.dataframe(data=G.DataTable, width=None, height=None)
-       st.caption("The data is just filler to demonstrate the Pandas " 
-                  "dataframes.") 
-       st.caption("The dataframe display will automatically offer vertical "
-                  "and horizontal scroll bars if required.")
-       st.caption("You can expand the datatable using the 'View fullscreen' "
-                  "icon. The icon is above and to the right of the table.")       
+       st.caption = ("The data is just filler to demonstrate the Pandas " 
+                      "dataframes.") 
+       st.caption = ("The dataframe display will automatically offer vertical "
+                    "and horizontal scroll bars if required.")
+       st.caption= ("You can expand the datatable using the 'View fullscreen' "
+                    "icon. The icon is above and to the right of the table.")       
 
        
        # Add a "download" dataframe button.
