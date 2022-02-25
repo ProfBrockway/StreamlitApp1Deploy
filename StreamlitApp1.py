@@ -363,7 +363,7 @@ def Plot_Build():
     st.write(md)
   
 
-    st.subheader("We Can Display  Any Image Or Audio/Visual Media")
+    
     # Show a picture on the webpage using a web address for the picture.
     #   We must get our picture (and other resources) from a web address 
     #   because streamlit does NOT have a full backend on its server from
@@ -377,19 +377,19 @@ def Plot_Build():
     #   accessable resources. (Eg Google drive or dropbox etc)
     # - How to user github to host media for display
     #   https://www.labnol.org/internet/free-file-hosting-github/29092/
-    st.subheader(" We can display a picture from a web address (Github)")
+    
+    st.subheader("We Can Display  Any Image Or Audio/Visual Media")
     st.image("https://raw.githubusercontent.com/ProfBrockway/OSExperiments/main/TigerMoth.jpg",
        caption="We used a github url address to get this picture from github")
-   
     
     # Show a picture on the webpage using the github file path for the picture.
+    #  Get the path to the picture file on github.
+    #  Online the full path will be:',/app/streamlitapp1deploy/hms-victory.jpg'
     FullPath = os.path.join(G.ThisModule_ProjectPath, "hms-victory.jpg")
- 
-    
     MyImage = Image.open(FullPath)
     st.image(MyImage, 
        caption="We used a github disk path to get this picture from github")
-    st.caption(f"Full path of the video file: ,{FullPath}")
+    st.caption(f"Full path of the picture file:  {FullPath}")
     
     # Show a video
     #  Get the path to the video file on github
@@ -397,9 +397,10 @@ def Plot_Build():
     FullPath = os.path.join(G.ThisModule_ProjectPath, "TestVideo.mp4")
     video_file = open(FullPath, 'rb')
     video_bytes = video_file.read()
-    st.subheader("We Can Display Any Movie, So The Page Is Self Documenting.")
-    st.caption(f"Full path of the video file: ,{FullPath}")
-    st.video(video_bytes)
+    st.subheader("We Can Display Any Movie, Video Help Files For Example.")
+    st.video(video_bytes,
+         caption="We used a github disk path to get this video from github")
+    st.caption(f"Full path of the video file: {FullPath}")
     
     # Plot a chart using native streamlit plotting functions.  
     chart_data = pd.DataFrame(np.random.randn(20, 3),columns=['a', 'b', 'c'])
