@@ -173,6 +173,7 @@ def Perform_Program_Initialization():
 
  
     # Set up some basic properties of the GUI.
+      # We setup a standard webpage "about/help" menu.
       #  - The set_page_config command can only be used once per run.
       #  - New line marker \n must be preceeded by at least two blanks to work.
       
@@ -232,7 +233,7 @@ def Perform_EveryRun_Initialization():
     G.ThisModule_Purpose = "To test the features of Streamlit."
     
     # RESOURCE LINKS Etc
-    G.Link01 ='https://www.extremelycoolapp.com/help'
+    G.Link01 ='https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/main/ProgramDocumentation.pdf'
     G.Link04 = 'https://www.extremelycoolapp.com/bug'
     G.Link06 = "https://raw.githubusercontent.com/ProfBrockway/OSExperiments/main/TigerMoth.jpg"
     G.Link08 = "https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/0bc950a80603401a54dfb1c6ebe15bc83a362d6e/StreamlitApp1.py"
