@@ -232,6 +232,7 @@ def Perform_EveryRun_Initialization():
     # RESOURCE LINKS Etc
 
     G.Link01 = "https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/main/ProgramDocumentation.pdf"
+    G.Link02 = "https://drive.google.com/file/d/1ADswqmBPZaEzwrhzu_mTk5HY_qHv2Mhw/view?usp=sharing"
     G.Link04 = "https://www.extremelycoolapp.com/bug"   
     G.Link06 = "https://raw.githubusercontent.com/ProfBrockway/OSExperiments/main/TigerMoth.jpg"
     G.Link08 = "https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/0bc950a80603401a54dfb1c6ebe15bc83a362d6e/StreamlitApp1.py"
@@ -310,17 +311,7 @@ def Process_Users_Data():
     return()  # End of function: Generate_Data_To_Be_Plotted
    
 def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
-  
-  # ?V  Possible Bug when deploying matplotlib streamlit apps
-    # https://docs.streamlit.io/streamlit-cloud/troubleshooting#limitations-and-known-issues
-    #     from matplotlib.backends.backend_agg import RendererAgg
-    # https://docs.streamlit.io/library/api-reference/charts/st.pyplot
-    # _lock = RendererAgg.lock
-    # with _lock:
-    #   fig.title('This is a figure)')
-    #   fig.plot([1,20,3,40])
-    #   st.pyplot(fig)
-    
+      
     # Create a Matplotlib figure.
     G.Fig1 = mpl.figure.Figure()
     
@@ -447,32 +438,41 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
     st.line_chart(chart_data)
     
     # Show a clickable weblink on our webpage GUI.
+    #   There are several ways to do this.
+    
     st.subheader("Link To This Apps Code. Downloadable.")
     st.markdown("     [Link To Source Code](%s)" % G.Link08)
+    # Also works: st.write("     [Link To The Source Code](%s)" % G.Link08)
     st.write("You can also see the app code by using the menu in "
              "the top right of the webpage (3 horizontal lines)")
   
-    # Show a PDF
+    # Show a PDF in a pop up new web page
     #   We could base the pdf file in the github repository for the project.
     #   But the github using the github link to the address displays
     #   the pdf file in the primitive github pdf view which does not
     #   have basic features, especially the pdf document index.
     #   So we base our pdfs in another web page (eg Google drive) so
     #   that the user has the full PDF utility.
-    st.subheader("Here Is The Program Documentation As A PDF.")
+    
+    st.subheader("Here Are Links Program Documentation As A PDF.")
+    # Retrieve the PDF object from its web page.
+    #   We prefer to host pdf files on a web page not github.
+    #   The github PDF viewer lacks important features, espcially the PDF
+    #   index feature that is essential for easy document navigation.
+    st.write("     [ A Link To The PDF stored on github](%s)" % G.Link01)
+    st.write("     [ A Link To The PDF stored on Google](%s)" % G.Link02)
     st.write("Be sure to use the PDF toolbar and index to navigate "
                    "around the document.")
     
-    # Retrieve the PDF object from its web page.
-    # We host any pdf file on a web page not github.
-    #  The user can download from the github viewer and then it works
-    #    but this is a step most users wont do.
-    PDF_HTML ="<a href='https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf' target='_blank'>Link to a pdf</a> "                 
-    PDF_HTML ="<a href='" + G.Link01 + "' target='_blank'>Link to a pdf</a> "                 
-    # Render with Streamlit Markdown
-    st.markdown(PDF_HTML, unsafe_allow_html=True)
-    
+    # Show a PDF file embedded in our webpage.
+    st.subheader("Here A PDF Embedded In this web page PDF.")
    
+    st.markdown("<embed src='https://drive.google.com/viewerng/viewer?embedded=true&url="
+       + "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf' "  
+       + "width='400' height='400'>" , unsafe_allow_html=True)  
+
+
+
     # Show debugging information.
     if G.Debug:
         st.subheader("Debugging Information Follows.")
@@ -643,6 +643,7 @@ def StMarkdown(TextToBeFormated="", color="black",
 
 MainLine()   # Start this program.
 
+
 #  ++++++++++++++++++++++++++ OLD CODE ++++++++++++++++++++++++++++++++++++++++
      # The following is obsolete since i use online sources for pdfs.
      # To display a pdf from online resource we have to download it as
@@ -667,3 +668,49 @@ MainLine()   # Start this program.
     #     # Parse To HTML Embed Tag
     # PDF_HTML = f"""<embed src='data:application/pdf;base64,{PDF_Base64}' 
     #                   width='1000' height='1000' type='application/pdf'>"""
+    
+    # pdf_display = F'<iframe src="data:application/pdf;base64,{base64_pdf}" width="700" height="1000" type="application/pdf"></iframe>
+    
+    
+    
+
+# Also you could use Google's pdf viewer in this way:
+# st.markdown("""
+#            <embed src="https://drive.google.com/viewerng/
+#             viewer?embedded=true&url=https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" width="400" height="400">
+#            """, unsafe_allow_html=True)
+    
+    
+    
+    # st.markdown("""
+    #            <embed src="https://drive.google.com/viewerng/
+    #             viewer?embedded=true&url=https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" width="400" height="400">
+    #            """, unsafe_allow_html=True)
+
+        # st.markdown("<embed src='" 
+        #             + G.Link02 
+        #             + "' width='400' height='400'> ", unsafe_allow_html=True)
+
+        # st.markdown("""
+        #             <embed src="https://drive.google.com/file/d/1ADswqmBPZaEzwrhzu_mTk5HY_qHv2Mhw/view?usp=sharing" width="400" height="400">
+        #             """, unsafe_allow_html=True)
+
+        # st.markdown("""
+        #             <embed src="https://drive.google.com/viewerng/
+        #             viewer?embedded=true&url=https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" width="400" height="400">
+        #             """, unsafe_allow_html=True)
+    
+    
+    
+    
+    
+    #######################################################################
+    # ?V  Possible Bug when deploying matplotlib streamlit apps
+      # https://docs.streamlit.io/streamlit-cloud/troubleshooting#limitations-and-known-issues
+      #     from matplotlib.backends.backend_agg import RendererAgg
+      # https://docs.streamlit.io/library/api-reference/charts/st.pyplot
+      # _lock = RendererAgg.lock
+      # with _lock:
+      #   fig.title('This is a figure)')
+      #   fig.plot([1,20,3,40])
+      #   st.pyplot(fig)
