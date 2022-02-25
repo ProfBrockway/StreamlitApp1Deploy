@@ -671,7 +671,8 @@ MainLine()   # Start this program.
     
     # pdf_display = F'<iframe src="data:application/pdf;base64,{base64_pdf}" width="700" height="1000" type="application/pdf"></iframe>
     
-    
+    # pdf_file = st.file_uploader("Choose your Resume", type=["pdf"])
+
     
 
 # Also you could use Google's pdf viewer in this way:
@@ -700,7 +701,10 @@ MainLine()   # Start this program.
         #             viewer?embedded=true&url=https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" width="400" height="400">
         #             """, unsafe_allow_html=True)
     
-    
+    # other ideas
+    # https://stackoverflow.com/questions/38491722/reading-a-github-file-using-python-returns-html-tags
+    # https://www.codegrepper.com/code-examples/python/python+get+github+file+content
+    # https://github.com/streamlit/example-app-pdf-report
     
     
     
