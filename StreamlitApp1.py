@@ -362,16 +362,21 @@ def Plot_Build():
                     fontsize=22,bold=True,color="blue")   
     st.write(md)
   
-    # ?V How to user github to host media for display
+
+    
+    # Show a picture on the web page.
+    # We must get our picture (and other resources) from a web address 
+    # because streamlit does NOT have a full backend on its server from
+    # which server disk we might otherwise get resources.
+    # The obvious online repository for resources like pictures is the
+    # github repository for the project. Streamlit drives itself from
+    # the github repository. However github cannot as yet support some 
+    # resources. For example a pdf displayed at github does not support 
+    # pdf features like indexing or links. Also the video storage is very 
+    # limited. So we will be using other online sites to store web
+    # accessable resources. (Eg Google drive or dropbox etc)
+    # - How to user github to host media for display
     #   https://www.labnol.org/internet/free-file-hosting-github/29092/
-    
-    # Show a picture.
-    # Get a picture from our pc. Not usable without a web backend.
-    # FullPath = os.path.join(G.ThisModule_ProjectPath, "TigerMoth.jpg")
-    # st.subheader("We Can Display And Save Any Image Or Audio/Visual Media")
-    # MyImage = Image.open(FullPath)
-    # st.image(MyImage, caption='Sunrise by the mountains')
-    
     st.subheader(" We can display a picture from a web address (Github)")
     st.image("https://raw.githubusercontent.com/ProfBrockway/OSExperiments/main/TigerMoth.jpg")
     
@@ -381,6 +386,7 @@ def Plot_Build():
     video_file = open(FullPath, 'rb')
     video_bytes = video_file.read()
     st.subheader("We Can Display Any Movie, So The Page Is Self Documenting.")
+    st.caption(f"Full path of the video file: ,{FullPath}")
     st.video(video_bytes)
     
     # Plot a chart using native streamlit plotting functions.  
