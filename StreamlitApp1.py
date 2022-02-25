@@ -351,11 +351,11 @@ def Plot_Build():
                            args=None,
                            kwargs=None, 
                            disabled=False)
-       st.caption("You can save the data frame to your computer using the "
-                  "above button.") 
-       st.caption("The file will be called 'DataFrame.csv'")
-       st.caption("The file will be saved in your browser's default download "
-                  "location on your computer.")
+       st.caption = ("You can save the data frame to your computer using the "
+                      "above button.") 
+       st.caption = ("The file will be called 'DataFrame.csv'")
+       st.caption = ("The file will be saved in your browser's default "
+                      "download location on your computer.")
        
     # Demonstrate that we can control text appearance using HTML.
     md = StMarkdown("This Demonstrates That We Can Format Text Using HTML.",
@@ -388,8 +388,8 @@ def Plot_Build():
     FullPath = os.path.join(G.ThisModule_ProjectPath, "hms-victory.jpg")
     MyImage = Image.open(FullPath)
     st.image(MyImage, use_column_width="auto",
-       caption="We used a github disk path to get this picture from github")
-    st.caption(f"Full path of the picture file:  {FullPath}")
+       caption = "We used a github disk path to get this picture from github")
+    st.caption = (f"Full path of the picture file:  {FullPath}")
     
     # Show a video
     #  Get the path to the video file on github
@@ -447,8 +447,8 @@ def Plot_Build():
     # Show debugging information.
     if G.Debug:
         st.subheader("Debugging Information Follows.")
-        st.caption(" The streamlit st.session_state persistant/static "
-                   "variables follow.") 
+        st.caption = (" The streamlit st.session_state persistant/static "
+                      "variables follow.") 
         st.write(GUI)    #  Show all streamlit persistent variables.
         
         # st.write(G)  # ?v fix so this works For debugging. Show global variables.
