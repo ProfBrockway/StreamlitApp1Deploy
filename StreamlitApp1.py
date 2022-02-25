@@ -413,7 +413,7 @@ def Plot_Build():
     st.subheader("Link To This Apps Code. Downloadable.")
     st.markdown("     [Link To Source Code](%s)" % Codeurl)
     st.caption = ("You can also see the app code by using the menu in "
-                  "the top right of the webpage ☰ (3 horizontal lines)")
+                  "the top right of the webpage (3 horizontal lines)")
   
     # Show a PDF
     # ?V THIS IS NOT WORKING ONLINE
