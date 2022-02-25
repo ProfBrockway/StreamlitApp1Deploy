@@ -458,7 +458,7 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
                   "the top right of the webpage (3 horizontal lines)")
   
     # Show a PDF
-    # ?V THIS IS NOT WORKING ONLINE
+
     # To display a pdf from online resource we have to download it as
     # file then read it back in. We use the python "tempfile" object
     # so that the user doesn't get any junk file on the host computer.
@@ -470,17 +470,17 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
                    "around the document.")
     
     # Retrieve the PDF object from its web page.
-    PDF_Object = urllib.request.urlopen(G.Link10)    
-    # Store the PDF in a temp file so we can read it into 
-    TempPDFFile = tempfile.TemporaryFile()
-    TempPDFFile.write(PDF_Object.read())
-    TempPDFFile.seek(0) # Reposition at front of the temporary file.
-    # Convert the PDF file to a base64 byte stream for HTML. 
-    PDF_Base64 = base64.b64encode(TempPDFFile.read()).decode('utf-8')
-    TempPDFFile.close()
-        # Parse To HTML Embed Tag
-    PDF_HTML = f"""<embed src='data:application/pdf;base64,{PDF_Base64}' 
-                      width='1000' height='1000' type='application/pdf'>"""
+    # PDF_Object = urllib.request.urlopen(G.Link10)    
+    # # Store the PDF in a temp file so we can read it into 
+    # TempPDFFile = tempfile.TemporaryFile()
+    # TempPDFFile.write(PDF_Object.read())
+    # TempPDFFile.seek(0) # Reposition at front of the temporary file.
+    # # Convert the PDF file to a base64 byte stream for HTML. 
+    # PDF_Base64 = base64.b64encode(TempPDFFile.read()).decode('utf-8')
+    # TempPDFFile.close()
+    #     # Parse To HTML Embed Tag
+    # PDF_HTML = f"""<embed src='data:application/pdf;base64,{PDF_Base64}' 
+    #                   width='1000' height='1000' type='application/pdf'>"""
     PDF_HTML ="<a href='https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf' target='_blank'>Link to a pdf</a> "                 
     # Render with Streamlit Markdown
     st.markdown(PDF_HTML, unsafe_allow_html=True)
