@@ -399,8 +399,8 @@ def Plot_Build():
     video_bytes = video_file.read()
     st.subheader("We Can Display Any Movie, Video Help Files For Example.")
     st.video(video_bytes)
-    st.caption=("We used a github disk path to get this video from github")
-    st.caption(f"Full path of the video file: {FullPath}")
+    st.caption =("We used a github disk path to get this video from github")
+    st.caption = (f"Full path of the video file: {FullPath}")
     
     # Plot a chart using native streamlit plotting functions.  
     chart_data = pd.DataFrame(np.random.randn(20, 3),columns=['a', 'b', 'c'])
