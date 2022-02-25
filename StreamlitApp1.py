@@ -399,7 +399,7 @@ def Plot_Build():
     video_bytes = video_file.read()
     st.subheader("We Can Display Any Movie, Video Help Files For Example.")
     st.video(video_bytes)
-    st.caption =("We used a github disk path to get this video from github")
+    st.caption = ("We used a github disk path to get this video from github")
     st.caption = (f"Full path of the video file: {FullPath}")
     
     # Plot a chart using native streamlit plotting functions.  
@@ -421,8 +421,8 @@ def Plot_Build():
     # path supplied. It uses the default temp file facility of the opeerating
     # systems.
     st.subheader("Here Is The Program Documentation As A PDF.")
-    st.caption("Be sure to use the PDF toolbar and index to navigate around "
-               "the document.")
+    st.caption = ("Be sure to use the PDF toolbar and index to navigate "
+                   "around the document.")
 
     # Set the URL of the PDF. (Stored in the cloud somewhere).
     PDF_URL = "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
