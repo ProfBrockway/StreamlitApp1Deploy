@@ -410,10 +410,13 @@ def Plot_Build():
     
     # Show a clickable weblink on our webpage GUI.
     Codeurl = "https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/0bc950a80603401a54dfb1c6ebe15bc83a362d6e/StreamlitApp1.py"
-    st.subheader("Link To This Apps Code.")
+    st.subheader("Link To This Apps Code. Downloadable.")
     st.markdown("     [Link To Source Code](%s)" % Codeurl)
-    
+    st.caption = ("You can also see the app code by using the menu in "
+                  "the top right of the webpage ☰ (3 horizontal lines)")
+  
     # Show a PDF
+    # ?V THIS IS NOT WORKING ONLINE
     # To display a pdf from online resource we have to download it as
     # file then read it back in. We use the python "tempfile" object
     # so that the user doesn't get any junk file on the host computer.
