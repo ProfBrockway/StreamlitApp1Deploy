@@ -15,6 +15,7 @@ import os
 import pandas as pd
 import numpy as np
 import random
+import datetime 
 from PIL import Image  # For getting and displaying images in streamlit.
 
 
@@ -26,6 +27,26 @@ import tempfile  # For manipulating and showing a PDF file in streamlit.
   
 
 class Global_Variables():  # A class for creating all python global variables.
+    
+    # RESOURCES AND OTHER LINKS OR VARIABLES THAT MIGHT CHANGE.
+    #   - The values for these variables are set in:
+    #                                   Perform_EveryRun_Initialization
+    Debug = False
+
+    ThisModule_Version = None
+    ThisModule_FullPath  = None
+    ThisModule_FileName = None
+    ThisModule_ProjectPath = None
+    ThisModule_About = None
+    ThisModule_Author = None
+    ThisModule_Purpose = None
+    
+    # Links to resources.
+    Link01 = None
+    Link04 = None
+    Link06 = None
+    Link08 = None
+    Link10 = None
 
     # USERS INPUTS (Copied from input widgets and internalized)
     RowsToGenerate = None
@@ -37,15 +58,11 @@ class Global_Variables():  # A class for creating all python global variables.
     # SUNDRY GLOBAL VARIABLES
     Fig1 = None
     Plot1 = None
-    Msg01 = "Fill out the input boxes and click the 'Plot Now' button."
-    Debug = False
-    ThisModule_Version = "7.0"
-    ThisModule_FullPath  = None
-    ThisModule_FileName = None
-    ThisModule_ProjectPath = None
     Title_1 = None
     Title_2 = None
+    Msg01 = "Fill out the input boxes and click the 'Plot Now' button."
     
+
     
     # DATA TO BE PLOTTED
     x = []
@@ -54,7 +71,6 @@ class Global_Variables():  # A class for creating all python global variables.
     y3 = None  
     
     # A Pandas Dataframe
-
     DataTable = pd.DataFrame(
     columns=["x",
              "y1",
@@ -80,8 +96,6 @@ def MainLine():
     #    to the streamlit webpage.
     ConsoleClear()  # Clear the internal IPyhon console.
     
-    G.Debug = False  # Trace and dump some important variables.
-
     # If this the initial session create "Static/Persistent" variables.
     if 'Dialog_State' not in GUI:
         if G.Debug: print("Debug: First Display. Display count=1")   
@@ -116,6 +130,8 @@ def MainLine():
     return()  # End of function: MainLine.
 
 def Perform_Program_Initialization():
+
+    Perform_EveryRun_Initialization()
 
     # During the first load session, we create our "Persistent" variables.
     #  Persistent variables:
@@ -155,30 +171,33 @@ def Perform_Program_Initialization():
     GUI['ShowInput'] = True
     GUI['ShowData'] = True
 
-    Paths_Get()  # Get the current file names, paths, versions etc.
-
+ 
     # Set up some basic properties of the GUI.
       #  - The set_page_config command can only be used once per run.
       #  - New line marker \n must be preceeded by at least two blanks to work.
+      
     st.set_page_config  (
-        page_title="Web Page Header. Version: " +  G.ThisModule_Version,
-        page_icon=None,
+        page_title = "Web Page Header. ",
+        
+        page_icon = None,
+        
         layout="centered", # or "wide".
            # 'wide' gives a bigger display. 'centered' gives a smaller display
            #  Remember that plots and tables etc on the streamlit webpage 
-           #  can be "blownup" by the user clicking an "expand" icon
-           # so don't worry if the normal view is too small.
+           #  can be "blownup" by the user clicking an "expand" icon.
+           #  So don't worry if the normal view is too small.
+        
         initial_sidebar_state="auto",
+        
         menu_items={ # These appear as the webpage "about" menu items.
-                   'Get Help': 'https://www.extremelycoolapp.com/help',
-                   'Report a bug': 'https://www.extremelycoolapp.com/bug',
-                   'About': 'Produced by  Spring 2021.  \n ' +
-                       'Author: Fred Bloggs    \n' +
-                       'Program Purpose:  To test streamlit' +
-                        G.ThisModule_FileName +'  \n' +
-                       "Version: " + G.ThisModule_Version 
-                   }
-                        )
+        'Get Help  ':  G.Link01,
+        'Report a bug  ': G.Link04,
+        'About': 'App:  ' + G.ThisModule_FileName + '.  ' +  G.ThisModule_About
+            + '  \nAuthor:  ' +  G.ThisModule_Author 
+            + '  \nProgram Purpose:  ' + G.ThisModule_Purpose 
+            + '  \nApp Version:  ' +  G.ThisModule_Version 
+                  }
+                       )
 
     return()  # End of function: Perform_Program_Initialization
  
@@ -197,8 +216,28 @@ def Perform_EveryRun_Initialization():
     #      - Usefull if the initialization is very time consuming.
     # However having an "Every Time" initialization function is good practice
     # and less vulnerable to the subtle misbehaviors of the alternatives.
-        
-    Paths_Get()  # Get the current file names, paths, versions etc.
+    
+    G.Debug = False  # Some useful tracing information is embedded in the code.
+    
+    # Get the current paths and file names of this app.
+    G.ThisModule_FullPath = os.path.abspath(__file__)
+    G.ThisModule_FileName = os.path.basename(G.ThisModule_FullPath)
+    G.ThisModule_ProjectPath = os.path.dirname(G.ThisModule_FullPath)
+    
+    # Set up a version for this module with a time stamp to help debugging.
+    G.ThisModule_Version = \
+                        "7.0" + "-" + str(datetime.datetime.now().timestamp())
+    G.ThisModule_About = "For a course Spring 2021. "  
+    G.ThisModule_Author = "UConn Math Dept."
+    G.ThisModule_Purpose = "To test the features of Streamlit."
+    
+    # RESOURCE LINKS Etc
+    G.Link01 ='https://www.extremelycoolapp.com/help'
+    G.Link04 = 'https://www.extremelycoolapp.com/bug'
+    G.Link06 = "https://raw.githubusercontent.com/ProfBrockway/OSExperiments/main/TigerMoth.jpg"
+    G.Link08 = "https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/0bc950a80603401a54dfb1c6ebe15bc83a362d6e/StreamlitApp1.py"
+    G.Link10 = "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"    
+    
     return()
     
 def Validate_And_Internalize_User_Input():
@@ -379,7 +418,7 @@ def Plot_Build():
     #   https://www.labnol.org/internet/free-file-hosting-github/29092/
     
     st.subheader("We Can Display  Any Image Or Audio/Visual Media")
-    st.image("https://raw.githubusercontent.com/ProfBrockway/OSExperiments/main/TigerMoth.jpg",
+    st.image(G.Link06,
        caption="We used a github url address to get this picture from github")
     
     # Show a picture on the webpage using the github file path for the picture.
@@ -409,9 +448,9 @@ def Plot_Build():
     st.line_chart(chart_data)
     
     # Show a clickable weblink on our webpage GUI.
-    Codeurl = "https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/0bc950a80603401a54dfb1c6ebe15bc83a362d6e/StreamlitApp1.py"
+   
     st.subheader("Link To This Apps Code. Downloadable.")
-    st.markdown("     [Link To Source Code](%s)" % Codeurl)
+    st.markdown("     [Link To Source Code](%s)" % G.Link08)
     st.caption = ("You can also see the app code by using the menu in "
                   "the top right of the webpage (3 horizontal lines)")
   
@@ -426,11 +465,9 @@ def Plot_Build():
     st.subheader("Here Is The Program Documentation As A PDF.")
     st.caption = ("Be sure to use the PDF toolbar and index to navigate "
                    "around the document.")
-
-    # Set the URL of the PDF. (Stored in the cloud somewhere).
-    PDF_URL = "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
+    
     # Retrieve the PDF object from its web page.
-    PDF_Object = urllib.request.urlopen(PDF_URL)    
+    PDF_Object = urllib.request.urlopen(G.Link10)    
     # Store the PDF in a temp file so we can read it into 
     TempPDFFile = tempfile.TemporaryFile()
     TempPDFFile.write(PDF_Object.read())
@@ -571,14 +608,6 @@ def Msg_Set(TextString):
     GUI['MsgText'] = TextString
     return()
 
-def Paths_Get():
-    # Get the current paths and file names of this app.
-    #   https://docs.python.org/3/library/os.path.html
-    G.ThisModule_FullPath = os.path.abspath(__file__)
-    G.ThisModule_FileName = os.path.basename(G.ThisModule_FullPath)
-    G.ThisModule_ProjectPath = os.path.dirname(G.ThisModule_FullPath)
-    return()  # End of function Paths_Get
-
 def Title_Build(TitleLength = "short"):
     G.Title_1 = str(
                    "You entered the following values:  \n" +
@@ -620,5 +649,7 @@ def StMarkdown(TextToBeFormated="", color="black",
     if G.Debug: print(md) # ?V
     st.markdown(md, unsafe_allow_html=True)
     return(md)
+
+
 
 MainLine()   # Start this program.
