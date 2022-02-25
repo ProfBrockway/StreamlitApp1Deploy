@@ -1,6 +1,7 @@
-# This code is a template for a python app to run in a streamlit webpage.
+# This code is a template for creating a python app to run in a streamlit
+# webpage.
 # The webpage has a familiar "toolbar on left / plot and output on right"
-#  layout.
+# layout.
 
 # To run this app in a web browser undeployed on the development computer
 # run the following command in the Anaconda console.
@@ -17,17 +18,14 @@ import numpy as np
 import random
 import datetime 
 from PIL import Image  # For getting and displaying images in streamlit.
-
-
-
-
-  
+ 
 
 class Global_Variables():  # A class for creating all python global variables.
     
-    # RESOURCES AND OTHER LINKS OR VARIABLES THAT MIGHT CHANGE.
-    #   - The values for these variables are set in:
-    #                                   Perform_EveryRun_Initialization
+    # +++ RESOURCES AND OTHER LINKS OR VARIABLES THAT MIGHT CHANGE.
+    #   - The values for these variables are all initialized in:
+    #     function "Perform_EveryRun_Initialization", below
+    
     Debug = False
 
     ThisModule_Version = None
@@ -45,14 +43,14 @@ class Global_Variables():  # A class for creating all python global variables.
     Link08 = None
     Link10 = None
 
-    # USERS INPUTS (Copied from input widgets and internalized)
+    # +++ USERS INPUTS (Copied from input widgets and internalized)
     RowsToGenerate = None
     AFloatNumber = None
     ShowLine3 = None
     ShowInput = None
     ShowData = None
     
-    # SUNDRY GLOBAL VARIABLES
+    # +++ SUNDRY GLOBAL VARIABLES
     Fig1 = None
     Plot1 = None
     Title_1 = None
@@ -61,13 +59,13 @@ class Global_Variables():  # A class for creating all python global variables.
     
 
     
-    # DATA TO BE PLOTTED
+    # +++ DATA TO BE PLOTTED
     x = []
     y1 = None
     y2 = None
     y3 = None  
     
-    # A Pandas Dataframe
+    # +++ A PANDAS DATAFRAME
     DataTable = pd.DataFrame(
     columns=["x",
              "y1",
@@ -78,14 +76,13 @@ class Global_Variables():  # A class for creating all python global variables.
              "sum with a longer name",
              "random2"]
                            )
-    
 # End of Global Variables
 G = Global_Variables()    # Instantiate our global variables.
 
 def MainLine():
-    # Remember this app is rerun every time the GUI is displayed.
+    # Remember this app is rerun by streamlit every time the GUI is displayed.
     # So we have to keep track of the conversation state and preserve
-    # or recreate variables.
+    # or recreate variables appropriately.
     
     # Note: Console output from this program - like print("Whatever") - will
     # appear in the streamlit console NOT the usual python console.
@@ -93,10 +90,11 @@ def MainLine():
     #    to the streamlit webpage.
     ConsoleClear()  # Clear the internal IPyhon console.
     
-    # If this the initial session create "Static/Persistent" variables.
+    # If this the initial session create "Static/Persistent" variables
+    # and do the "first load only" program initialization.
     if 'Dialog_State' not in GUI:
         if G.Debug: print("Debug: First Display. Display count=1")   
-        Perform_Program_Initialization()
+        Perform_First_Load_Only_Initialization()
         GUI['Dialog_State'] = 1  # Upgrade state so we don't come back here.
 
     else:  # We are responding to a session reply from the user.
@@ -110,6 +108,7 @@ def MainLine():
         #   program initialization once then perform the "every run"
         #   intialization.
         Perform_EveryRun_Initialization()
+        
         # Validate and internalize users'input.
         InputOK = Validate_And_Internalize_User_Input()
         if InputOK == True:
@@ -121,12 +120,13 @@ def MainLine():
             # There is an error in the users input. 
             # A message describing the error is already set.
             pass
-    # Having prepared all output, we now insert the output into our GUI.
-    # display the GUI and wait for next user input.
+    
+    # Having processed all input, we now insert the output into our GUI,
+    # display the GUI and then wait for next user input.
     GUI_Build_And_Show()
     return()  # End of function: MainLine.
 
-def Perform_Program_Initialization():
+def Perform_First_Load_Only_Initialization():
 
     Perform_EveryRun_Initialization()
 
@@ -197,21 +197,22 @@ def Perform_Program_Initialization():
                   }
                        )
 
-    return()  # End of function: Perform_Program_Initialization
+    return()  # End of function: Perform_First_Load_Only_Initialization
  
 def Perform_EveryRun_Initialization():
     # Initalize variables for every run.
     #   Remember nothing is preserved across sessions, except variables in  
     #   the GUI streamlit "session_state" and its static/persistant variables.
     #  
-    #   So on the first run we perform the one time program initialization.
-    #   On subsequent runs we perform the "every run" intialization.
-    #    So here we initialize anything not preserved across display/response.
+    #   On the first run we perform the one time program initialization.
+    #   On subsequent runs we perform the "every run" intialization to 
+    #   initialize or reinitialize anything not preserved across 
+    #   the display/response dialog.
     # 
-    # Alternatives to repeating initialization here are: :
+    # Alternatives to repeating initialization here are: 
     # (1) Save static/persistant variables in the streamlit "session_state".
-    # (2) Make the initialization "static" using steamlit st.cache.
-    #      - Usefull if the initialization is very time consuming.
+    # (2) Make the initialization "static" using streamlit st.cache.
+    #      - Use st.cache if the initialization is very time consuming.
     # However having an "Every Time" initialization function is good practice
     # and less vulnerable to the subtle misbehaviors of the alternatives.
     
@@ -222,19 +223,16 @@ def Perform_EveryRun_Initialization():
     G.ThisModule_FileName = os.path.basename(G.ThisModule_FullPath)
     G.ThisModule_ProjectPath = os.path.dirname(G.ThisModule_FullPath)
     
-    # Set up a version for this module with a time stamp to help debugging.
-    G.ThisModule_Version = \
-                        "7.0" + "-" + str(datetime.datetime.now().timestamp())
+    # Create a version for this module with a time stamp to help debugging.
+    G.ThisModule_Version = "7.0 - "  + str(datetime.datetime.now().timestamp())
     G.ThisModule_About = "For a course Spring 2021. "  
     G.ThisModule_Author = "UConn Math Dept."
     G.ThisModule_Purpose = "To test the features of Streamlit."
     
     # RESOURCE LINKS Etc
-    # ?V The help pdf link shows the pdf in githubs pdf viewer without the nice pdf indexes etc
-    #    try basing the base elsewhere. The user can download from the github viewer and then it works
-    #    but this is a step most users wont do.
-    G.Link01 ='https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/main/ProgramDocumentation.pdf'
-    G.Link04 = 'https://www.extremelycoolapp.com/bug'
+
+    G.Link01 = "https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/main/ProgramDocumentation.pdf"
+    G.Link04 = "https://www.extremelycoolapp.com/bug"   
     G.Link06 = "https://raw.githubusercontent.com/ProfBrockway/OSExperiments/main/TigerMoth.jpg"
     G.Link08 = "https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/0bc950a80603401a54dfb1c6ebe15bc83a362d6e/StreamlitApp1.py"
     G.Link10 = "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"    
@@ -349,9 +347,9 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
     # Show the plot on the streamlit webpage.
     st.subheader(" This Is The GUI 'Output Display Panel' On The Right")
     st.pyplot(G.Fig1)  # st.write(G.Fig1) also Displays a Matplotlib figure.
-    st.caption = ("You can enlarge the plot using the View fullscreen "
+    st.write("You can enlarge the plot using the View fullscreen "
                   "icon. The icon is above and to the right of the plot.")
-    st.caption = ("You can save the plot to your computer. Right click on "
+    st.write("You can save the plot to your computer. Right click on "
                   "the plot, then use 'save image' or 'copy image'.")
     # Show how checkbox or other user requests can be used to
     # conditionally show data or text or any output after the plot appears.
@@ -365,11 +363,11 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
     if G.ShowData == True:
        st.subheader("The Pandas Data Table You Requested Follows:")
        st.dataframe(data=G.DataTable, width=None, height=None)
-       st.caption = ("The data is just filler to demonstrate the Pandas " 
-                      "dataframes.") 
-       st.caption = ("The dataframe display will automatically offer vertical "
+       st.write("The data shown is just filler to demonstrate a Pandas " 
+                      "dataframe.") 
+       st.write("The dataframe display will automatically offer vertical "
                     "and horizontal scroll bars if required.")
-       st.caption= ("You can expand the datatable using the 'View fullscreen' "
+       st.write("You can expand the datatable using the 'View fullscreen' "
                     "icon. The icon is above and to the right of the table.")       
 
        
@@ -390,10 +388,10 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
                            args=None,
                            kwargs=None, 
                            disabled=False)
-       st.caption = ("You can save the data frame to your computer using the "
+       st.write("You can save the data frame to your computer using the "
                       "above button.") 
-       st.caption = ("The file will be called 'DataFrame.csv'")
-       st.caption = ("The file will be saved in your browser's default "
+       st.write("The file will be called 'DataFrame.csv'")
+       st.write("The file will be saved in your browser's default "
                       "download location on your computer.")
        
     # Demonstrate that we can control text appearance using HTML.
@@ -419,8 +417,9 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
     
     st.subheader("We Can Display  Any Image Or Audio/Visual Media")
     st.image(G.Link06,
-       caption="We used a github url address to get this picture from github")
-    
+        caption="We used a github url address to get this picture from github")
+    st.write("You can enlarge the picture by clicking the pop up symbol "
+             "that appears when you mouse near the top right of the image.")
     # Show a picture on the webpage using the github file path for the picture.
     #  Get the path to the picture file on github.
     #  Online the full path will be:',/app/streamlitapp1deploy/hms-victory.jpg'
@@ -428,7 +427,7 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
     MyImage = Image.open(FullPath)
     st.image(MyImage, use_column_width="auto",
        caption = "We used a github disk path to get this picture from github")
-    st.caption = (f"Full path of the picture file:  {FullPath}")
+    st.write(f"Full path of the picture file:  {FullPath}")
     
     # Show a video
     #  Get the path to the video file on github
@@ -438,8 +437,8 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
     video_bytes = video_file.read()
     st.subheader("We Can Display Any Movie, Video Help Files For Example.")
     st.video(video_bytes)
-    st.caption = ("We used a github disk path to get this video from github")
-    st.caption = (f"Full path of the video file: {FullPath}")
+    st.write("We used a github disk path to get this video from github")
+    st.write(f"Full path of the video file: {FullPath}")
     
     # Plot a chart using native streamlit plotting functions.  
     chart_data = pd.DataFrame(np.random.randn(20, 3),columns=['a', 'b', 'c'])
@@ -450,10 +449,8 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
     # Show a clickable weblink on our webpage GUI.
     st.subheader("Link To This Apps Code. Downloadable.")
     st.markdown("     [Link To Source Code](%s)" % G.Link08)
-    # st.caption("You can also see the app code by using the menu in "
-    #               "the top right of the webpage (3 horizontal lines)")
-    st.caption('You can also see the app code by using the menu in ')
-
+    st.write("You can also see the app code by using the menu in "
+             "the top right of the webpage (3 horizontal lines)")
   
     # Show a PDF
     #   We could base the pdf file in the github repository for the project.
@@ -463,12 +460,15 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
     #   So we base our pdfs in another web page (eg Google drive) so
     #   that the user has the full PDF utility.
     st.subheader("Here Is The Program Documentation As A PDF.")
-    st.caption = ("Be sure to use the PDF toolbar and index to navigate "
+    st.write("Be sure to use the PDF toolbar and index to navigate "
                    "around the document.")
     
     # Retrieve the PDF object from its web page.
-
+    # We host any pdf file on a web page not github.
+    #  The user can download from the github viewer and then it works
+    #    but this is a step most users wont do.
     PDF_HTML ="<a href='https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf' target='_blank'>Link to a pdf</a> "                 
+    PDF_HTML ="<a href='" + G.Link01 + "' target='_blank'>Link to a pdf</a> "                 
     # Render with Streamlit Markdown
     st.markdown(PDF_HTML, unsafe_allow_html=True)
     
@@ -476,7 +476,7 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
     # Show debugging information.
     if G.Debug:
         st.subheader("Debugging Information Follows.")
-        st.caption = (" The streamlit st.session_state persistant/static "
+        st.write(" The streamlit st.session_state persistant/static "
                       "variables follow.") 
         st.write(GUI)    #  Show all streamlit persistent variables.
         
