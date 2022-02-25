@@ -387,7 +387,7 @@ def Plot_Build():
     #  Online the full path will be:',/app/streamlitapp1deploy/hms-victory.jpg'
     FullPath = os.path.join(G.ThisModule_ProjectPath, "hms-victory.jpg")
     MyImage = Image.open(FullPath)
-    st.image(MyImage, 
+    st.image(MyImage, use_column_width="auto",
        caption="We used a github disk path to get this picture from github")
     st.caption(f"Full path of the picture file:  {FullPath}")
     
@@ -398,8 +398,8 @@ def Plot_Build():
     video_file = open(FullPath, 'rb')
     video_bytes = video_file.read()
     st.subheader("We Can Display Any Movie, Video Help Files For Example.")
-    st.video(video_bytes,
-         caption="We used a github disk path to get this video from github")
+    st.video(video_bytes)
+    st.caption=("We used a github disk path to get this video from github")
     st.caption(f"Full path of the video file: {FullPath}")
     
     # Plot a chart using native streamlit plotting functions.  
