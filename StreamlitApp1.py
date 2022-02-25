@@ -119,7 +119,7 @@ def MainLine():
             # Process the users input and generate the data for plotting
             Process_Users_Data()
             # Plot the data
-            Plot_Build()
+            Right_Panel_Build()
         else:
             # There is an error in the users input. 
             # A message describing the error is already set.
@@ -233,6 +233,9 @@ def Perform_EveryRun_Initialization():
     G.ThisModule_Purpose = "To test the features of Streamlit."
     
     # RESOURCE LINKS Etc
+    # ?V The help pdf link shows the pdf in githubs pdf viewer without the nice pdf indexes etc
+    #    try basing the base elsewhere. The user can download from the github viewer and then it works
+    #    but this is a step most users wont do.
     G.Link01 ='https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/main/ProgramDocumentation.pdf'
     G.Link04 = 'https://www.extremelycoolapp.com/bug'
     G.Link06 = "https://raw.githubusercontent.com/ProfBrockway/OSExperiments/main/TigerMoth.jpg"
@@ -311,8 +314,9 @@ def Process_Users_Data():
     # End for   
     return()  # End of function: Generate_Data_To_Be_Plotted
    
-def Plot_Build():
-    #  Possible Bug when deploying matplotlib streamlit apps
+def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
+  
+  # ?V  Possible Bug when deploying matplotlib streamlit apps
     # https://docs.streamlit.io/streamlit-cloud/troubleshooting#limitations-and-known-issues
     #     from matplotlib.backends.backend_agg import RendererAgg
     # https://docs.streamlit.io/library/api-reference/charts/st.pyplot
@@ -321,9 +325,7 @@ def Plot_Build():
     #   fig.title('This is a figure)')
     #   fig.plot([1,20,3,40])
     #   st.pyplot(fig)
-
     
-
     # Create a Matplotlib figure.
     G.Fig1 = mpl.figure.Figure()
     
@@ -479,12 +481,11 @@ def Plot_Build():
         # Parse To HTML Embed Tag
     PDF_HTML = f"""<embed src='data:application/pdf;base64,{PDF_Base64}' 
                       width='1000' height='1000' type='application/pdf'>"""
+    PDF_HTML ="<a href='https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf' target='_blank'>Link to a pdf</a> "                 
     # Render with Streamlit Markdown
     st.markdown(PDF_HTML, unsafe_allow_html=True)
     
- 
-    
-    
+   
     # Show debugging information.
     if G.Debug:
         st.subheader("Debugging Information Follows.")
@@ -495,7 +496,7 @@ def Plot_Build():
         # st.write(G)  # ?v fix so this works For debugging. Show global variables.
 
 
-    return  # End of function: Plot_Build
+    return  # End of function: Right_Panel_Build
 
 def GUI_Build_And_Show():        # Build the GUI.
     # - Our GUI is a streamlit web page with widgets in a vertical toolbar 
