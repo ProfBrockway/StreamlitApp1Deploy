@@ -310,9 +310,9 @@ def Plot_Build():
     # Show the plot on the streamlit webpage.
     st.subheader(" This Is The GUI 'Output Display Panel' On The Right")
     st.pyplot(G.Fig1)  # st.write(G.Fig1) also Displays a Matplotlib figure.
-    st.caption("You can enlarge the plot using the 'View fullscreen' "
+    st.caption = ("You can enlarge the plot using the View fullscreen "
                   "icon. The icon is above and to the right of the plot.")
-    st.caption("You can save the plot to your computer. Right click on "
+    st.caption = ("You can save the plot to your computer. Right click on "
                   "the plot, then use 'save image' or 'copy image'.")
     # Show how checkbox or other user requests can be used to
     # conditionally show data or text or any output after the plot appears.
@@ -326,7 +326,7 @@ def Plot_Build():
     if G.ShowData == True:
        st.subheader("The Pandas Data Table You Requested Follows:")
        st.dataframe(data=G.DataTable, width=None, height=None)
-       st.caption("The data is just filler to demonstrate the Pandas' " 
+       st.caption("The data is just filler to demonstrate the Pandas " 
                   "dataframes.") 
        st.caption("The dataframe display will automatically offer vertical "
                   "and horizontal scroll bars if required.")
