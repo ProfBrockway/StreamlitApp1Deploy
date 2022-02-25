@@ -363,25 +363,37 @@ def Plot_Build():
     st.write(md)
   
 
-    
-    # Show a picture on the web page.
-    # We must get our picture (and other resources) from a web address 
-    # because streamlit does NOT have a full backend on its server from
-    # which server disk we might otherwise get resources.
-    # The obvious online repository for resources like pictures is the
-    # github repository for the project. Streamlit drives itself from
-    # the github repository. However github cannot as yet support some 
-    # resources. For example a pdf displayed at github does not support 
-    # pdf features like indexing or links. Also the video storage is very 
-    # limited. So we will be using other online sites to store web
-    # accessable resources. (Eg Google drive or dropbox etc)
+    st.subheader("We Can Display  Any Image Or Audio/Visual Media")
+    # Show a picture on the webpage using a web address for the picture.
+    #   We must get our picture (and other resources) from a web address 
+    #   because streamlit does NOT have a full backend on its server from
+    #   which server disk we might otherwise get resources.
+    #   The obvious online repository for resources like pictures is the
+    #   github repository for the project. Streamlit drives itself from
+    #   the github repository. However github cannot as yet support some 
+    #   resources. For example a pdf displayed at github does not support 
+    #   pdf features like indexing or links. Also the video storage is very 
+    #   limited. So we will be using other online sites to store web
+    #   accessable resources. (Eg Google drive or dropbox etc)
     # - How to user github to host media for display
     #   https://www.labnol.org/internet/free-file-hosting-github/29092/
     st.subheader(" We can display a picture from a web address (Github)")
-    st.image("https://raw.githubusercontent.com/ProfBrockway/OSExperiments/main/TigerMoth.jpg")
+    st.image("https://raw.githubusercontent.com/ProfBrockway/OSExperiments/main/TigerMoth.jpg",
+       caption="We used a github url address to get this picture from github")
+   
     
+    # Show a picture on the webpage using the github file path for the picture.
+    FullPath = os.path.join(G.ThisModule_ProjectPath, "hms-victory.jpg")
+ 
+    
+    MyImage = Image.open(FullPath)
+    st.image(MyImage, 
+       caption="We used a github disk path to get this picture from github")
+    st.caption(f"Full path of the video file: ,{FullPath}")
     
     # Show a video
+    #  Get the path to the video file on github
+    #  Online the full path will be: ',/app/streamlitapp1deploy/TestVideo.mp4' 
     FullPath = os.path.join(G.ThisModule_ProjectPath, "TestVideo.mp4")
     video_file = open(FullPath, 'rb')
     video_bytes = video_file.read()
