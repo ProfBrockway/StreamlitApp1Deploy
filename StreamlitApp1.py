@@ -409,9 +409,9 @@ def Plot_Build():
     st.line_chart(chart_data)
     
     # Show a clickable weblink on our webpage GUI.
-    myurl = "https://github.com/ProfBrockway/ScreeningTests"
+    Codeurl = "https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/0bc950a80603401a54dfb1c6ebe15bc83a362d6e/StreamlitApp1.py"
     st.subheader("Link To This Apps Code.")
-    st.markdown("     [Link To Source Code](%s)" % myurl)
+    st.markdown("     [Link To Source Code](%s)" % Codeurl)
     
     # Show a PDF
     # To display a pdf from online resource we have to download it as
