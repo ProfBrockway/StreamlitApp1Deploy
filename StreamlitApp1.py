@@ -312,7 +312,7 @@ def Process_Users_Data():
    
 def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
       
-    # Create a Matplotlib figure.
+    # CREATE A MATPLOTLIB FIGURE.
     G.Fig1 = mpl.figure.Figure()
     
     # Create a plot object within the main figure with multiple lines.
@@ -323,7 +323,7 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
     G.Plot1.plot(G.x, G.y1, label="Y = X", color="red")
     G.Plot1.plot(G.x, G.y2, label="Y = X**2", color="blue")
 
-    # The following shows how the plot can be modified by users requests.
+    # THE FOLLOWING SHOWS HOW THE PLOT CAN BE MODIFIED BY USERS REQUESTS.
     if G.ShowLine3 == True:
         G.Plot1.plot(G.x, G.y3, label="Y = - X", color="green")
         
@@ -350,7 +350,7 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
     else:
         st.subheader("The Values You Entered Are Not Displayed.")
         
-   # Show the Pandas dataframe if user requested it. 
+   # SHOW THE PANDAS DATAFRAME IF USER REQUESTED IT. 
     if G.ShowData == True:
        st.subheader("The Pandas Data Table You Requested Follows:")
        st.dataframe(data=G.DataTable, width=None, height=None)
@@ -385,14 +385,14 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
        st.write("The file will be saved in your browser's default "
                       "download location on your computer.")
        
-    # Demonstrate that we can control text appearance using HTML.
+    # DEMONSTRATE THAT WE CAN CONTROL TEXT APPEARANCE USING HTML.
     md = StMarkdown("This Demonstrates That We Can Format Text Using HTML.",
                     fontsize=22,bold=True,color="blue")   
     st.write(md)
   
 
     
-    # Show a picture on the webpage using a web address for the picture.
+    # SHOW A PICTURE ON THE WEBPAGE USING A WEB ADDRESS FOR THE PICTURE.
     #   We must get our picture (and other resources) from a web address 
     #   because streamlit does NOT have a full backend on its server from
     #   which server disk we might otherwise get resources.
@@ -420,7 +420,7 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
        caption = "We used a github disk path to get this picture from github")
     st.write(f"Full path of the picture file:  {FullPath}")
     
-    # Show a video
+    # SHOW A VIDEO
     #  Get the path to the video file on github
     #  Online the full path will be: ',/app/streamlitapp1deploy/TestVideo.mp4' 
     FullPath = os.path.join(G.ThisModule_ProjectPath, "TestVideo.mp4")
@@ -431,21 +431,55 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
     st.write("We used a github disk path to get this video from github")
     st.write(f"Full path of the video file: {FullPath}")
     
-    # Plot a chart using native streamlit plotting functions.  
+    # PLOT A CHART USING NATIVE STREAMLIT PLOTTING FUNCTIONS.  
     chart_data = pd.DataFrame(np.random.randn(20, 3),columns=['a', 'b', 'c'])
                            
     st.subheader("Plot A Chart Using Native Streamlit Plotting Functions.")
     st.line_chart(chart_data)
     
-    # Show a clickable weblink on our webpage GUI.
+    # SHOW A CLICKABLE WEBLINK ON OUR WEBPAGE GUI.
     #   There are several ways to do this.
-    
     st.subheader("Link To This Apps Code. Downloadable.")
     st.markdown("     [Link To Source Code](%s)" % G.Link08)
     # Also works: st.write("     [Link To The Source Code](%s)" % G.Link08)
     st.write("You can also see the app code by using the menu in "
              "the top right of the webpage (3 horizontal lines)")
-  
+    
+    
+    # SHOW A PDF FILE STORED ON A WEB PAGE DISK.
+    #   - This only works if the pdf is already in a web page.
+    #   - This only works locally.
+    # To display a pdf from online resource we have to download it as
+    # file then read it back in. We use the python "tempfile" object
+    # so that the user doesn't get any junk file on the host computer.
+    # Tempfile works on all operating system and doesn't need a
+    # path supplied. It uses the default temp file facility of the opeerating
+    # systems.
+    import urllib.request  # For getting a pdf file online.
+    import base64    # For showing PDFs.
+    import tempfile  # For manipulating and showing a PDF file in streamlit.
+    st.subheader("Here is a pdf. THIS ONLY WORKS LOCALLY.")
+    st.caption("Be sure to use the PDF toolbar and index to navigate around "
+               "the document.")
+    # Set the URL of the PDF. (Stored in the cloud somewhere).
+    PDF_URL = "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
+    PDF_URL = G.Link01
+    # Retrieve the PDF object from its web page.
+    PDF_Object = urllib.request.urlopen(PDF_URL)    
+    # Store the PDF in a temp file so we can read it into 
+    TempPDFFile = tempfile.TemporaryFile()
+    TempPDFFile.write(PDF_Object.read())
+    TempPDFFile.seek(0) # Reposition at front of the temporary file.
+    # Convert the PDF file to a base64 byte stream for HTML. 
+    PDF_Base64 = base64.b64encode(TempPDFFile.read()).decode('utf-8')
+    TempPDFFile.close()
+        # Parse To HTML Embed Tag
+    PDF_HTML = f"""<embed src='data:application/pdf;base64,{PDF_Base64}' 
+                      width='1000' height='1000' type='application/pdf'>"""
+    # Render with Streamlit Markdown
+    st.markdown(PDF_HTML, unsafe_allow_html=True)
+        
+    
     # Show a PDF in a pop up new web page
     #   We could base the pdf file in the github repository for the project.
     #   But the github using the github link to the address displays
