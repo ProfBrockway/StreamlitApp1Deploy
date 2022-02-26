@@ -16,6 +16,7 @@ import os
 import pandas as pd
 import numpy as np
 import random
+import time
 import datetime 
 from PIL import Image  # For getting and displaying images in streamlit.
  
@@ -127,9 +128,37 @@ def MainLine():
     return()  # End of function: MainLine.
 
 def Perform_First_Load_Only_Initialization():
-
+    
+    # Initalize variables etc.
     Perform_EveryRun_Initialization()
 
+    # Set up a typical "About/Help" menu for the webpage.
+    #  - The set_page_config command can only be used once per run.
+    #  - The set_page_config command be the first Streamlit command used.
+    #  - New line marker \n must be preceeded by at least two blanks to work.
+    st.set_page_config  (
+     page_title = "Web Page Header. ",
+     
+     page_icon = None,
+     
+     layout="centered", # or "wide".
+        # 'wide' gives a bigger display. 'centered' gives a smaller display
+        #  Remember that plots and tables etc on the streamlit webpage 
+        #  can be "blownup" by the user clicking an "expand" icon.
+        #  So don't worry if the normal view is too small.
+     
+     initial_sidebar_state="auto",
+     
+     menu_items={ # These appear as the webpage "about" menu items.
+     'Get Help  ':  G.Link01,
+     'Report a bug  ': G.Link04,
+     'About': 'App:  ' + G.ThisModule_FileName + '.  ' +  G.ThisModule_About
+         + '  \nAuthor:  ' +  G.ThisModule_Author 
+         + '  \nProgram Purpose:  ' + G.ThisModule_Purpose 
+         + '  \nApp Version:  ' +  G.ThisModule_Version 
+               }
+                    )
+    # CREATE PERSISTENT/STATIC VARIABLES.
     # During the first load session, we create our "Persistent" variables.
     #  Persistent variables:
     #   - Are stored and created by streamlit.
@@ -168,34 +197,6 @@ def Perform_First_Load_Only_Initialization():
     GUI['ShowInput'] = True
     GUI['ShowData'] = True
 
- 
-    # Set up some basic properties of the GUI.
-      # We setup a standard webpage "about/help" menu.
-      #  - The set_page_config command can only be used once per run.
-      #  - New line marker \n must be preceeded by at least two blanks to work.
-      
-    st.set_page_config  (
-        page_title = "Web Page Header. ",
-        
-        page_icon = None,
-        
-        layout="centered", # or "wide".
-           # 'wide' gives a bigger display. 'centered' gives a smaller display
-           #  Remember that plots and tables etc on the streamlit webpage 
-           #  can be "blownup" by the user clicking an "expand" icon.
-           #  So don't worry if the normal view is too small.
-        
-        initial_sidebar_state="auto",
-        
-        menu_items={ # These appear as the webpage "about" menu items.
-        'Get Help  ':  G.Link01,
-        'Report a bug  ': G.Link04,
-        'About': 'App:  ' + G.ThisModule_FileName + '.  ' +  G.ThisModule_About
-            + '  \nAuthor:  ' +  G.ThisModule_Author 
-            + '  \nProgram Purpose:  ' + G.ThisModule_Purpose 
-            + '  \nApp Version:  ' +  G.ThisModule_Version 
-                  }
-                       )
 
     return()  # End of function: Perform_First_Load_Only_Initialization
  
@@ -229,8 +230,7 @@ def Perform_EveryRun_Initialization():
     G.ThisModule_Author = "UConn Math Dept."
     G.ThisModule_Purpose = "To test the features of Streamlit."
     
-    # RESOURCE LINKS Etc
-
+    # RESOURCE LINKS Etc  Pictures/Videos/Files etc stored online.
     G.Link01 = "https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/main/ProgramDocumentation.pdf"
     G.Link02 = "https://drive.google.com/file/d/1ADswqmBPZaEzwrhzu_mTk5HY_qHv2Mhw/view?usp=sharing"
     G.Link04 = "https://www.extremelycoolapp.com/bug"   
@@ -261,18 +261,17 @@ def Validate_And_Internalize_User_Input():
     # Validate and internalize population.
     G.RowsToGenerate, InputOK = Validate_Integer(GUI['RowsToGenerate'])
     if InputOK == False:
-        Msg_Set("Error 1006: Rows to Generate must be an integer.") 
+        Msg_Set("Error 1006:\n'Rows to Generate' must be an integer.") 
         return(False) 
     if (G.RowsToGenerate < 50):
-        Msg_Set("Error 1008: Rows To Generate  must be [50,150] but not 99.")  
+        Msg_Set("Error 1008:\n'Rows To Generate' must be [50,150] but not 99.")  
         return (False)
     if GUI['RowsToGenerate'] == 99:
-       Msg_Set("Rows to Generate is exactly 99 which is not ok.")
+       Msg_Set("Error 1010:\n'Rows to Generate' is exactly 99 which is not ok.")
        return(False)
-    
     G.AFloatNumber, InputOK= Validate_Float(GUI['AFloatNumber'])
     if G.AFloatNumber == 9:
-       Msg_Set("AFloatNumber is exactly 9 which is not ok.")
+       Msg_Set("Error 1012:\n'A FloatNumber' is exactly 9 which is not ok.")
        return(False)
     
     # Internalize checkbox options.
@@ -312,7 +311,7 @@ def Process_Users_Data():
    
 def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
       
-    # CREATE A MATPLOTLIB FIGURE.
+    # +++ CREATE A MATPLOTLIB FIGURE. 
     G.Fig1 = mpl.figure.Figure()
     
     # Create a plot object within the main figure with multiple lines.
@@ -323,7 +322,7 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
     G.Plot1.plot(G.x, G.y1, label="Y = X", color="red")
     G.Plot1.plot(G.x, G.y2, label="Y = X**2", color="blue")
 
-    # THE FOLLOWING SHOWS HOW THE PLOT CAN BE MODIFIED BY USERS REQUESTS.
+    # The following shows how the plot can be modified by users requests.
     if G.ShowLine3 == True:
         G.Plot1.plot(G.x, G.y3, label="Y = - X", color="green")
         
@@ -342,15 +341,16 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
                   "icon. The icon is above and to the right of the plot.")
     st.write("You can save the plot to your computer. Right click on "
                   "the plot, then use 'save image' or 'copy image'.")
+    
     # Show how checkbox or other user requests can be used to
-    # conditionally show data or text or any output after the plot appears.
+    # conditionally show data or text on a plot.
     if G.ShowInput == True:
         st.subheader("The Values You Entered Are Listed Below.")
         st.write(Title_Build())
     else:
         st.subheader("The Values You Entered Are Not Displayed.")
         
-   # SHOW THE PANDAS DATAFRAME IF USER REQUESTED IT. 
+   # +++ SHOW A PANDAS DATAFRAME IF USER REQUESTED IT.
     if G.ShowData == True:
        st.subheader("The Pandas Data Table You Requested Follows:")
        st.dataframe(data=G.DataTable, width=None, height=None)
@@ -362,7 +362,7 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
                     "icon. The icon is above and to the right of the table.")       
 
        
-       # Add a "download" dataframe button.
+       #  +++ ADD A "DOWNLOAD" DATAFRAME BUTTON.
        #   - The dataframe is converted to a csv file.
        #   - The csv file is downloaded to the browsers default download
        #     location.
@@ -385,14 +385,16 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
        st.write("The file will be saved in your browser's default "
                       "download location on your computer.")
        
-    # DEMONSTRATE THAT WE CAN CONTROL TEXT APPEARANCE USING HTML.
-    md = StMarkdown("This Demonstrates That We Can Format Text Using HTML.",
-                    fontsize=22,bold=True,color="blue")   
-    st.write(md)
+       
+    #  +++ SHOW FONT CHANGES IN TEXT USING HTML.
+    MDText = StMarkdown(
+        "This Demonstrates That We Can Format Text Using HTML.",
+         fontsize=22,bold=True,color="blue")   
+    st.markdown(MDText, unsafe_allow_html=True) 
   
 
     
-    # SHOW A PICTURE ON THE WEBPAGE USING A WEB ADDRESS FOR THE PICTURE.
+    #  +++ SHOW A PICTURE ON THE WEBPAGE USING A WEB ADDRESS FOR THE PICTURE.
     #   We must get our picture (and other resources) from a web address 
     #   because streamlit does NOT have a full backend on its server from
     #   which server disk we might otherwise get resources.
@@ -420,7 +422,9 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
        caption = "We used a github disk path to get this picture from github")
     st.write(f"Full path of the picture file:  {FullPath}")
     
-    # SHOW A VIDEO
+    
+    
+    #  +++ SHOW A VIDEO
     #  Get the path to the video file on github
     #  Online the full path will be: ',/app/streamlitapp1deploy/TestVideo.mp4' 
     FullPath = os.path.join(G.ThisModule_ProjectPath, "TestVideo.mp4")
@@ -431,93 +435,100 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
     st.write("We used a github disk path to get this video from github")
     st.write(f"Full path of the video file: {FullPath}")
     
-    # PLOT A CHART USING NATIVE STREAMLIT PLOTTING FUNCTIONS.  
+    
+    
+    #  +++ SHOW A PLOT USING NATIVE STREAMLIT PLOTTING FUNCTIONS.  
     chart_data = pd.DataFrame(np.random.randn(20, 3),columns=['a', 'b', 'c'])
-                           
     st.subheader("Plot A Chart Using Native Streamlit Plotting Functions.")
     st.line_chart(chart_data)
     
-    # SHOW A CLICKABLE WEBLINK ON OUR WEBPAGE GUI.
+    
+    #  +++ SHOW A CLICKABLE WEBLINK ON OUR WEBPAGE GUI.
     #   There are several ways to do this.
-    st.subheader("Link To This Apps Code. Downloadable.")
-    st.markdown("     [Link To Source Code](%s)" % G.Link08)
-    # Also works: st.write("     [Link To The Source Code](%s)" % G.Link08)
-    st.write("You can also see the app code by using the menu in "
-             "the top right of the webpage (3 horizontal lines)")
-    
-    
-    # SHOW A PDF FILE STORED ON A WEB PAGE DISK.
-    #   - This only works if the pdf is already in a web page.
-    #   - This only works locally.
-    # To display a pdf from online resource we have to download it as
-    # file then read it back in. We use the python "tempfile" object
-    # so that the user doesn't get any junk file on the host computer.
-    # Tempfile works on all operating system and doesn't need a
-    # path supplied. It uses the default temp file facility of the opeerating
-    # systems.
-    import urllib.request  # For getting a pdf file online.
-    import base64    # For showing PDFs.
-    import tempfile  # For manipulating and showing a PDF file in streamlit.
-    st.subheader("Here is a pdf. THIS ONLY WORKS LOCALLY.")
-    st.caption("Be sure to use the PDF toolbar and index to navigate around "
-               "the document.")
-    # Set the URL of the PDF. (Stored in the cloud somewhere).
-    PDF_URL = "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
-    PDF_URL = G.Link01
-    # Retrieve the PDF object from its web page.
-    PDF_Object = urllib.request.urlopen(PDF_URL)    
-    # Store the PDF in a temp file so we can read it into 
-    TempPDFFile = tempfile.TemporaryFile()
-    TempPDFFile.write(PDF_Object.read())
-    TempPDFFile.seek(0) # Reposition at front of the temporary file.
-    # Convert the PDF file to a base64 byte stream for HTML. 
-    PDF_Base64 = base64.b64encode(TempPDFFile.read()).decode('utf-8')
-    TempPDFFile.close()
-        # Parse To HTML Embed Tag
-    PDF_HTML = f"""<embed src='data:application/pdf;base64,{PDF_Base64}' 
-                      width='1000' height='1000' type='application/pdf'>"""
-    # Render with Streamlit Markdown
-    st.markdown(PDF_HTML, unsafe_allow_html=True)
-        
-    
-    # Show a PDF in a pop up new web page
-    #   We could base the pdf file in the github repository for the project.
+    st.subheader("LINK TO THIS APPS CODE. (DOWNLOADABLE). ")
+    st.markdown(" [Link To Source Code](%s)" % G.Link08)
+    # Also works: st.write("[Link To The Source Code](%s)" % G.Link08)
+
+
+    #  +++ SHOW A PDF AT GITHUB USING POP UP NEW WEB PAGE
+    #   We  base the pdf file in the github repository for the project.
     #   But the github using the github link to the address displays
     #   the pdf file in the primitive github pdf view which does not
     #   have basic features, especially the pdf document index.
-    #   So we base our pdfs in another web page (eg Google drive) so
-    #   that the user has the full PDF utility.
-    
-    st.subheader("Here Are Links Program Documentation As A PDF.")
-    # Retrieve the PDF object from its web page.
-    #   We prefer to host pdf files on a web page not github.
-    #   The github PDF viewer lacks important features, espcially the PDF
-    #   index feature that is essential for easy document navigation.
-    st.write("     [ A Link To The PDF stored on github](%s)" % G.Link01)
-    st.write("     [ A Link To The PDF stored on Google](%s)" % G.Link02)
-    st.write("Be sure to use the PDF toolbar and index to navigate "
-                   "around the document.")
-    
-    # Show a PDF file embedded in our webpage.
-    st.subheader("Here A PDF Embedded In this web page PDF.")
+    #   I have not been able to fix this problem so for now, the pdf
+    #   is displayed and the user advised to download it a use a 
+    #   proper pdf viewer.
+    st.subheader("PROGRAM DOCUMENTATION AS A PDF.")
+    st.subheader("       ALSO SEE MENU 'GET HELP'")
+    st.write("You can also see the program documentation by using the menu in "
+             "the top right of this webpage (3 horizontal lines). "
+             "Select 'GET HELP'")
+    st.write("By downloading the documentation PDF and viewing it on "
+             "your computer you will be able to navigate the document "
+             "using an index, search, etc.")
    
-    st.markdown("<embed src='https://drive.google.com/viewerng/viewer?embedded=true&url="
-       + "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf' "  
-       + "width='400' height='400'>" , unsafe_allow_html=True)  
-
-
-
-    # Show debugging information.
+    # Place a link on our webpage to a file in the cloud.
+    st.write(" [ A Link To The Program Documentation PDF stored on github]" 
+             "(%s)" % G.Link01)
+   
+    
+    # +++ SHOW DEBUGGING INFORMATION.
     if G.Debug:
+      st.subheader("Debugging Information Follows.")
+      st.write(" The streamlit st.session_state persistant/static "
+                    "variables follow.") 
+      st.write(GUI)    #  Show all streamlit persistent variables.
+                # st.write(G)  # ?v fix so this works For debugging. Show global variables.
+    
+    # +++ DEMONSTRATE AN EXPANDER
+    st.subheader("DEMONSTRATE AN EXPANDER.")
+    with st.expander("An expanding section that shows debugging information"):
+        st.write(""" Write or display anything here. """)
+        st.write("You can call any Streamlit command.")
         st.subheader("Debugging Information Follows.")
         st.write(" The streamlit st.session_state persistant/static "
                       "variables follow.") 
         st.write(GUI)    #  Show all streamlit persistent variables.
+        # st.write(G)  # ?v fix so this works For  Show global variables.
+          
         
-        # st.write(G)  # ?v fix so this works For debugging. Show global variables.
-
+    # +++ DEMONSTRATE A CONTAINER, ALLOWS GROUPING OF ITEMS
+    st.subheader("DEMONSTRATE A CONTAINER.")     
+    with st.container():
+        st.write("This is inside the container")
+        st.write(""" Inserts an invisible container into your app that
+                 can be used to hold multiple elements. This allows you to,
+                 for example, insert multiple elements into your
+                 app out of order.""")
+    st.write("This is outside the container")
+   
+    
+   
+    # +++ DEMONSTRATE An EMPTY CONTAINER. ALLOWS REMOVAL OF ITEMS
+    st.subheader("DEMONSTRATE AN EMPTY CONTAINER.ALLOWS REMOVAL OF ITEMS")     
+    
+    with st.empty():
+     for seconds in range(20):
+         st.write(f"⏳ {seconds} seconds have passed")
+         time.sleep(1)
+     st.write("✔️ 1 minute over!")
+    
+    
+    
+    placeholder = st.empty()
+    # Replace the placeholder with some text:
+    placeholder.text("Hello")
+    # Replace the text with a chart:
+    placeholder.line_chart({"data": [1, 5, 2, 6]})
+    # Replace the chart with several elements:
+    with placeholder.container():
+         st.write("This is one element")
+         st.write("This is another")
+    # Clear all those elements:
+    placeholder.empty()
 
     return  # End of function: Right_Panel_Build
+
 
 def GUI_Build_And_Show():        # Build the GUI.
     # - Our GUI is a streamlit web page with widgets in a vertical toolbar 
@@ -539,9 +550,11 @@ def GUI_Build_And_Show():        # Build the GUI.
     Form1 = st.sidebar.form(key="Form1", clear_on_submit=False)
 
     with Form1:
-        StMarkdown("THIS IS THE TOOLBAR",
-                    color="green",bold=True,italic=True,fontsize=16)
- 
+        # Add a title to the toolbar on the left.
+        MDText = StMarkdown("THIS IS THE TOOLBAR",
+           color="green",bold=True,italic=True,fontsize=16,align="center")
+        st.write(MDText, unsafe_allow_html=True)
+        
         # Create a textbox for displaying instructions and error messages.
         st.text_area(
             key="MsgText",   # Value will be placed in GUI['MsgText'].
@@ -640,10 +653,7 @@ def Title_Build(TitleLength = "short"):
     return(G.Title_1)   #  End of function: Title_Build
 
 def StMarkdown(TextToBeFormated="", color="black",
-                                     fontsize=14,
-                                     bold=False,
-                                     italic=False,
-                                     fontname="Courier"):
+    fontsize=14,bold=False,italic=False,fontname="Courier",align="left" ):
     # Set a particular font for display as html markdown text.
     weight = ""    
     weightend = ""
@@ -664,91 +674,16 @@ def StMarkdown(TextToBeFormated="", color="black",
                               "font-family:", fontname, ";",
                               "color:", color, ";",
                               "font-size: ",  fs, ";",
+                              "text-align: ",  align, ";",
                            "'"
                   ">",
                         weight + TextToBeFormated + weightend ,
                   "</p>"]
                )
-    if G.Debug: print(md) # ?V
-    st.markdown(md, unsafe_allow_html=True)
-    return(md)
+    return(md)  # End of function: StMarkdown
 
 
 
 MainLine()   # Start this program.
 
 
-#  ++++++++++++++++++++++++++ OLD CODE ++++++++++++++++++++++++++++++++++++++++
-     # The following is obsolete since i use online sources for pdfs.
-     # To display a pdf from online resource we have to download it as
-     # file then read it back in. We use the python "tempfile" object
-     # so that the user doesn't get any junk file on the host computer.
-     # Tempfile works on all operating system and doesn't need a
-     # path supplied. It uses the default temp file facility of the opeerating
-     # systems.
-
-    # PDF imports
-    # import urllib.request  # For getting a pdf file online.
-    # import base64    # For showing PDFs.
-    # import tempfile  # For manipulating and showing a PDF file in streamlit.
-    # PDF_Object = urllib.request.urlopen(G.Link10)    
-    # # Store the PDF in a temp file so we can read it into 
-    # TempPDFFile = tempfile.TemporaryFile()
-    # TempPDFFile.write(PDF_Object.read())
-    # TempPDFFile.seek(0) # Reposition at front of the temporary file.
-    # # Convert the PDF file to a base64 byte stream for HTML. 
-    # PDF_Base64 = base64.b64encode(TempPDFFile.read()).decode('utf-8')
-    # TempPDFFile.close()
-    #     # Parse To HTML Embed Tag
-    # PDF_HTML = f"""<embed src='data:application/pdf;base64,{PDF_Base64}' 
-    #                   width='1000' height='1000' type='application/pdf'>"""
-    
-    # pdf_display = F'<iframe src="data:application/pdf;base64,{base64_pdf}" width="700" height="1000" type="application/pdf"></iframe>
-    
-    # pdf_file = st.file_uploader("Choose your Resume", type=["pdf"])
-
-    
-
-# Also you could use Google's pdf viewer in this way:
-# st.markdown("""
-#            <embed src="https://drive.google.com/viewerng/
-#             viewer?embedded=true&url=https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" width="400" height="400">
-#            """, unsafe_allow_html=True)
-    
-    
-    
-    # st.markdown("""
-    #            <embed src="https://drive.google.com/viewerng/
-    #             viewer?embedded=true&url=https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" width="400" height="400">
-    #            """, unsafe_allow_html=True)
-
-        # st.markdown("<embed src='" 
-        #             + G.Link02 
-        #             + "' width='400' height='400'> ", unsafe_allow_html=True)
-
-        # st.markdown("""
-        #             <embed src="https://drive.google.com/file/d/1ADswqmBPZaEzwrhzu_mTk5HY_qHv2Mhw/view?usp=sharing" width="400" height="400">
-        #             """, unsafe_allow_html=True)
-
-        # st.markdown("""
-        #             <embed src="https://drive.google.com/viewerng/
-        #             viewer?embedded=true&url=https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" width="400" height="400">
-        #             """, unsafe_allow_html=True)
-    
-    # other ideas
-    # https://stackoverflow.com/questions/38491722/reading-a-github-file-using-python-returns-html-tags
-    # https://www.codegrepper.com/code-examples/python/python+get+github+file+content
-    # https://github.com/streamlit/example-app-pdf-report
-    
-    
-    
-    #######################################################################
-    # ?V  Possible Bug when deploying matplotlib streamlit apps
-      # https://docs.streamlit.io/streamlit-cloud/troubleshooting#limitations-and-known-issues
-      #     from matplotlib.backends.backend_agg import RendererAgg
-      # https://docs.streamlit.io/library/api-reference/charts/st.pyplot
-      # _lock = RendererAgg.lock
-      # with _lock:
-      #   fig.title('This is a figure)')
-      #   fig.plot([1,20,3,40])
-      #   st.pyplot(fig)
