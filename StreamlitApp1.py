@@ -17,8 +17,6 @@ import pandas as pd
 import numpy as np
 import random
 
-from PIL import Image  # For getting and displaying images in streamlit.
- 
 
 class Global_Variables():  # A class for creating all python global variables.
     
@@ -39,7 +37,7 @@ class Global_Variables():  # A class for creating all python global variables.
          #  Where possible we base our resources in this apps repostitory
          #  at github. If github basing is not possible or inadequate
          #  we have to use another cloud storage site, eg Google drive.
-         
+        
     # A PDF in this projects repository at github. (Program Help/Documentation.    
     Link01 = "https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/main/Resource_ProgramDocumentation.pdf"
     # A pdf stored at Google drive.
@@ -54,9 +52,10 @@ class Global_Variables():  # A class for creating all python global variables.
     Link11 = "https://raw.githubusercontent.com/ProfBrockway/StreamlitApp1Deploy/main/Resource_TestCSVFile.csv"
     # A url of a video on Youtube.
     Link20 = "https://youtu.be/nsHl48Wnudc"
-    # A url of a video NOT on Youtube.
-    Link24 = 'https://pixabay.com/videos/stars-long-exposure-starry-sky-6962/'
-
+    # A url of a video NOT on Youtube. Just a random website.
+    Link24 = r"https://www.orthopedicone.com/u/home-vid-4.mp4"
+    # A url of a video on google drive.
+    Link30 = "https://drive.google.com/file/d/18xDRuX9lTpEuSsjtJjFHz4TNnxfKAWdI/view?usp=sharing"
 
     # +++ END OF RESOURCES AND OTHER LINKS OR VARIABLES THAT MIGHT CHANGE.
     ###########################################################################
@@ -378,7 +377,7 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
                     "icon. The icon is above and to the right of the table.")       
 
        
-       #  +++ ADD A "DOWNLOAD" DATAFRAME BUTTON.
+   #  +++ ADD A "DOWNLOAD" DATAFRAME BUTTON.
        #   - The dataframe is converted to a csv file.
        #   - The csv file is downloaded to the browsers default download
        #     location.
@@ -410,7 +409,7 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
   
 
     
-    #  +++ SHOW A PICTURE ON THE WEBPAGE USING A WEB ADDRESS FOR THE PICTURE.
+    # +++ DEMONSTRATE SHOWING A PICTURE FROM THE APPS GITHUB REPOSITORY.
     #   We must get our picture (and other resources) from a web address 
     #   because streamlit does NOT have a full backend on its server from
     #   which server disk we might otherwise get resources.
@@ -422,18 +421,13 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
     #   limited. So we will be using other online sites to store web
     #   accessable resources. (Eg Google drive or dropbox etc)
     # - How to user github to host media for display
-    #   https://www.labnol.org/internet/free-file-hosting-github/29092/
-    
-    
-    # +++ DEMONSTRATE SHOWING A PICTURE FROM THE APPS GITHUB REPOSITORY.
+    #     https://www.labnol.org/internet/free-file-hosting-github/29092/
     st.subheader("DEMONSTRATE SHOWING A PICTURE FROM THE APPS GITHUB REPOSITORY.")
     st.image(G.Link06, 
         caption="We used a github url address to get this picture from github.")
     st.write("You can enlarge the picture by clicking the pop up symbol "
              "that appears when you mouse near the top right of the image.")
-    
-
-    
+      
     
 
     # +++ DEMONSTRATE SHOWING A VIDEO FROM YOUTUBE.
@@ -444,15 +438,17 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
     
     # +++ DEMONSTRATE SHOWING A VIDEO FROM AN ONLINE SOURCE OTHER THAN YOUTUBE.
     #  Github does not allow raw address of large files.
-   
-    # ?V !!  Could try https://discuss.streamlit.io/t/streamlit-player/3169
-   
     st.subheader("DEMONSTRATE SHOWING A VIDEO AN ONLINE SOURCE OTHER THAN YOUTUBE.")
-    FullURL = G.Link24
-    video_file = open(FullURL, 'rb')
-    video_bytes = video_file.read()
-    st.video(video_bytes,format="video/mp4")
-     
+    st.write("The following video is just on a website somewhere.")
+    st.video(G.Link24)
+ 
+    # +++ DEMONSTRATE SHOWING A VIDEO FROM GOOGLE DRIVE.
+    #  Github does not allow raw address of large files.
+    st.subheader("DEMONSTRATE SHOWING A VIDEO FROM GOOGLE DRIVE.")
+    st.write("")
+    st.video(G.Link30)
+ 
+    
     
     
     #  +++ SHOW A PLOT USING NATIVE STREAMLIT PLOTTING FUNCTIONS.  
@@ -585,6 +581,7 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
     df2 = pd.read_csv(G.Link11)
     st.dataframe(data=df2, width=None, height=None)
     
+ 
     
     # # +++ DEMONSTRATE AN EMPTY CONTAINER. ALLOWS REMOVAL OF ITEMS
     # import time
@@ -766,9 +763,7 @@ def StMarkdown(TextToBeFormated="", color="black",
                )
     return(md)  # End of function: StMarkdown
 
-def Initialize_Literals():
 
-    return()  # End of fuction 
 
 MainLine()   # Start this program.
 
