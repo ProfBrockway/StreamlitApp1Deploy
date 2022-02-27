@@ -431,17 +431,24 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
 
     
     
-    #  +++ SHOW A VIDEO
-    #  Get the path to the video file on github
-    #  Online the full path will be: ',/app/streamlitapp1deploy/TestVideo.mp4' 
-    FullPath = os.path.join(G.ThisModule_ProjectPath, "TestVideo.mp4")
-    video_file = open(FullPath, 'rb')
-    video_bytes = video_file.read()
-    st.subheader("We Can Display Any Movie, Video Help Files For Example.")
-    st.video(video_bytes)
-    st.write("We used a github disk path to get this video from github")
-    st.write(f"Full path of the video file: {FullPath}")
+
+    # +++ DEMONSTRATE SHOWING A VIDEO FROM YOUTUBE.
+    #  Github does not allow raw address of large files.
+    st.subheader("DEMONSTRATE SHOWING A VIDEO FROM YOUTUBE.")
+    FullURL = "https://youtu.be/nsHl48Wnudc"
+    st.video(FullURL)
     
+    # +++ DEMONSTRATE SHOWING A VIDEO FROM AN ONLINE SOURCE OTHER THAN YOUTUBE.
+    #  Github does not allow raw address of large files.
+   
+    # ?V !!  Could try https://discuss.streamlit.io/t/streamlit-player/3169
+   
+    st.subheader("DEMONSTRATE SHOWING A VIDEO AN ONLINE SOURCE OTHER THAN YOUTUBE.")
+    FullURL = 'https://pixabay.com/videos/stars-long-exposure-starry-sky-6962/'
+    video_file = open(FullURL, 'rb')
+    video_bytes = video_file.read()
+    st.video(video_bytes,format="video/mp4")
+     
     
     
     #  +++ SHOW A PLOT USING NATIVE STREAMLIT PLOTTING FUNCTIONS.  
