@@ -45,6 +45,9 @@ class Global_Variables():  # A class for creating all python global variables.
     Link06 = "https://raw.githubusercontent.com/ProfBrockway/OSExperiments/main/TigerMoth.jpg"
     Link08 = "https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/0bc950a80603401a54dfb1c6ebe15bc83a362d6e/StreamlitApp1.py"
     Link10 = "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" 
+       # A RAW url to a demonstration CSV file stored at  Github.
+    Link11 = "https://raw.githubusercontent.com/ProfBrockway/StreamlitApp1Deploy/main/TestCSVFile.csv"
+
 
     # +++ END OF RESOURCES AND OTHER LINKS OR VARIABLES THAT MIGHT CHANGE.
     ###########################################################################
@@ -554,9 +557,22 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
             "  \n'white_check_mark ' :white_check_mark: "
             "  \n'pushpin ' :pushpin: " )
               
- 
-     
-    
+    # DEMONSTRATE READING A CSV FILE FROM THE PROJECT'S GITHUB REPOSITORY.
+    temptext = """
+    ### DEMONSTRATE READING A CSV FILE FROM THE PROJECT'S GITHUB REPOSITORY.  \n 
+          THIS ALLOWS YOU TO HAVE A DATABASE AVAILABLE TO THE DEPLOYED
+          APP WITHOUT THE NEED OF A WEB HOSTING BACKEND.  \n
+        How To:
+        1. Add the csv file to the project's github repository.
+        1. Get the files github RAW url.    
+        1. Code:
+            1. url = 'the.url.of.the.RAW.file.a.tGithub'
+            2. df = pd.read_csv(url)
+        1. Your Done ! 
+        """
+    st.info(temptext)    
+    df2 = pd.read_csv(G.Link11)
+    st.dataframe(data=df2, width=None, height=None)
     
     
     # # +++ DEMONSTRATE AN EMPTY CONTAINER. ALLOWS REMOVAL OF ITEMS
