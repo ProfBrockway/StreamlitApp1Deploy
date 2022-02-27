@@ -52,7 +52,8 @@ class Global_Variables():  # A class for creating all python global variables.
     Link10 = "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" 
     # A RAW url to a demonstration CSV file stored at Github.
     Link11 = "https://raw.githubusercontent.com/ProfBrockway/StreamlitApp1Deploy/main/Resource_TestCSVFile.csv"
-
+    # A url of a video on Youtube.
+    Link20 = "https://youtu.be/nsHl48Wnudc"
 
     # +++ END OF RESOURCES AND OTHER LINKS OR VARIABLES THAT MIGHT CHANGE.
     ###########################################################################
@@ -435,7 +436,7 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
     # +++ DEMONSTRATE SHOWING A VIDEO FROM YOUTUBE.
     #  Github does not allow raw address of large files.
     st.subheader("DEMONSTRATE SHOWING A VIDEO FROM YOUTUBE.")
-    FullURL = "https://youtu.be/nsHl48Wnudc"
+    FullURL = G.Link20
     st.video(FullURL)
     
     # +++ DEMONSTRATE SHOWING A VIDEO FROM AN ONLINE SOURCE OTHER THAN YOUTUBE.
