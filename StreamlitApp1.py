@@ -16,32 +16,38 @@ import os
 import pandas as pd
 import numpy as np
 import random
-import datetime 
+
 from PIL import Image  # For getting and displaying images in streamlit.
  
 
 class Global_Variables():  # A class for creating all python global variables.
     
+    ##########################################################################
     # +++ RESOURCES AND OTHER LINKS OR VARIABLES THAT MIGHT CHANGE.
-    #   - The values for these variables are all initialized in:
-    #     function "Perform_EveryRun_Initialization", below
+    #   - The values for these variables are all initialized here.
     
     Debug = False
+         #  DETAILS ABOUT THIS MODULE
+    ThisModule_Version = "7.0.2  2022 Feb 27, 10.29 EST."       
+    ThisModule_About = "For a course Spring 2021. "  
+    ThisModule_Author = "UConn Math Dept."
+    ThisModule_Purpose = "To test the features of Streamlit."
+    ThisModule_FullPath = os.path.abspath(__file__)
+    ThisModule_FileName = os.path.basename(ThisModule_FullPath)
+    ThisModule_ProjectPath = os.path.dirname(ThisModule_FullPath)
+         # RESOURCE LINKS Etc  Pictures/Videos/Files etc stored online.
+         #  Where possible we base our resources in this apps repostitory
+         #  at github. If github basing is not possible or inadequate
+         #  we have to use another cloud storage site, eg Google drive.
+    Link01 = "https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/main/ProgramDocumentation.pdf"
+    Link02 = "https://drive.google.com/file/d/1ADswqmBPZaEzwrhzu_mTk5HY_qHv2Mhw/view?usp=sharing"
+    Link04 = "https://www.extremelycoolapp.com/bug"   
+    Link06 = "https://raw.githubusercontent.com/ProfBrockway/OSExperiments/main/TigerMoth.jpg"
+    Link08 = "https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/0bc950a80603401a54dfb1c6ebe15bc83a362d6e/StreamlitApp1.py"
+    Link10 = "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" 
 
-    ThisModule_Version = None
-    ThisModule_FullPath  = None
-    ThisModule_FileName = None
-    ThisModule_ProjectPath = None
-    ThisModule_About = None
-    ThisModule_Author = None
-    ThisModule_Purpose = None
-    
-    # Links to resources.
-    Link01 = None
-    Link04 = None
-    Link06 = None
-    Link08 = None
-    Link10 = None
+    # +++ END OF RESOURCES AND OTHER LINKS OR VARIABLES THAT MIGHT CHANGE.
+    ###########################################################################
 
     # +++ USERS INPUTS (Copied from input widgets and internalized)
     RowsToGenerate = None
@@ -158,7 +164,7 @@ def Perform_First_Load_Only_Initialization():
          + '  \nApp Version:  ' +  G.ThisModule_Version 
                }
                     )
-    # CREATE PERSISTENT/STATIC VARIABLES.
+    # +++ CREATE PERSISTENT/STATIC VARIABLES.
     # https://docs.streamlit.io/library/api-reference/session-state
     # During the first load session, we create our "Persistent" variables.
     #  Persistent variables:
@@ -219,29 +225,18 @@ def Perform_EveryRun_Initialization():
     # (1) Save static/persistant variables in the streamlit "session_state".
     # (2) Make the initialization "static" using streamlit st.cache.
     #      - Use st.cache if the initialization is very time consuming.
-    # However having an "Every Time" initialization function is good practice
-    # and less vulnerable to the subtle misbehaviors of the alternatives.
-
-    G.Debug = False  # Some useful tracing information is embedded in the code.
-    
-    # Get the current paths and file names of this app.
-    G.ThisModule_FullPath = os.path.abspath(__file__)
-    G.ThisModule_FileName = os.path.basename(G.ThisModule_FullPath)
-    G.ThisModule_ProjectPath = os.path.dirname(G.ThisModule_FullPath)
-    
-    # Create a version for this module with a time stamp to help debugging.
-    G.ThisModule_Version = "7.0 - "  + str(datetime.datetime.now().timestamp())
-    G.ThisModule_About = "For a course Spring 2021. "  
-    G.ThisModule_Author = "UConn Math Dept."
-    G.ThisModule_Purpose = "To test the features of Streamlit."
-    
-    # RESOURCE LINKS Etc  Pictures/Videos/Files etc stored online.
-    G.Link01 = "https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/main/ProgramDocumentation.pdf"
-    G.Link02 = "https://drive.google.com/file/d/1ADswqmBPZaEzwrhzu_mTk5HY_qHv2Mhw/view?usp=sharing"
-    G.Link04 = "https://www.extremelycoolapp.com/bug"   
-    G.Link06 = "https://raw.githubusercontent.com/ProfBrockway/OSExperiments/main/TigerMoth.jpg"
-    G.Link08 = "https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/0bc950a80603401a54dfb1c6ebe15bc83a362d6e/StreamlitApp1.py"
-    G.Link10 = "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"    
+    # (3) Initialize in our Global_Variables class (above)
+    #     The Global_Variables class is run everytime the app is run.
+    #     So it initializes every time streamlit reruns this app.
+    #
+    # However having an "Every Time" initialization function is good practice.
+    # It may be neccessary to make the logic work.
+    # Also its less vulnerable to the subtle misbehaviors of alternatives
+    # (1) and (2).
+ 
+    # No code needed here right now. All initializtion done in 
+    # class Global_Variables.
+ 
     return()
     
 def Validate_And_Internalize_User_Input():
@@ -310,6 +305,11 @@ def Process_Users_Data():
                  'random2': random.randint(1,100) 
                }
        G.DataTable = G.DataTable.append(newrow, ignore_index=True)
+    
+    # Temporary code only.
+    # csvfullpath = os.path.join(G.ThisModule_ProjectPath,"TestCSVFile.csv")   
+    # G.DataTable.to_csv(csvfullpath)   
+    
     # End for   
     return()  # End of function: Generate_Data_To_Be_Plotted
    
