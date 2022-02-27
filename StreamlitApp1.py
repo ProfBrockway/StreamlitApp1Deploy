@@ -39,14 +39,19 @@ class Global_Variables():  # A class for creating all python global variables.
          #  Where possible we base our resources in this apps repostitory
          #  at github. If github basing is not possible or inadequate
          #  we have to use another cloud storage site, eg Google drive.
-    Link01 = "https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/main/ProgramDocumentation.pdf"
-    Link02 = "https://drive.google.com/file/d/1ADswqmBPZaEzwrhzu_mTk5HY_qHv2Mhw/view?usp=sharing"
+         
+    # A PDF in this projects repository at github. (Program Help/Documentation.    
+    Link01 = "https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/main/Resource_ProgramDocumentation.pdf"
+    # A pdf stored at Google drive.
     Link04 = "https://www.extremelycoolapp.com/bug"   
-    Link06 = "https://raw.githubusercontent.com/ProfBrockway/OSExperiments/main/TigerMoth.jpg"
+    # A picture stored at this projects repository at github.
+    Link06 = "https://raw.githubusercontent.com/ProfBrockway/OSExperiments/main/Resource_TigerMoth.jpg"
+    # This apps code page at Github.
     Link08 = "https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/0bc950a80603401a54dfb1c6ebe15bc83a362d6e/StreamlitApp1.py"
+    # A test pdf online somewhere.
     Link10 = "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" 
-       # A RAW url to a demonstration CSV file stored at  Github.
-    Link11 = "https://raw.githubusercontent.com/ProfBrockway/StreamlitApp1Deploy/main/TestCSVFile.csv"
+    # A RAW url to a demonstration CSV file stored at Github.
+    Link11 = "https://raw.githubusercontent.com/ProfBrockway/StreamlitApp1Deploy/main/Resource_TestCSVFile.csv"
 
 
     # +++ END OF RESOURCES AND OTHER LINKS OR VARIABLES THAT MIGHT CHANGE.
@@ -415,20 +420,15 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
     # - How to user github to host media for display
     #   https://www.labnol.org/internet/free-file-hosting-github/29092/
     
-    st.subheader("We Can Display  Any Image Or Audio/Visual Media")
-    st.image(G.Link06,
-        caption="We used a github url address to get this picture from github")
+    
+    # +++ DEMONSTRATE SHOWING A PICTURE FROM THE APPS GITHUB REPOSITORY.
+    st.subheader("DEMONSTRATE SHOWING A PICTURE FROM THE APPS GITHUB REPOSITORY.")
+    st.image(G.Link06, 
+        caption="We used a github url address to get this picture from github.")
     st.write("You can enlarge the picture by clicking the pop up symbol "
              "that appears when you mouse near the top right of the image.")
-    # Show a picture on the webpage using the github file path for the picture.
-    #  Get the path to the picture file on github.
-    #  Online the full path will be:',/app/streamlitapp1deploy/hms-victory.jpg'
-    FullPath = os.path.join(G.ThisModule_ProjectPath, "hms-victory.jpg")
-    MyImage = Image.open(FullPath)
-    st.image(MyImage, use_column_width="auto",
-       caption = "We used a github disk path to get this picture from github")
-    st.write(f"Full path of the picture file:  {FullPath}")
     
+
     
     
     #  +++ SHOW A VIDEO
