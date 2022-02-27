@@ -54,6 +54,9 @@ class Global_Variables():  # A class for creating all python global variables.
     Link11 = "https://raw.githubusercontent.com/ProfBrockway/StreamlitApp1Deploy/main/Resource_TestCSVFile.csv"
     # A url of a video on Youtube.
     Link20 = "https://youtu.be/nsHl48Wnudc"
+    # A url of a video NOT on Youtube.
+    Link24 = 'https://pixabay.com/videos/stars-long-exposure-starry-sky-6962/'
+
 
     # +++ END OF RESOURCES AND OTHER LINKS OR VARIABLES THAT MIGHT CHANGE.
     ###########################################################################
@@ -445,7 +448,7 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
     # ?V !!  Could try https://discuss.streamlit.io/t/streamlit-player/3169
    
     st.subheader("DEMONSTRATE SHOWING A VIDEO AN ONLINE SOURCE OTHER THAN YOUTUBE.")
-    FullURL = 'https://pixabay.com/videos/stars-long-exposure-starry-sky-6962/'
+    FullURL = G.Link24
     video_file = open(FullURL, 'rb')
     video_bytes = video_file.read()
     st.video(video_bytes,format="video/mp4")
