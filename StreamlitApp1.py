@@ -16,7 +16,6 @@ import os
 import pandas as pd
 import numpy as np
 import random
-import time
 import datetime 
 from PIL import Image  # For getting and displaying images in streamlit.
  
@@ -56,8 +55,8 @@ class Global_Variables():  # A class for creating all python global variables.
     Plot1 = None
     Title_1 = None
     Title_2 = None
-    Msg01 = "Fill out the input boxes and click the 'Plot Now' button."
-    
+    Msg01 = "Please fill out the input boxes and click the 'Plot Now' button."
+    Msg_Current = None
 
     
     # +++ DATA TO BE PLOTTED
@@ -113,13 +112,14 @@ def MainLine():
         # Validate and internalize users'input.
         InputOK = Validate_And_Internalize_User_Input()
         if InputOK == True:
-            # Process the users input and generate the data for plotting
+            # Process the users input and generate the data for plotting.
             Process_Users_Data()
             # Plot the data
             Right_Panel_Build()
         else:
             # There is an error in the users input. 
-            # A message describing the error is already set.
+            # A message describing the error is already set in the textbox.
+            st.error(G.Msg_Current)
             pass
     
     # Having processed all input, we now insert the output into our GUI,
@@ -137,9 +137,9 @@ def Perform_First_Load_Only_Initialization():
     #  - The set_page_config command be the first Streamlit command used.
     #  - New line marker \n must be preceeded by at least two blanks to work.
     st.set_page_config  (
-     page_title = "Web Page Header. ",
+     page_title = "Webage Header. ", 
      
-     page_icon = None,
+     page_icon = ":confused:",
      
      layout="centered", # or "wide".
         # 'wide' gives a bigger display. 'centered' gives a smaller display
@@ -159,9 +159,11 @@ def Perform_First_Load_Only_Initialization():
                }
                     )
     # CREATE PERSISTENT/STATIC VARIABLES.
+    # https://docs.streamlit.io/library/api-reference/session-state
     # During the first load session, we create our "Persistent" variables.
     #  Persistent variables:
-    #   - Are stored and created by streamlit.
+    #   - Are stored and created by streamlit in the streamlit
+    #     'session state dictionary'
     #   - Are static (preserved) between sessions.
     #   - Are effectively global.
     #   - Have a python dictionary like syntax.
@@ -170,6 +172,9 @@ def Perform_First_Load_Only_Initialization():
     #       - In our case the st.session_State is abbreviated at import to GUI.
     #          - Eg: GUI['Input_SSN'] = 0
     #   - Can be "linked" to a streamlit widget via the widget key= parameter.
+    #      - Using the key= parameter on any widget automatically
+    #        creates a static variable in the 'session state dictionary'.
+    #        But I prefer to declare them explicity as well.
     #      - Any change in the GUI linked widget will automatically update 
     #      - the linked persistant variable.
     #      - Any change in linked persistant variable will automatically 
@@ -216,7 +221,7 @@ def Perform_EveryRun_Initialization():
     #      - Use st.cache if the initialization is very time consuming.
     # However having an "Every Time" initialization function is good practice
     # and less vulnerable to the subtle misbehaviors of the alternatives.
-    
+
     G.Debug = False  # Some useful tracing information is embedded in the code.
     
     # Get the current paths and file names of this app.
@@ -237,7 +242,6 @@ def Perform_EveryRun_Initialization():
     G.Link06 = "https://raw.githubusercontent.com/ProfBrockway/OSExperiments/main/TigerMoth.jpg"
     G.Link08 = "https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/0bc950a80603401a54dfb1c6ebe15bc83a362d6e/StreamlitApp1.py"
     G.Link10 = "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"    
-    
     return()
     
 def Validate_And_Internalize_User_Input():
@@ -466,8 +470,7 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
     st.write("By downloading the documentation PDF and viewing it on "
              "your computer you will be able to navigate the document "
              "using an index, search, etc.")
-   
-    # Place a link on our webpage to a file in the cloud.
+    # Place a link on our webpage to the pdf file in the cloud.
     st.write(" [ A Link To The Program Documentation PDF stored on github]" 
              "(%s)" % G.Link01)
    
@@ -502,33 +505,72 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
                  app out of order.""")
     st.write("This is outside the container")
    
-    
+
    
-    # +++ DEMONSTRATE An EMPTY CONTAINER. ALLOWS REMOVAL OF ITEMS
-    st.subheader("DEMONSTRATE AN EMPTY CONTAINER.ALLOWS REMOVAL OF ITEMS")     
+    # +++ DEMONSTRATE COLUMN LAYOUT.  
+    st.subheader("DEMONSTRATE COLUMN LAYOUT. ") 
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.header("A cat")
+        st.image("https://static.streamlit.io/examples/cat.jpg")
+    with col2:
+        st.header("A dog")
+        st.image("https://static.streamlit.io/examples/dog.jpg")
+    with col3:
+        st.header("An owl")
+        st.image("https://static.streamlit.io/examples/owl.jpg")
+        
+        
+        
+    # +++ DEMONSTRATE A STREAMLIT 'INFO' Box.      
+    st.info("This is a Streamlit 'info' box.")   
+     
+            
+        
+    # +++ DEMONSTRATE A STREAMLIT 'ERROR' Box.      
+    st.error("This is a Streamlit 'error' box.")   
+     
+            
+        
+    # +++ DEMONSTRATE A STREAMLIT 'WARNING' Box.     
+    st.warning("This is a Streamlit 'warning' box.")   
+     
+                
+        
+    # +++ DEMONSTRATE A STREAMLIT 'SUCCESS' Box.     
+    st.success("This is a Streamlit 'success' box. :white_check_mark:")   
+     
+            
+        
+    # +++ DEMONSTRATE A STREAMLIT 'EXCEPTION' Box.    
+    st.exception("This is a Streamlit 'exception' box.")   
     
-    with st.empty():
-     for seconds in range(20):
-         st.write(f"⏳ {seconds} seconds have passed")
-         time.sleep(1)
-     st.write("✔️ 1 minute over!")
+    
+    # +++ DEMONSTRATE EMOJIS  
+    # The emojis supported by streamlit
+    #    https://share.streamlit.io/streamlit/emoji-shortcodes
+    # Just include the emojis markdown code in any output.
+    st.info("The demonstates how easy it is to include emojis in any text:  \n"
+            "  \n'white_check_mark ' :white_check_mark: "
+            "  \n'pushpin ' :pushpin: " )
+              
+ 
+     
     
     
     
-    placeholder = st.empty()
-    # Replace the placeholder with some text:
-    placeholder.text("Hello")
-    # Replace the text with a chart:
-    placeholder.line_chart({"data": [1, 5, 2, 6]})
-    # Replace the chart with several elements:
-    with placeholder.container():
-         st.write("This is one element")
-         st.write("This is another")
-    # Clear all those elements:
-    placeholder.empty()
+    # # +++ DEMONSTRATE AN EMPTY CONTAINER. ALLOWS REMOVAL OF ITEMS
+    # import time
+    # st.subheader("DEMONSTRATE AN EMPTY CONTAINER.ALLOWS REMOVAL OF ITEMS.")     
+    # with st.empty():
+    #     for seconds in range(20):
+    #         st.write(f"⏳ {seconds} seconds have passed")
+    #         time.sleep(1)
+    #     st.write("✔️ 1 minute over!")
+       
+        
 
     return  # End of function: Right_Panel_Build
-
 
 def GUI_Build_And_Show():        # Build the GUI.
     # - Our GUI is a streamlit web page with widgets in a vertical toolbar 
@@ -543,6 +585,9 @@ def GUI_Build_And_Show():        # Build the GUI.
     #     widget's by the widgets "key=" parameter. See elsewhere in this
     #     program for an explanation of "linked" static variables.
    
+
+   
+    
     # - We now make the sidebar a single form with a single submit button.
     #    With st.form and its form_submit_button, this app only reruns
     #    when you hit the form submit button, NOT at each widget interaction.
@@ -555,11 +600,18 @@ def GUI_Build_And_Show():        # Build the GUI.
            color="green",bold=True,italic=True,fontsize=16,align="center")
         st.write(MDText, unsafe_allow_html=True)
         
+ 
+        st.warning("The demonstates how easy it is to include emojis in "
+                " any text:  \n"
+                "  \n'white_check_mark ' :white_check_mark: "
+                "  \n'pushpin ' :pushpin: " )
+        
+        
         # Create a textbox for displaying instructions and error messages.
         st.text_area(
             key="MsgText",   # Value will be placed in GUI['MsgText'].
             label="",
-            height=None,
+            height=150,
             max_chars=None,
             help=None,
             on_change=None)
@@ -641,7 +693,12 @@ def Validate_Integer(TextString):
         return(tempvar,True)
 
 def Msg_Set(TextString):
-    GUI['MsgText'] = TextString
+    FormattedText = TextString
+    ErrStr = TextString[0:5].upper()  
+    if ErrStr == "ERROR":
+        FormattedText = f"There is an error in your input.    \n{FormattedText}   \nPlease correct and try again."
+    GUI['MsgText'] = FormattedText
+    G.Msg_Current = FormattedText
     return()
 
 def Title_Build(TitleLength = "short"):
@@ -682,7 +739,9 @@ def StMarkdown(TextToBeFormated="", color="black",
                )
     return(md)  # End of function: StMarkdown
 
+def Initialize_Literals():
 
+    return()  # End of fuction 
 
 MainLine()   # Start this program.
 

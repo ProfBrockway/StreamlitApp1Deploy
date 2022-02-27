@@ -13,9 +13,18 @@ def Msg_Set(TextString):
     GUI['MsgText'] = FormattedText
     return(FormattedText)
 
+##################################################################
+    # Compact the streamlit layouts a little. ?V
+    padding = 0
+    st.markdown(f""" <style>
+        .reportview-container .main .block-container{{
+            padding-top: {padding}rem;
+            padding-right: {padding}rem;
+            padding-left: {padding}rem;
+            padding-bottom: {padding}rem;
+        }} </style> """, unsafe_allow_html=True)
 
-
-
+#####################################################################
 
 
 # SHOW A PDF FILE STORED ON A WEB PAGE DISK.
