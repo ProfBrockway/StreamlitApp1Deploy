@@ -3,15 +3,98 @@ import streamlit as st
 from streamlit import session_state as Static
 def mainline():
     ConsoleClear()
-    test4()
+    test6()
     return() # End of function: mainline.
 
-def test4():
+def test6():
     st.markdown("""
-    <embed src="https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/main/Resource_ProgramDocumentation.pdf" width="400" height="400">
+    <embed src="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" width="400" height="400">
     """, unsafe_allow_html=True)
-       
- 
+
+    return()
+
+
+def test5():
+    from bokeh.models.widgets import Div
+    import streamlit as st
+    
+    # if st.button('Go to Streamlit'):
+    #     js = "window.open('https://www.streamlit.io/')"  # New tab or window
+    #     #js = "window.location.href = 'https://www.streamlit.io/'"  # Current tab
+    #     js = "window.open('https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/main/github.io/Resource_ProgramDocumentation.pdf/')" 
+    #     html = '<img src onerror="{}">'.format(js)
+    #     div = Div(text=html)
+    #     st.bokeh_chart(div)
+    import urllib.request
+    import webbrowser
+    chrome_path = 'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe %s'
+    try:
+        webbrowser.get(chrome_path).open('http://docs.python.org/')
+    except urllib.error.URLError as e: 
+        st.write(e.reason)
+        
+    st.markdown("<a href='https://sumanbogati.github.io/sample.pdf' target='_BLANK'>Click here to open the file</a> "   )
+        
+    # webbrowser.open('https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/main/github.io/Resource_ProgramDocumentation.pdf')
+    st.write("hit")
+    
+    # import urllib.request
+    # try:
+    #    with urllib.request.urlopen('http://www.python.org/') as f:
+    #       st.write(f.read().decode('utf-8'))
+    # except urllib.error.URLError as e:
+    #    st.write(e.reason)
+    # st.write('i thik this is how u do it')
+    return
+
+
+
+def test4():
+    # It's very easy to display Pdf in browser from Github static page, for that you need approach following process,
+
+    # Make the static website/repository using your Github username, for example, if the username is sumanbogati then repository would be sumanbogati.github.io
+    # Put the desired pdf in that repository
+    # Now locate the Url of Pdf wherever you want
+    # For example, to display pdf in Html web page
+    
+    # <embed src="https://sumanbogati.github.io/sample.pdf" type="application/pdf" />
+    # This is an instant demo.
+    
+    
+    
+    #   https://stackoverflow.com/questions/30745981/opening-pdf-in-a-browser-with-github-pages
+    # https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/main/github.io/Resource_ProgramDocumentation.pdf
+    # e1 = "<embed src="https://sumanbogati.github.io/sample.pdf" type="application/pdf" />"
+    # e2 = "https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/main/github.io/Resource_ProgramDocumentation.pdf" />"
+    e3 = "https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/main/github.io/Resource_ProgramDocumentation.pdf"
+    #src="https://docs.google.com/gview?url=https://sumanbogati.github.io/sample.pdf&embedded=true" style="width:600px; height:500px;" frameborder="0"></iframe>
+    
+    # st.markdown("""
+    # <embed src="https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/main/Resource_ProgramDocumentation.pdf" width="400" height="400">
+    # """, unsafe_allow_html=True)
+    
+    e7 = """<embed
+    src="http://infolab.stanford.edu/pub/papers/google.pdf#toolbar=0&navpanes=0&scrollbar=0"
+    type="application/pdf"
+    frameBorder="0"
+    scrolling="auto"
+    height="100%"
+    width="100%"
+    </embed>"""
+    
+    
+    # st.markdown(e7, unsafe_allow_html=True)
+    
+    st.markdown("""
+    <embed src="<embed src="https://sumanbogati.github.io/sample.pdf" type="application/pdf" />" width="400" height="400">
+    """, unsafe_allow_html=True)
+    
+    st.markdown("""
+    <embed src="<embed src="https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/main/github.io/Resource_ProgramDocumentation.pdf" type="application/pdf" />" width="400" height="400">
+    """, unsafe_allow_html=True)
+   
+
+
     return()
 
 
