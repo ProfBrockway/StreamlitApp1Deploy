@@ -11,7 +11,7 @@
 import streamlit as st
 from streamlit import session_state as GUI
    # Writing GUI['VarName'] is easier than writing st.session_state['VarName'] 
-import matplotlib as mpl  # We are using Matplotlib objects.
+import matplotlib as mpl  
 import os
 import pandas as pd
 import numpy as np
@@ -25,7 +25,13 @@ class Global_Variables():  # A class for creating all python global variables.
     #   - The values for these variables are all initialized here.
     
     Debug = False
-         #  DETAILS ABOUT THIS MODULE
+    
+    #  DETAILS ABOUT THIS MODULE
+    # RESOURCE LINKS Etc  Pictures/Videos/Files etc stored online.
+    #   Where possible we base our resources in this apps repostitory
+    #   at github. If github basing is not possible or inadequate
+    #   we have to use another cloud storage site, eg Google drive.Youtube etc.
+    
     ThisModule_Version = "7.0.2  2022 Feb 27, 10.29 EST."       
     ThisModule_About = "For a course Spring 2021. "  
     ThisModule_Author = "UConn Math Dept."
@@ -33,30 +39,27 @@ class Global_Variables():  # A class for creating all python global variables.
     ThisModule_FullPath = os.path.abspath(__file__)
     ThisModule_FileName = os.path.basename(ThisModule_FullPath)
     ThisModule_ProjectPath = os.path.dirname(ThisModule_FullPath)
-         # RESOURCE LINKS Etc  Pictures/Videos/Files etc stored online.
-         #  Where possible we base our resources in this apps repostitory
-         #  at github. If github basing is not possible or inadequate
-         #  we have to use another cloud storage site, eg Google drive.
         
-    # A PDF in this projects repository at github. (Program Help/Documentation.    
-    Link01 = "https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/main/Resource_ProgramDocumentation.pdf"
-    # A pdf stored at Google drive.
-    Link04 = "https://www.extremelycoolapp.com/bug"   
+    # Program Help/Documentation.    
+    Link01 = r"https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/main/Resource_ProgramDocumentation.pdf"
+    # Where to report a bug..
+    Link04 = r"https://www.ibm.com/us-en?ar=1"   
     # A picture stored at this projects repository at github.
-    Link06 = "https://raw.githubusercontent.com/ProfBrockway/OSExperiments/main/Resource_TigerMoth.jpg"
+    Link06 = r"https://raw.githubusercontent.com/ProfBrockway/OSExperiments/main/Resource_TigerMoth.jpg"
     # This apps code page at Github.
-    Link08 = "https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/0bc950a80603401a54dfb1c6ebe15bc83a362d6e/StreamlitApp1.py"
+    Link08 = r"https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/0bc950a80603401a54dfb1c6ebe15bc83a362d6e/StreamlitApp1.py"
     # A test pdf online somewhere.
-    Link10 = "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" 
+    Link10 = r"https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" 
     # A RAW url to a demonstration CSV file stored at Github.
-    Link11 = "https://raw.githubusercontent.com/ProfBrockway/StreamlitApp1Deploy/main/Resource_TestCSVFile.csv"
+    Link11 = r"https://raw.githubusercontent.com/ProfBrockway/StreamlitApp1Deploy/main/Resource_TestCSVFile.csv"
     # A url of a video on Youtube.
-    Link20 = "https://youtu.be/nsHl48Wnudc"
+    Link20 = r"https://youtu.be/nsHl48Wnudc"
     # A url of a video NOT on Youtube. Just a random website.
     Link24 = r"https://www.orthopedicone.com/u/home-vid-4.mp4"
     # A url of a video on google drive.
-    Link30 = "https://drive.google.com/file/d/18xDRuX9lTpEuSsjtJjFHz4TNnxfKAWdI/view?usp=sharing"
-
+    Link30 = r"https://drive.google.com/file/d/18xDRuX9lTpEuSsjtJjFHz4TNnxfKAWdI/view?usp=sharing"
+	# Name of downloaded table
+    Link40 = "ScreeningTestDataFrame.csv"
     # +++ END OF RESOURCES AND OTHER LINKS OR VARIABLES THAT MIGHT CHANGE.
     ###########################################################################
 
@@ -133,11 +136,10 @@ def MainLine():
             Process_Users_Data()
             # Plot the data
             Right_Panel_Build()
-        else:
-            # There is an error in the users input. 
-            # A message describing the error is already set in the textbox.
-            st.error(G.Msg_Current)
-            pass
+
+        else: # There is an error in the users input. 
+           st.error(G.Msg_Current) # Show the error in the right panel.
+
     
     # Having processed all input, we now insert the output into our GUI,
     # display the GUI and then wait for next user input.
@@ -218,8 +220,9 @@ def Perform_First_Load_Only_Initialization():
     GUI['ShowLine3'] = False
     GUI['ShowInput'] = True
     GUI['ShowData'] = True
-
-
+    
+    GUI['UploadedFile'] = None
+     
     return()  # End of function: Perform_First_Load_Only_Initialization
  
 def Perform_EveryRun_Initialization():
@@ -245,7 +248,7 @@ def Perform_EveryRun_Initialization():
     # Also its less vulnerable to the subtle misbehaviors of alternatives
     # (1) and (2).
  
-    # No code needed here right now. All initializtion done in 
+    # No code needed here right now. All initialization done in 
     # class Global_Variables.
  
     return()
@@ -261,8 +264,10 @@ def Validate_And_Internalize_User_Input():
     #      Also streamlit has some nasty bugs we don't want complicating
     #      the data processing code.
     #
-    # - The GUI performs validation for data type and values ranges.
-    #      - Eg: The GUI won't allow a number input that is not numeric.
+    # - The Streamlit input widgets perform validation for data type 
+	#   and values ranges.
+    #      - Eg: A widget can be set up to disallow a number input 
+	#        that is not numeric.
     #      - So most of the following validations are duplicative.
     #        But I have left them in as belt and suspenders.
     
@@ -344,30 +349,39 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
     # Prettyfy the plot.    
     G.Plot1.minorticks_on()
     G.Plot1.legend(loc="best", fontsize=14, prop={"weight": "bold"})
-    G.Plot1.set_title("Matplotlib Plot Title.", fontsize=10, fontweight="bold")
+    G.Plot1.set_title(Title_Build("long"),fontsize=10,fontweight="bold" )
     G.Plot1.grid(visible=True, which='major', axis="both")
     G.Plot1.set_xlabel("A sample x axis. x=[0,100]")
     G.Plot1.set_ylabel("Y Values Value")
 
-    # Show the plot on the streamlit webpage.
+    # Put header(s) before the plot.
     st.subheader(" This Is The GUI 'Output Display Panel' On The Right")
-    st.pyplot(G.Fig1)  # st.write(G.Fig1) also Displays a Matplotlib figure.
-    st.write("You can enlarge the plot using the View fullscreen "
-                  "icon. The icon is above and to the right of the plot.")
-    st.write("You can save the plot to your computer. Right click on "
-                  "the plot, then use 'save image' or 'copy image'.")
-    
-    # Show how checkbox or other user requests can be used to
-    # conditionally show data or text on a plot.
     if G.ShowInput == True:
-        st.subheader("The Values You Entered Are Listed Below.")
-        st.write(Title_Build())
+        temptext = f"""
+             ### The Values You Entered Are Listed Below.  \n 
+            {Title_Build()}  \n
+            
+            More Stuff:
+            1. Blah blah.
+            1. More Blah Blah.    
+            1. HOW TO ENLARGE OR SAVE THE PLOT :
+                1. You can enlarge the plot using the View fullscreen icon. The icon is above and to the right of the plot.
+                2. You can save the plot to your computer. Right click on the plot, then use 'save image' or 'copy image'.
+            1. Great stuff ! 
+            """
+        st.info(temptext )
+        
+        
     else:
         st.subheader("The Values You Entered Are Not Displayed.")
+ 
+    # Show the plot on the streamlit webpage.
+    st.pyplot(G.Fig1)  # st.write(G.Fig1) also Displays a Matplotlib figure.
+     
         
    # +++ SHOW A PANDAS DATAFRAME IF USER REQUESTED IT.
     if G.ShowData == True:
-       st.subheader("The Pandas Data Table You Requested Follows:")
+       st.markdown("#### The Pandas Data Table You Requested Follows:")
        st.dataframe(data=G.DataTable, width=None, height=None)
        st.write("The data shown is just filler to demonstrate a Pandas " 
                       "dataframe.") 
@@ -378,27 +392,26 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
 
        
    #  +++ ADD A "DOWNLOAD" DATAFRAME BUTTON.
-       #   - The dataframe is converted to a csv file.
-       #   - The csv file is downloaded to the browsers default download
-       #     location.
-       #   - There is no "save as" menu. The file name is hard coded.
+       # - The dataframe is converted to a csv file.
+       # - That file is downloaded to the browsers download location.
+       #  - There is no "save as" menu. The file name is hard coded.
        DataFrame_CSV = G.DataTable.to_csv().encode('utf-8')
-       st.subheader("Download The Pandas DataFrame As A CSV File.")
-       st.download_button(label="Download The DataFrame", 
-                           data=DataFrame_CSV, 
-                           file_name="DataFrame.csv", 
-                           mime= "text/csv",
-                           key='download-csv', 
-                           help=None, 
-                           on_click=None, 
-                           args=None,
-                           kwargs=None, 
-                           disabled=False)
-       st.write("You can save the data frame to your computer using the "
-                      "above button.") 
-       st.write("The file will be called 'DataFrame.csv'")
-       st.write("The file will be saved in your browser's default "
-                      "download location on your computer.")
+       st.markdown("#### Download The Pandas DataFrame As A CSV File.")
+       helpstr = f"""You can save the data frame to your computer using this button.  \r
+                    The file will be called {G.Link40}.   \r
+                     The file will be saved in your browser's default 'download' location on your computer.
+	             """
+       st.download_button(label="⚙️ Download The DataFrame",  
+            data=DataFrame_CSV, 
+            file_name=G.Link40, 
+            mime= "text/csv",
+            key="DownloadCSV_Button", 
+            help=helpstr, 
+            on_click=None, 
+            args=None,
+            kwargs=None, 
+            disabled=False)
+
        
        
     #  +++ SHOW FONT CHANGES IN TEXT USING HTML.
@@ -422,7 +435,7 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
     #   accessable resources. (Eg Google drive or dropbox etc)
     # - How to user github to host media for display
     #     https://www.labnol.org/internet/free-file-hosting-github/29092/
-    st.subheader("DEMONSTRATE SHOWING A PICTURE FROM THE APPS GITHUB REPOSITORY.")
+    st.markdown("#### DEMONSTRATE SHOWING A PICTURE FROM THE APPS GITHUB REPOSITORY.")
     st.image(G.Link06, 
         caption="We used a github url address to get this picture from github.")
     st.write("You can enlarge the picture by clicking the pop up symbol "
@@ -431,59 +444,93 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
     
 
     # +++ DEMONSTRATE SHOWING A VIDEO FROM YOUTUBE.
-    #  Github does not allow raw address of large files.
-    st.subheader("DEMONSTRATE SHOWING A VIDEO FROM YOUTUBE.")
+    #  Github basing of videos does not allow raw address of large files.
+    #  Google basing of videos  does not work because it downloads too slowly.
+    #  So until I can figure out how to base videos at github we use Youtube.
+    st.markdown("#### DEMONSTRATE SHOWING A VIDEO FROM YOUTUBE.")
     FullURL = G.Link20
     st.video(FullURL)
     
     # +++ DEMONSTRATE SHOWING A VIDEO FROM AN ONLINE SOURCE OTHER THAN YOUTUBE.
-    #  Github does not allow raw address of large files.
-    st.subheader("DEMONSTRATE SHOWING A VIDEO AN ONLINE SOURCE OTHER THAN YOUTUBE.")
+    #  Github basing of videos does not allow raw address of large files.
+    #  Google basing of videos  does not work because it downloads too slowly.    
+    st.markdown("#### DEMONSTRATE SHOWING A VIDEO AN ONLINE SOURCE OTHER THAN YOUTUBE.")
     st.write("The following video is just on a website somewhere.")
     st.video(G.Link24)
  
-    # +++ DEMONSTRATE SHOWING A VIDEO FROM GOOGLE DRIVE.
-    #  Github does not allow raw address of large files.
-    st.subheader("DEMONSTRATE SHOWING A VIDEO FROM GOOGLE DRIVE.")
-    st.write("")
-    st.video(G.Link30)
- 
+    # # +++ DEMONSTRATE SHOWING A VIDEO FROM GOOGLE DRIVE.
+    # #  Github does not allow raw address of large files.
+    # #  Google basing of videos  does not work because it downloads too slowly.    
+    # st.subheader("DEMONSTRATE SHOWING A VIDEO FROM GOOGLE DRIVE.")
+    # st.write("")
+    # st.video(G.Link30)
     
+
+    # +++ DEMONSTRATE EASY SHOWING A PYTHON DICTIONARY ON A STREAMLIT WEBPAGE.
+    people = {1: {'name': 'John', 'age': '27', 'sex': 'Male'},
+          2: {'name': 'Marie', 'age': '22', 'sex': 'Female'},
+          3: {'name': 'Luna', 'age': '24', 'sex': 'Female', 'married': 'No'}, 
+          4: {'name': 'Peter', 'age': '29', 'sex': 'Male', 'married': 'Yes'}}
     
+    st.info("DEMONSTRATE SHOWING A PYTHON DICTIONARY ON A STREAMLIT WEBPAGE.")
+    st.text("Pretty printing python dictionarys is easy using streamlit.  \n"
+            "Even nested dictionaries.  \n"
+            "We use the st.dataframe feature.")
+    st.dataframe(people)
     
     #  +++ SHOW A PLOT USING NATIVE STREAMLIT PLOTTING FUNCTIONS.  
     chart_data = pd.DataFrame(np.random.randn(20, 3),columns=['a', 'b', 'c'])
-    st.subheader("Plot A Chart Using Native Streamlit Plotting Functions.")
+    st.markdown("#### Plot A Chart Using Native Streamlit Plotting Functions.")
     st.line_chart(chart_data)
     
     
     #  +++ SHOW A CLICKABLE WEBLINK ON OUR WEBPAGE GUI.
     #   There are several ways to do this.
-    st.subheader("LINK TO THIS APPS CODE. (DOWNLOADABLE). ")
+    st.markdown("### LINK TO THIS APPS CODE. (DOWNLOADABLE). ")
     st.markdown(" [Link To Source Code](%s)" % G.Link08)
     # Also works: st.write("[Link To The Source Code](%s)" % G.Link08)
 
 
     #  +++ SHOW A PDF AT GITHUB USING POP UP NEW WEB PAGE
+    ###########################################################################
+    # +++ MAKE THIS APPS DOCUMENTATION AVAILABLE.
     #   We  base the pdf file in the github repository for the project.
-    #   But the github using the github link to the address displays
+    #   The github using the github link to the address displays
     #   the pdf file in the primitive github pdf view which does not
     #   have basic features, especially the pdf document index.
     #   I have not been able to fix this problem so for now, the pdf
     #   is displayed and the user advised to download it a use a 
     #   proper pdf viewer.
-    st.subheader("PROGRAM DOCUMENTATION AS A PDF.")
-    st.subheader("       ALSO SEE MENU 'GET HELP'")
-    st.write("You can also see the program documentation by using the menu in "
-             "the top right of this webpage (3 horizontal lines). "
-             "Select 'GET HELP'")
-    st.write("By downloading the documentation PDF and viewing it on "
-             "your computer you will be able to navigate the document "
-             "using an index, search, etc.")
-    # Place a link on our webpage to the pdf file in the cloud.
-    st.write(" [ A Link To The Program Documentation PDF stored on github]" 
-             "(%s)" % G.Link01)
+    st.info("🟢 THIS APP'S DOCUMENTATION.")
+       
+    col1, col2 = st.columns(2)
+    with col1:
+        st.write(" [ Link To This App's Documentation.]"  "(%s)" % G.Link01)
    
+    with col2: 
+        # Here we use a trick to display a pop up help message.
+        # We use an st.button and load its help parameter with our popup.
+        # This works fine when the user hovers the mouse over the button.   
+        # But when the user clicks the button (as is reasonable) the
+        # app is rerun. This doesn't produce any errors but is obviously
+        # inefficient. We have to live with this until we find a better
+        # method for pop up messages.
+        tempstr = ("""You can read this app's documentation at the
+        provided link using a primitive pdf reader.  \r
+        But by downloading the documentation PDF and viewing it 
+        on your computer you will be able to navigate the document using 
+        an index, search, etc.  \r
+        You can also see the program documentation by using
+        the menu in the top right of this webpage '≡' (3 horizontal lines) then
+        select 'GET HELP'. """) 
+        st.button(label="Help", key="ButtonH1", help=tempstr )
+   
+    # DEMONSTRATE HOW TO USE AN ICON
+    # https://share.streamlit.io/streamlit/emoji-shortcodes
+    # Just copy and paste the icon from the list. 
+    # Not all of the :whatever: codes work so best avoid that method.
+    st.write("✔️  ❌  How to include icons in any text",help="help text here" )    
+    
     
     # +++ SHOW DEBUGGING INFORMATION.
     if G.Debug:
@@ -515,7 +562,6 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
                  app out of order.""")
     st.write("This is outside the container")
    
-
    
     # +++ DEMONSTRATE COLUMN LAYOUT.  
     st.subheader("DEMONSTRATE COLUMN LAYOUT. ") 
@@ -530,27 +576,26 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
         st.header("An owl")
         st.image("https://static.streamlit.io/examples/owl.jpg")
         
-        
+    # +++ DEMONSTRATE HOW THE ST.TEXT FEATURE FORMATS TEXT..
+    Anumber = 678.4325 
+    helpstr = f"""
+    This shows how st.text shows fixed width preformatted text.\r
+      A number. {Anumber}    \r
+      This will appear on a new line.   \r
+      The will be on another line."""
+    st.text(helpstr)    
         
     # +++ DEMONSTRATE A STREAMLIT 'INFO' Box.      
-    st.info("This is a Streamlit 'info' box.")   
-     
-            
-        
-    # +++ DEMONSTRATE A STREAMLIT 'ERROR' Box.      
-    st.error("This is a Streamlit 'error' box.")   
-     
-            
+    st.info("ℹ️  This is a Streamlit 'info' box.")   
         
     # +++ DEMONSTRATE A STREAMLIT 'WARNING' Box.     
-    st.warning("This is a Streamlit 'warning' box.")   
+    st.warning("⚠️ This is a Streamlit 'warning' box.")   
      
-                
-        
+    # +++ DEMONSTRATE A STREAMLIT 'ERROR' Box.      
+    st.error("❌ This is a Streamlit 'error' box.")   
+       
     # +++ DEMONSTRATE A STREAMLIT 'SUCCESS' Box.     
-    st.success("This is a Streamlit 'success' box. :white_check_mark:")   
-     
-            
+    st.success("✅	This is a Streamlit 'success' box.")   
         
     # +++ DEMONSTRATE A STREAMLIT 'EXCEPTION' Box.    
     st.exception("This is a Streamlit 'exception' box.")   
@@ -581,7 +626,46 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
     df2 = pd.read_csv(G.Link11)
     st.dataframe(data=df2, width=None, height=None)
     
- 
+    # +++ DEMONSTRATE A STREAMLIT FILE UPLOAD BUTTON.
+    # https://pythonwife.com/file-upload-download-with-streamlit/     
+    st.info("DEMONSTRATE A STREAMLIT FILE UPLOAD BUTTON")
+    UploadedFiles = st.file_uploader("Upload a file why not", 
+                    key="UploadedFile",  #?V Add to static dictionary
+                    type="", # Let the user upload any file type
+                    help = "Help text appears here.",
+                    accept_multiple_files=True,
+                    on_change = None, # Callback event 
+                    args =(), # optional tuple of args to pass to the callback.
+                    kwargs = (), # A doctionary of kwargs to pass to  callback.
+                    )
+    
+    if st.button("Process The Files"):
+        # List details of the files uploaded.
+        if UploadedFiles is not None:
+           # The UploadedFile class is a subclass of BytesIO, and therefore it is
+           # "file-like". This means you can pass them anywhere where a file
+           # is expected 
+           i = 0
+           for Uploaded_File in UploadedFiles:
+    		   # Create a dictionary of the file details, which prints pretty.
+               file_details = {"File Index In List Of Files":i, 
+                               "Filename":Uploaded_File.name,
+                               "FileType":Uploaded_File.type,
+                               "FileSize":Uploaded_File.size,
+                               "InteralID":Uploaded_File.id}
+               st.write(file_details)
+               i = i + 1
+
+
+    
+    # +++ DEMONSTRATE USING AN EXCEL FILE (Upload then make it a pandas dataframe.") 
+    st.info("DEMONSTRATE USING AN EXCEL FILE (Upload then make it a pandas dataframe.")
+    UploadedFiles = st.file_uploader("Upload an excel file", 
+                     key="UploadedFile",  #?V Add to static dictionary
+                     type="",
+                     help = "Help text appears here.",
+                     on_change = None,
+                     accept_multiple_files=True)
     
     # # +++ DEMONSTRATE AN EMPTY CONTAINER. ALLOWS REMOVAL OF ITEMS
     # import time
@@ -624,6 +708,17 @@ def GUI_Build_And_Show():        # Build the GUI.
            color="green",bold=True,italic=True,fontsize=16,align="center")
         st.write(MDText, unsafe_allow_html=True)
         
+		# Add a form submit button.
+        # Every "form" must have exactly one form_submit_button.
+        st.form_submit_button(
+                    label='Plot Now',
+                    on_click=PlotNowButton_Click_Event,
+                    help="When you have entered the parameters  \r"
+                    "for the calculations click  \r"
+                    "this button to draw your plot.",
+                    args=(),
+                    kwargs=())
+            
  
         st.warning("The demonstates how easy it is to include emojis in "
                 " any text:  \n"
@@ -634,10 +729,10 @@ def GUI_Build_And_Show():        # Build the GUI.
         # Create a textbox for displaying instructions and error messages.
         st.text_area(
             key="MsgText",   # Value will be placed in GUI['MsgText'].
-            label="",
+            label="INSTRUCTIONS",
             height=150,
             max_chars=None,
-            help=None,
+            help="Watch here for instructions and error messages",
             on_change=None)
 
         # Create input boxes in the toolbar for our user specifed variables.
@@ -672,14 +767,7 @@ def GUI_Build_And_Show():        # Build the GUI.
         st.checkbox(key="ShowInput", label="Show The Variables I Input.")
         st.checkbox(key="ShowData", label="Show The Pandas Data Frame.")
         
-        # Add a form submit button.
-        #   Every "form" block must have exactly one form_submit_button
-        st.form_submit_button(
-            label='Plot Now',
-            on_click=PlotNowButton_Click_Event,
-            help="Click this button to draw your plot.",
-            args=(),
-            kwargs=())
+
     # End of 'with form'.
     
 
@@ -720,14 +808,13 @@ def Msg_Set(TextString):
     FormattedText = TextString
     ErrStr = TextString[0:5].upper()  
     if ErrStr == "ERROR":
-        FormattedText = f"There is an error in your input.    \n{FormattedText}   \nPlease correct and try again."
+        FormattedText = f"❌ There is an error in your input.    \n{FormattedText}   \nPlease correct and try again."
     GUI['MsgText'] = FormattedText
     G.Msg_Current = FormattedText
     return()
 
 def Title_Build(TitleLength = "short"):
-    G.Title_1 = str(
-                   "You entered the following values:  \n" +
+    G.Title_1 = str(""+
                    "Rows To Generate = {:d}  \n".format(G.RowsToGenerate)  +
                    "AFloatNumber = {:.5f}".format(G.AFloatNumber) + "."
                    )
