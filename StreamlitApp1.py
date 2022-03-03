@@ -39,9 +39,9 @@ class Global_Variables():  # A class for creating all python global variables.
     ThisModule_FullPath = os.path.abspath(__file__)
     ThisModule_FileName = os.path.basename(ThisModule_FullPath)
     ThisModule_ProjectPath = os.path.dirname(ThisModule_FullPath)
-        
+        #https://github.com/ProfBrockway/StreamlitApp1Deploy/raw/main/Resource_ProgramDocumentation.pdf
     # Program Help/Documentation.    
-    Link01 = r"https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/main/Resource_ProgramDocumentation.pdf"
+    Link01 = r"https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/main/Resource_ProgramDocumentation.pdf?raw=true"
     # Where to report a bug..
     Link04 = r"https://www.ibm.com/us-en?ar=1"   
     # A picture stored at this projects repository at github.
@@ -661,18 +661,16 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
 
     
     # +++ DEMONSTRATE USING AN EXCEL FILE (Upload then make it a pandas dataframe.") 
-    st.info("DEMONSTRATE USING AN EXCEL FILE (Upload then make it a pandas dataframe.")
-    UploadedFile = st.file_uploader("Upload an excel file", 
-                     key="UploadedFile",  #?V Add to static dictionary
-                     type="",
-                     help = "Help text appears here.",
-                     on_change = None,
-                     accept_multiple_files=False)
-    
-    
-    xPath=r"G:\My Drive\UConn\1-Subjects\Python\STAT476\CODE\StreamlitApp1Deploy\Resource_TestExcelFile.xlsx"
+    # https://towardsdatascience.com/how-to-work-with-excel-files-in-pandas-c584abb67bfb
+    st.info("DEMONSTRATE USING AN EXCEL FILE BASED ONLINE IN THE GITHUB REPOSTIORY")
+    st.write("Be sure that that remote url of the excel file includes the 'raw' suffix ?raw=true")
+    st.write("For pandas to input an excel file you must install a pandas slave program xlrd. pip install xlrd  ")
+    xPath = r"https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/main/Resource_TestExcelFile.xlsx?raw=true"
     df_sheet = pd.read_excel(xPath, sheet_name=0)
-    st.write("EXCEL FILE FOLLOWS<\n",df_sheet)
+    st.write("EXCEL FILE FOLLOWS:\n",df_sheet)
+    
+    
+
     
     
     # # +++ DEMONSTRATE AN EMPTY CONTAINER. ALLOWS REMOVAL OF ITEMS
