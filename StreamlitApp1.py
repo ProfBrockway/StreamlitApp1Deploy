@@ -9,8 +9,8 @@
    
 
 import streamlit as st
-from streamlit import session_state as GUI
-   # Writing GUI['VarName'] is easier than writing st.session_state['VarName'] 
+from streamlit import session_state as Static
+   # Writing Static['VarName'] is easier than  st.session_state['VarName'] 
 import matplotlib as mpl  
 import os
 import pandas as pd
@@ -112,18 +112,18 @@ def MainLine():
     
     # If this the initial session create "Static/Persistent" variables
     # and do the "first load only" program initialization.
-    if 'Dialog_State' not in GUI:
-        if G.Debug: print("Debug: First Display. Display count=1")   
+    if 'Dialog_State' not in Static:
+        if G.Debug: print("Debug: State=0 Initial load. Display count=1")   
         Perform_First_Load_Only_Initialization()
-        GUI['Dialog_State'] = 1  # Upgrade state so we don't come back here.
+        Static['Dialog_State'] = 1  # Upgrade state so we don't come back here.
 
     else:  # We are responding to a session reply from the user.
-        GUI['Display_Count'] += 1  # Count of sessions.
+        Static['Display_Count'] += 1  # Count of sessions.
         if G.Debug: 
-           print("Debug: Input received. Display count=", GUI['Display_Count'])  
+           print("Debug: State=1. Display count=", Static['Display_Count'])  
         
         # Initalize variables for every run.
-        #   Remember nothing outside the GUI static/persistant dictionary
+        #   Remember nothing outside the Streamlit static/persistant dictionary
         #   is preserved across sessions. So we perform the one time
         #   program initialization once then perform the "every run"
         #   intialization.
@@ -163,7 +163,7 @@ def Perform_First_Load_Only_Initialization():
      layout="centered", # or "wide".
         # 'wide' gives a bigger display. 'centered' gives a smaller display
         #  Remember that plots and tables etc on the streamlit webpage 
-        #  can be "blownup" by the user clicking an "expand" icon.
+        #  can be "blown up" by the user clicking an "expand" icon.
         #  So don't worry if the normal view is too small.
      
      initial_sidebar_state="auto",
@@ -187,48 +187,50 @@ def Perform_First_Load_Only_Initialization():
     #   - Are effectively global.
     #   - Have a python dictionary like syntax.
     #   - Are created using the streamlit "session_state" method.
-    #       - Eg:  st.session_state['Display_Count'] = 0
-    #       - In our case the st.session_State is abbreviated at import to GUI.
-    #          - Eg: GUI['Input_SSN'] = 0
+    #      - Eg:  st.session_state['Display_Count'] = 0
+    #      - In our case the st.session_State is abbreviated to Static.
+    #          - from streamlit import session_state as Static
+    #          - Eg: Static['Input_SSN'] = 0
     #   - Can be "linked" to a streamlit widget via the widget key= parameter.
     #      - Using the key= parameter on any widget automatically
     #        creates a static variable in the 'session state dictionary'.
     #        But I prefer to declare them explicity as well.
-    #      - Any change in the GUI linked widget will automatically update 
+    #      - Any change in the Static linked widget will automatically update 
     #      - the linked persistant variable.
     #      - Any change in linked persistant variable will automatically 
-    #        update the linked widgets value in th GUI.
+    #        update the linked widgets value in the Static dictionary.
     #      - The python type of linked variables are specifed by the
     #        linked widget's  "format=" parameter.
     #
     #      - Eg of a Linked persistent variable.
     #         In this initialization section:
-    #              GUI['FirstName'] = "Fred"  # Create a persistant variable.
-    #         In the GUI creation code:
+    #              Static['FirstName'] = "Fred"  # Create a persistant variable.
+    #         In the Static creation code:
     #             st.number_input(label=:Enter first name", key="FirstName")
     #         Notice the key is the same as the persistent variable name.
 
-    GUI['Dialog_State'] = 0    # Create session Dialog_State variable.
-    GUI['Display_Count'] = 1   # A debugging Display_Count of sessions.
+    Static['Dialog_State'] = 0    # Create session Dialog_State variable.
+    Static['Display_Count'] = 1   # A debugging Display_Count of sessions.
 
     # Persistant variables for the users input in the GUI
-    GUI['MsgText'] = G.Msg01           # A text box for instructions & errors.
-    GUI['RowsToGenerate'] = 100        # An integer variable.
-    GUI['AFloatNumber'] = 123.678               # A float variable.
+    Static['MsgText'] = G.Msg01       # A text box for instructions & errors.
+    Static['RowsToGenerate'] = 100    # An integer variable.
+    Static['AFloatNumber'] = 123.678  # A float variable.
 
     # Persistant variables for checkboxes.
-    GUI['ShowLine3'] = False
-    GUI['ShowInput'] = True
-    GUI['ShowData'] = True
+    Static['ShowLine3'] = False
+    Static['ShowInput'] = True
+    Static['ShowData'] = True
     
-    GUI['UploadedFile'] = None
+    Static['UploadedFile'] = None
      
     return()  # End of function: Perform_First_Load_Only_Initialization
  
 def Perform_EveryRun_Initialization():
     # Initalize variables for every run.
     #   Remember nothing is preserved across sessions, except variables in  
-    #   the GUI streamlit "session_state" and its static/persistant variables.
+    #   the Static streamlit "session_state" dictionary in its
+    #   static/persistant variables.
     #  
     #   On the first run we perform the one time program initialization.
     #   On subsequent runs we perform the "every run" intialization to 
@@ -274,25 +276,25 @@ def Validate_And_Internalize_User_Input():
     Msg_Set("")    
      
     # Validate and internalize population.
-    G.RowsToGenerate, InputOK = Validate_Integer(GUI['RowsToGenerate'])
+    G.RowsToGenerate, InputOK = Validate_Integer(Static['RowsToGenerate'])
     if InputOK == False:
         Msg_Set("Error 1006:\n'Rows to Generate' must be an integer.") 
         return(False) 
     if (G.RowsToGenerate < 50):
         Msg_Set("Error 1008:\n'Rows To Generate' must be [50,150] but not 99.")  
         return (False)
-    if GUI['RowsToGenerate'] == 99:
-       Msg_Set("Error 1010:\n'Rows to Generate' is exactly 99 which is not ok.")
+    if Static['RowsToGenerate'] == 99:
+       Msg_Set("Error 1010:\n'Rows to Generate' is 99 which is not ok.")
        return(False)
-    G.AFloatNumber, InputOK= Validate_Float(GUI['AFloatNumber'])
+    G.AFloatNumber, InputOK= Validate_Float(Static['AFloatNumber'])
     if G.AFloatNumber == 9:
        Msg_Set("Error 1012:\n'A FloatNumber' is exactly 9 which is not ok.")
        return(False)
     
     # Internalize checkbox options.
-    G.ShowLine3 = GUI['ShowLine3']  
-    G.ShowInput = GUI['ShowInput']  
-    G.ShowData = GUI['ShowData'] 
+    G.ShowLine3 = Static['ShowLine3']  
+    G.ShowInput = Static['ShowInput']  
+    G.ShowData = Static['ShowData'] 
     
     # If we fall through here the users input is all valid.
     Msg_Set(G.Msg01)    # The "Please enter test specs" message.
@@ -355,12 +357,12 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
     G.Plot1.set_ylabel("Y Values Value")
 
     # Put header(s) before the plot.
-    st.subheader(" This Is The GUI 'Output Display Panel' On The Right")
+    st.subheader(" This Is The Static 'Output Display Panel' On The Right")
     if G.ShowInput == True:
         temptext = f"""
-             ### The Values You Entered Are Listed Below.  \n 
-            {Title_Build()}  \n
-            
+             ### The Values You Entered Are Listed Below.  \r
+            {Title_Build()}  \r
+            \r
             More Stuff:
             1. Blah blah.
             1. More Blah Blah.    
@@ -484,7 +486,7 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
     st.line_chart(chart_data)
     
     
-    #  +++ SHOW A CLICKABLE WEBLINK ON OUR WEBPAGE GUI.
+    #  +++ SHOW A CLICKABLE WEBLINK ON OUR WEBPAGE Static.
     #   There are several ways to do this.
     st.markdown("### LINK TO THIS APPS CODE. (DOWNLOADABLE). ")
     st.markdown(" [Link To Source Code](%s)" % G.Link08)
@@ -537,7 +539,7 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
       st.subheader("Debugging Information Follows.")
       st.write(" The streamlit st.session_state persistant/static "
                     "variables follow.") 
-      st.write(GUI)    #  Show all streamlit persistent variables.
+      st.write(Static)    #  Show all streamlit persistent variables.
                 # st.write(G)  # ?v fix so this works For debugging. Show global variables.
     
     # +++ DEMONSTRATE AN EXPANDER
@@ -548,7 +550,7 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
         st.subheader("Debugging Information Follows.")
         st.write(" The streamlit st.session_state persistant/static "
                       "variables follow.") 
-        st.write(GUI)    #  Show all streamlit persistent variables.
+        st.write(Static)    #  Show all streamlit persistent variables.
         # st.write(G)  # ?v fix so this works For  Show global variables.
           
         
@@ -660,12 +662,18 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
     
     # +++ DEMONSTRATE USING AN EXCEL FILE (Upload then make it a pandas dataframe.") 
     st.info("DEMONSTRATE USING AN EXCEL FILE (Upload then make it a pandas dataframe.")
-    UploadedFiles = st.file_uploader("Upload an excel file", 
+    UploadedFile = st.file_uploader("Upload an excel file", 
                      key="UploadedFile",  #?V Add to static dictionary
                      type="",
                      help = "Help text appears here.",
                      on_change = None,
-                     accept_multiple_files=True)
+                     accept_multiple_files=False)
+    
+    
+    xPath=r"G:\My Drive\UConn\1-Subjects\Python\STAT476\CODE\StreamlitApp1Deploy\Resource_TestExcelFile.xlsx"
+    df_sheet = pd.read_excel(xPath, sheet_name=0)
+    st.write("EXCEL FILE FOLLOWS<\n",df_sheet)
+    
     
     # # +++ DEMONSTRATE AN EMPTY CONTAINER. ALLOWS REMOVAL OF ITEMS
     # import time
@@ -684,8 +692,8 @@ def GUI_Build_And_Show():        # Build the GUI.
     # - Our GUI is a streamlit web page with widgets in a vertical toolbar 
     #   on the left and a plot and display area on the right.
     #
-    # - !!!!! DON"T ADD A "value=" parameter to any input widget. !!!!!!
-    #      The "val=" causes error messages about duplicate initialization.
+    # - !!!!! DON'T ADD A "value=" parameter to any input widget. !!!!!!
+    #     The "val=" causes error messages about duplicate initialization.
     #
     #  - Widget values are stored in "linked" streamlit persistent variables.
     #     The value input/output to/from each widget is stored in/retrieved 
@@ -728,7 +736,7 @@ def GUI_Build_And_Show():        # Build the GUI.
         
         # Create a textbox for displaying instructions and error messages.
         st.text_area(
-            key="MsgText",   # Value will be placed in GUI['MsgText'].
+            key="MsgText",   # Value will be placed in Static['MsgText'].
             label="INSTRUCTIONS",
             height=150,
             max_chars=None,
@@ -739,7 +747,7 @@ def GUI_Build_And_Show():        # Build the GUI.
 
         #  Have the user input an integer from a widget.
         st.number_input(
-            key="RowsToGenerate", # Value will linked to GUI['RowsToGenerate'].
+            key="RowsToGenerate", # Value  linked to Static['RowsToGenerate'].
             label="Table Rows To Generate",
             min_value=1,       # Be sure all values for this variable are
             max_value=1000,    # specified as integers.
@@ -753,7 +761,7 @@ def GUI_Build_And_Show():        # Build the GUI.
 
         #  Have the user input a float number from a widget.
         st.number_input(
-            key="AFloatNumber",  # Value will be placed in GUI['AFloatNumber'].
+            key="AFloatNumber",  # Linked to placed in Static['AFloatNumber'].
             label="A float number",
             min_value=0.00,         # Always add a number after the point
             max_value=80000000.0,   # since the variable is a float. 
@@ -809,13 +817,13 @@ def Msg_Set(TextString):
     ErrStr = TextString[0:5].upper()  
     if ErrStr == "ERROR":
         FormattedText = f"❌ There is an error in your input.    \n{FormattedText}   \nPlease correct and try again."
-    GUI['MsgText'] = FormattedText
+    Static['MsgText'] = FormattedText
     G.Msg_Current = FormattedText
     return()
 
 def Title_Build(TitleLength = "short"):
-    G.Title_1 = str(""+
-                   "Rows To Generate = {:d}  \n".format(G.RowsToGenerate)  +
+    G.Title_1 = str(
+                   "Rows To Generate = {:d}   \r".format(G.RowsToGenerate)  +
                    "AFloatNumber = {:.5f}".format(G.AFloatNumber) + "."
                    )
     return(G.Title_1)   #  End of function: Title_Build
