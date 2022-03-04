@@ -16,6 +16,7 @@ import os
 import pandas as pd
 import numpy as np
 import random
+import scipy # Used by plotly figure factory behind the scenes.
 import plotly.figure_factory as ff
 
 
