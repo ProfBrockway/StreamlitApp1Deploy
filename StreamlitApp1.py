@@ -16,6 +16,7 @@ import os
 import pandas as pd
 import numpy as np
 import random
+import plotly.figure_factory as ff
 
 
 class Global_Variables():  # A class for creating all python global variables.
@@ -41,7 +42,14 @@ class Global_Variables():  # A class for creating all python global variables.
     ThisModule_ProjectPath = os.path.dirname(ThisModule_FullPath)
         #https://github.com/ProfBrockway/StreamlitApp1Deploy/raw/main/Resource_ProgramDocumentation.pdf
     # Program Help/Documentation.    
+    # The raw version will download the pdf automatically.
     Link01 = r"https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/main/Resource_ProgramDocumentation.pdf?raw=true"
+    # The non raw version will go to the file at github and show it in a simple pdf viewer without index.
+    Link01 = r"https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/main/Resource_ProgramDocumentation.pdf"
+    # This will pop up the pdf if googles pdf reader page. But no index or working links.
+    Link01 = r"https://docs.google.com/viewer?url=https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/main/Resource_ProgramDocumentation.pdf?raw=true"
+    # This will pop up the pdf if googles pdf reader page. But no index or working links.
+    Link01 = r"https://smallpdf.com/pdf-reader?url=https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/main/Resource_ProgramDocumentation.pdf?raw=true"
     # Where to report a bug..
     Link04 = r"https://www.ibm.com/us-en?ar=1"   
     # A picture stored at this projects repository at github.
@@ -480,11 +488,20 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
             "We use the st.dataframe feature.")
     st.dataframe(people)
     
-    #  +++ SHOW A PLOT USING NATIVE STREAMLIT PLOTTING FUNCTIONS.  
-    chart_data = pd.DataFrame(np.random.randn(20, 3),columns=['a', 'b', 'c'])
-    st.markdown("#### Plot A Chart Using Native Streamlit Plotting Functions.")
-    st.line_chart(chart_data)
-    
+    #  +++ SHOW A PLOT USING PLOTLY WHICH HAS GREAT INTERACTIVE CONTROLS 
+    st.info("DEMONSTRATE A 'PLOTLY' PLOT WITH GREAT INTERACTIVE CONTROLS.")
+
+    # Add histogram data
+    x1 = np.random.randn(200) - 2
+    x2 = np.random.randn(200)
+    x3 = np.random.randn(200) + 2
+    # Group data together
+    hist_data = [x1, x2, x3]
+    group_labels = ['Group 1', 'Group 2', 'Group 3']
+    # Create distplot with custom bin_size
+    fig = ff.create_distplot(
+             hist_data, group_labels, bin_size=[.1, .25, .5])
+    st.plotly_chart(fig, use_container_width=True)   # Plot!
     
     #  +++ SHOW A CLICKABLE WEBLINK ON OUR WEBPAGE Static.
     #   There are several ways to do this.

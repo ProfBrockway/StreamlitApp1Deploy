@@ -3,8 +3,65 @@ import streamlit as st
 from streamlit import session_state as Static
 def mainline():
     ConsoleClear()
-    test6()
+    test9()
     return() # End of function: mainline.
+
+def test9():
+
+    import streamlit as st
+    import plotly.figure_factory as ff
+    import numpy as np
+    # Add histogram data
+    x1 = np.random.randn(200) - 2
+    x2 = np.random.randn(200)
+    x3 = np.random.randn(200) + 2
+    # Group data together
+    hist_data = [x1, x2, x3]
+    group_labels = ['Group 1', 'Group 2', 'Group 3']
+    # Create distplot with custom bin_size
+    fig = ff.create_distplot(
+             hist_data, group_labels, bin_size=[.1, .25, .5])
+    st.plotly_chart(fig, use_container_width=True)   # Plot!
+    
+    return()
+
+
+
+
+def test8():
+    import base64
+    import requests
+    # The non raw version will go to the file at github and show it in a simple pdf viewer without index.
+    Link01 = r"https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/main/Resource_ProgramDocumentation.pdf"
+
+    page = requests.get(Link01)
+    st.write (page.text)
+    
+    base64_pdf = base64.b64encode(page)
+    pdf_display = f"<iframe src='data:application/pdf;base64,{base64_pdf}' width='700' height='1000' type='application/pdf'></iframe>"
+    st.markdonw(pdf_display)
+    return()
+
+
+
+
+
+def test7():
+    # Method 3: Open with webbrowser
+    import webbrowser
+    # This will pop up the pdf if googles pdf reader page. But no index or working links.
+    Link01 = r"https://smallpdf.com/pdf-reader?url=https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/main/Resource_ProgramDocumentation.pdf?raw=true"
+    # This will pop up the pdf if googles pdf reader page. But no index or working links.
+    Link01 = r"https://docs.google.com/viewer?url=https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/main/Resource_ProgramDocumentation.pdf?raw=true"
+    # The non raw version will go to the file at github and show it in a simple pdf viewer without index.
+    Link01 = r"https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/main/Resource_ProgramDocumentation.pdf"
+
+    # The raw version will download the pdf automatically.
+    Link01 = r"https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/main/Resource_ProgramDocumentation.pdf?raw=true"
+
+    webbrowser.open_new(Link01)
+    return()
+
 
 def test6():
     st.markdown("""
