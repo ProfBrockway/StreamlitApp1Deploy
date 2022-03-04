@@ -55,7 +55,8 @@ class Global_Variables():  # A class for creating all python global variables.
     Link01 = r"https://smallpdf.com/pdf-reader?url=https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/main/Resource_ProgramDocumentation.pdf?raw=true"
     # Where to report a bug..
     Link04 = r"https://www.ibm.com/us-en?ar=1"   
-    # A picture stored at this projects repository at github.
+    # A picture stored at this projects repository at github. 
+    # NOTE: MUST HAVE THE '?raw=true' SUFFIX to extract the pic from github.
     Link06 = r"https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/main/Resource_TigerMoth.jpg?raw=true"
     # This apps code page at Github.
     Link08 = r"https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/0bc950a80603401a54dfb1c6ebe15bc83a362d6e/StreamlitApp1.py"
@@ -451,7 +452,10 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
     #     https://www.labnol.org/internet/free-file-hosting-github/29092/
     st.markdown("#### DEMONSTRATE SHOWING A PICTURE FROM THE APPS GITHUB REPOSITORY.")
     st.image(G.Link06, 
-        caption="We used a github url address to get this picture from github.")
+        caption="We used a github url address to get this picture from " 
+       "  github.   \n"  
+        "  NOTE: THE URL MUST HAVE THE '?raw=true' SUFFIX to extract the pic"
+        "from github.")
     st.write("You can enlarge the picture by clicking the pop up symbol "
              "that appears when you mouse near the top right of the image.")
       
