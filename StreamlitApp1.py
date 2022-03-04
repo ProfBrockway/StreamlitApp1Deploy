@@ -20,7 +20,7 @@ import random
 import scipy # Used by plotly figure factory behind the scenes.
 import plotly.figure_factory as ff
 
-import openpyxl # For reading excel
+import openpyxl # For reading excel behind the scences.
 
 class Global_Variables():  # A class for creating all python global variables.
     
@@ -66,7 +66,7 @@ class Global_Variables():  # A class for creating all python global variables.
     # A url of a video on Youtube.
     Link20 = r"https://youtu.be/nsHl48Wnudc"
     # A url of a video NOT on Youtube. Just a random website.
-    Link24 = r"https://www.orthopedicone.com/u/home-vid-4.mp4"
+    Link24 = r"http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"
     # A url of a video on google drive.
     Link30 = r"https://drive.google.com/file/d/18xDRuX9lTpEuSsjtJjFHz4TNnxfKAWdI/view?usp=sharing"
 	# Name of downloaded table
@@ -443,9 +443,10 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
     #   github repository for the project. Streamlit drives itself from
     #   the github repository. However github cannot as yet support some 
     #   resources. For example a pdf displayed at github does not support 
-    #   pdf features like indexing or links. Also the video storage is very 
-    #   limited. So we will be using other online sites to store web
-    #   accessable resources. (Eg Google drive or dropbox etc)
+    #   pdf features like indexing or links. 
+    # Also the video storage is very  limited at github. S
+    # So we will be using other online sites to store web
+    #   accessable resources. (Eg Youtube)
     # - How to user github to host media for display
     #     https://www.labnol.org/internet/free-file-hosting-github/29092/
     st.markdown("#### DEMONSTRATE SHOWING A PICTURE FROM THE APPS GITHUB REPOSITORY.")
