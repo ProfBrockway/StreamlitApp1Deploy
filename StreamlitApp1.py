@@ -56,7 +56,7 @@ class Global_Variables():  # A class for creating all python global variables.
     # Where to report a bug..
     Link04 = r"https://www.ibm.com/us-en?ar=1"   
     # A picture stored at this projects repository at github.
-    Link06 = r"https://raw.githubusercontent.com/ProfBrockway/OSExperiments/main/Resource_TigerMoth.jpg"
+    Link06 = r"https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/main/Resource_TigerMoth.jpg"
     # This apps code page at Github.
     Link08 = r"https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/0bc950a80603401a54dfb1c6ebe15bc83a362d6e/StreamlitApp1.py"
     # A test pdf online somewhere.
