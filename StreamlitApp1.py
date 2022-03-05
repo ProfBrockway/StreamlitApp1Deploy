@@ -319,8 +319,8 @@ def Process_Users_Data():
     G.y2 = [item ** 1.2 for item in G.x]
     G.y3 = [item * -1 for item in G.x]
 
-    # Create an example Pandas dataframe to show how easily streamlit 
-    # shows it on the webpage. The values are meaningless.
+    # Create an example Pandas dataframe for plotting etc
+    # The values are meaningless.
     
     i = -1
     for  xvalue in (G.x):

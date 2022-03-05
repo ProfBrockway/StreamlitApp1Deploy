@@ -3,8 +3,19 @@ import streamlit as st
 from streamlit import session_state as Static
 def mainline():
     ConsoleClear()
-    test9()
+    test10()
     return() # End of function: mainline.
+
+def test10():
+    import plotly.express as px
+
+    df = px.data.gapminder().query("country=='Canada'")
+    fig = px.line(df, x="year", y="lifeExp", title='Life expectancy in Canada')
+    fig.show()
+        
+    
+    return()
+
 
 def test9():
 
