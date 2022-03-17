@@ -1,26 +1,35 @@
+
+r"""
+EXAMPLE OF A MODULE "DOCSTRING"
+   To run this app in a web browser undeployed on the development computer
+   run the following command in the Anaconda console.
+streamlit run "G:\My Drive\UConn\1-Subjects\Python\STAT476\CODE\StreamlitApp1Deploy\StreamlitApp1.py"
+   
 # This code is a template for creating a python app to run in a streamlit
 # webpage.
 # The webpage has a familiar "toolbar on left / plot and output on right"
 # layout.
 
-# To run this app in a web browser undeployed on the development computer
-# run the following command in the Anaconda console.
-# streamlit run "G:\My Drive\UConn\1-Subjects\Python\STAT476\CODE\StreamlitApp1Deploy\StreamlitApp1.py"
-   
+"""
+
 
 import streamlit as st
-from streamlit import session_state as Static
-   # Writing Static['VarName'] is easier than  st.session_state['VarName'] 
+from streamlit import session_state as S
+   # Writing S.VarName'] is easier than  st.session_state['VarName'] 
 import matplotlib as mpl  
 import os
 import pandas as pd
 import numpy as np
 import random
- 
-import scipy # Used by plotly figure factory behind the scenes.
-import plotly.figure_factory as ff
+import openpyxl # Flagged as unused but required for excel behind the scenes.
 
-import openpyxl # For reading excel behind the scences.
+# Plotly imports. Some may be flagged as unused, but import them anyway.
+import scipy  # Used by plotly figure factory behind the scenes.
+import plotly
+import plotly.express as px 
+import plotly.figure_factory as ff
+import plotly.graph_objects as go
+
 
 class Global_Variables():  # A class for creating all python global variables.
     
@@ -36,23 +45,30 @@ class Global_Variables():  # A class for creating all python global variables.
     #   at github. If github basing is not possible or inadequate
     #   we have to use another cloud storage site, eg Google drive.Youtube etc.
     
-    ThisModule_Version = "7.0.2  2022 Feb 27, 10.29 EST."       
-    ThisModule_About = "For a course Spring 2021. "  
-    ThisModule_Author = "UConn Math Dept."
-    ThisModule_Purpose = "To test the features of Streamlit."
-    ThisModule_FullPath = os.path.abspath(__file__)
+    # +++ DETAILS ABOUT THIS MODULE
+    ThisModule_Project = "Demonstrate and Explore Streamlit and Python."
+    ThisModule_Version = "7_00     2022 March 3, 10.29 am EST."  
+    ThisModule_About = "This module has a done of demo code.. "  
+    ThisModule_Author = "TB, UConn Math Dept."
+    ThisModule_Purpose = ("My first Streamlit app.")
+    ThisModule_Contact = "Contacts not supplied."
+    ThisModule_Docstring = (__doc__)
+    ThisModule_FullPath  = os.path.abspath(__file__)
     ThisModule_FileName = os.path.basename(ThisModule_FullPath)
     ThisModule_ProjectPath = os.path.dirname(ThisModule_FullPath)
+    ThisModule_Docstring = (__doc__)
+    
+    
         #https://github.com/ProfBrockway/StreamlitApp1Deploy/raw/main/Resource_ProgramDocumentation.pdf
     # Program Help/Documentation.    
     # The raw version will download the pdf automatically.
     Link01 = r"https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/main/Resource_ProgramDocumentation.pdf?raw=true"
-    # The non raw version will go to the file at github and show it in a simple pdf viewer without index.
-    Link01 = r"https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/main/Resource_ProgramDocumentation.pdf"
     # This will pop up the pdf if googles pdf reader page. But no index or working links.
     Link01 = r"https://docs.google.com/viewer?url=https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/main/Resource_ProgramDocumentation.pdf?raw=true"
     # This will pop up the pdf if googles pdf reader page. But no index or working links.
     Link01 = r"https://smallpdf.com/pdf-reader?url=https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/main/Resource_ProgramDocumentation.pdf?raw=true"
+    # The non raw version will go to the file at github and show it in a simple pdf viewer without index.
+    Link01 = r"https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/main/Resource_ProgramDocumentation.pdf"
     # Where to report a bug..
     Link04 = r"https://www.ibm.com/us-en?ar=1"   
     # A picture stored at this projects repository at github. 
@@ -124,15 +140,15 @@ def MainLine():
     
     # If this the initial session create "Static/Persistent" variables
     # and do the "first load only" program initialization.
-    if 'Dialog_State' not in Static:
+    if 'Dialog_State' not in S:
         if G.Debug: print("Debug: State=0 Initial load. Display count=1")   
         Perform_First_Load_Only_Initialization()
-        Static['Dialog_State'] = 1  # Upgrade state so we don't come back here.
+        S.Dialog_State = 1  # Upgrade state so we don't come back here.
 
     else:  # We are responding to a session reply from the user.
-        Static['Display_Count'] += 1  # Count of sessions.
+        S.Display_Count += 1  # Count of sessions.
         if G.Debug: 
-           print("Debug: State=1. Display count=", Static['Display_Count'])  
+           print("Debug: State=1. Display count=", S.Display_Count)  
         
         # Initalize variables for every run.
         #   Remember nothing outside the Streamlit static/persistant dictionary
@@ -162,8 +178,8 @@ def Perform_First_Load_Only_Initialization():
     
     # Initalize variables etc.
     Perform_EveryRun_Initialization()
-
-    # Set up a typical "About/Help" menu for the webpage.
+     
+    # ++++ Set up a typical "About/Help" menu for the webpage.
     #  - The set_page_config command can only be used once per run.
     #  - The set_page_config command be the first Streamlit command used.
     #  - New line marker \n must be preceeded by at least two blanks to work.
@@ -175,20 +191,25 @@ def Perform_First_Load_Only_Initialization():
      layout="centered", # or "wide".
         # 'wide' gives a bigger display. 'centered' gives a smaller display
         #  Remember that plots and tables etc on the streamlit webpage 
-        #  can be "blown up" by the user clicking an "expand" icon.
+        #  can be "blownup" by the user clicking an "expand" icon.
         #  So don't worry if the normal view is too small.
      
      initial_sidebar_state="auto",
      
+     # \r requires two preceeding spaces to work.
      menu_items={ # These appear as the webpage "about" menu items.
      'Get Help  ':  G.Link01,
      'Report a bug  ': G.Link04,
-     'About': 'App:  ' + G.ThisModule_FileName + '.  ' +  G.ThisModule_About
-         + '  \nAuthor:  ' +  G.ThisModule_Author 
-         + '  \nProgram Purpose:  ' + G.ThisModule_Purpose 
-         + '  \nApp Version:  ' +  G.ThisModule_Version 
+     'About': '  \rProgram: ' +  G.ThisModule_FileName 
+            + '  \rProject:  ' + G.ThisModule_Project
+            + '  \rProgram Purpose:  ' + G.ThisModule_Purpose 
+            + '  \rAuthor:  ' +  G.ThisModule_Author   
+            + '  \rContacts:  ' +  G.ThisModule_Contact
+            +  '  \rVersion:  ' + G.ThisModule_Version               
                }
-                    )
+                      )
+
+    
     # +++ CREATE PERSISTENT/STATIC VARIABLES.
     # https://docs.streamlit.io/library/api-reference/session-state
     # During the first load session, we create our "Persistent" variables.
@@ -202,7 +223,7 @@ def Perform_First_Load_Only_Initialization():
     #      - Eg:  st.session_state['Display_Count'] = 0
     #      - In our case the st.session_State is abbreviated to Static.
     #          - from streamlit import session_state as Static
-    #          - Eg: Static['Input_SSN'] = 0
+    #          - Eg: S.Input_SSN'] = 0
     #   - Can be "linked" to a streamlit widget via the widget key= parameter.
     #      - Using the key= parameter on any widget automatically
     #        creates a static variable in the 'session state dictionary'.
@@ -216,25 +237,25 @@ def Perform_First_Load_Only_Initialization():
     #
     #      - Eg of a Linked persistent variable.
     #         In this initialization section:
-    #              Static['FirstName'] = "Fred"  # Create a persistant variable.
+    #              S.FirstName'] = "Fred"  # Create a persistant variable.
     #         In the Static creation code:
     #             st.number_input(label=:Enter first name", key="FirstName")
     #         Notice the key is the same as the persistent variable name.
 
-    Static['Dialog_State'] = 0    # Create session Dialog_State variable.
-    Static['Display_Count'] = 1   # A debugging Display_Count of sessions.
+    S.Dialog_State = 0    # Create session Dialog_State variable.
+    S.Display_Count = 1   # A debugging Display_Count of sessions.
 
     # Persistant variables for the users input in the GUI
-    Static['MsgText'] = G.Msg01       # A text box for instructions & errors.
-    Static['RowsToGenerate'] = 100    # An integer variable.
-    Static['AFloatNumber'] = 123.678  # A float variable.
+    S.MsgText = G.Msg01       # A text box for instructions & errors.
+    S.RowsToGenerate = 100    # An integer variable.
+    S.AFloatNumber = 123.678  # A float variable.
 
     # Persistant variables for checkboxes.
-    Static['ShowLine3'] = False
-    Static['ShowInput'] = True
-    Static['ShowData'] = True
+    S.ShowLine3 = False
+    S.ShowInput = True
+    S.ShowData = True
     
-    Static['UploadedFile'] = None
+    S.UploadedFile = None
      
     return()  # End of function: Perform_First_Load_Only_Initialization
  
@@ -288,25 +309,25 @@ def Validate_And_Internalize_User_Input():
     Msg_Set("")    
      
     # Validate and internalize population.
-    G.RowsToGenerate, InputOK = Validate_Integer(Static['RowsToGenerate'])
+    G.RowsToGenerate, InputOK = Validate_Integer(S.RowsToGenerate)
     if InputOK == False:
         Msg_Set("Error 1006:\n'Rows to Generate' must be an integer.") 
         return(False) 
     if (G.RowsToGenerate < 50):
         Msg_Set("Error 1008:\n'Rows To Generate' must be [50,150] but not 99.")  
         return (False)
-    if Static['RowsToGenerate'] == 99:
+    if S.RowsToGenerate == 99:
        Msg_Set("Error 1010:\n'Rows to Generate' is 99 which is not ok.")
        return(False)
-    G.AFloatNumber, InputOK= Validate_Float(Static['AFloatNumber'])
+    G.AFloatNumber, InputOK= Validate_Float(S.AFloatNumber)
     if G.AFloatNumber == 9:
        Msg_Set("Error 1012:\n'A FloatNumber' is exactly 9 which is not ok.")
        return(False)
     
     # Internalize checkbox options.
-    G.ShowLine3 = Static['ShowLine3']  
-    G.ShowInput = Static['ShowInput']  
-    G.ShowData = Static['ShowData'] 
+    G.ShowLine3 = S.ShowLine3 
+    G.ShowInput = S.ShowInput 
+    G.ShowData = S.ShowData 
     
     # If we fall through here the users input is all valid.
     Msg_Set(G.Msg01)    # The "Please enter test specs" message.
@@ -392,6 +413,12 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
     # Show the plot on the streamlit webpage.
     st.pyplot(G.Fig1)  # st.write(G.Fig1) also Displays a Matplotlib figure.
      
+    # +++ PROVE EXTERIOR HELPER FUNCTIONS WORK IN STREAMLIT
+    st.info("PROVE EXTERIOR HELPER FUNCTIONS WORK IN STREAMLIT")
+    from HelperFunctions import Exterior_Helper_Function1
+    from HelperFunctions import Exterior_Helper_Function2   
+    st.text(Exterior_Helper_Function1())
+    st.text(Exterior_Helper_Function2()) 
         
    # +++ SHOW A PANDAS DATAFRAME IF USER REQUESTED IT.
     if G.ShowData == True:
@@ -458,7 +485,17 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
         "from github.")
     st.write("You can enlarge the picture by clicking the pop up symbol "
              "that appears when you mouse near the top right of the image.")
-      
+     
+    # # +++ DEMONSTRATE DOWNLOADING A PICTURE USING A DOWNLOAD BUTTON.
+    # with open(G.Link06, "rb") as file:
+    #  btn = st.download_button(
+    #          label="Download image",
+    #          data=file,
+    #          file_name="Resource_TigerMoth.jpg",
+    #          mime="image/png"
+    #        )
+    
+    
     
 
     # +++ DEMONSTRATE SHOWING A VIDEO FROM YOUTUBE.
@@ -498,7 +535,10 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
     
     #  +++ SHOW A PLOT USING PLOTLY WHICH HAS GREAT INTERACTIVE CONTROLS 
     st.info("DEMONSTRATE A 'PLOTLY' PLOT WITH GREAT INTERACTIVE CONTROLS.")
-
+    st.write("""See my program 'screening test' for a much better example 
+             of using plotly graphs which are MUCH better than 
+             matplotlib in screenlit because the plotly plots are
+             interactive.              """)
     # Add histogram data
     x1 = np.random.randn(200) - 2
     x2 = np.random.randn(200)
@@ -510,6 +550,7 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
     fig = ff.create_distplot(
              hist_data, group_labels, bin_size=[.1, .25, .5])
     st.plotly_chart(fig, use_container_width=True)   # Plot!
+        
     
     #  +++ SHOW A CLICKABLE WEBLINK ON OUR WEBPAGE Static.
     #   There are several ways to do this.
@@ -564,7 +605,7 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
       st.subheader("Debugging Information Follows.")
       st.write(" The streamlit st.session_state persistant/static "
                     "variables follow.") 
-      st.write(Static)    #  Show all streamlit persistent variables.
+      st.write(S)    #  Show all streamlit persistent variables.
                 # st.write(G)  # ?v fix so this works For debugging. Show global variables.
     
     # +++ DEMONSTRATE AN EXPANDER
@@ -575,7 +616,7 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
         st.subheader("Debugging Information Follows.")
         st.write(" The streamlit st.session_state persistant/static "
                       "variables follow.") 
-        st.write(Static)    #  Show all streamlit persistent variables.
+        st.write(S)    #  Show all streamlit persistent variables.
         # st.write(G)  # ?v fix so this works For  Show global variables.
           
         
@@ -696,6 +737,13 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
     
     
 
+    ###########################################################################
+    # +++ SHOW THIS APPS DOCSTRING
+    #  Github basing of videos does not allow raw address of large files.
+    #  Google basing of videos  does not work because it downloads too slowly.
+    #  So until I can figure out how to base videos at github we use Youtube.
+    st.info("🟢  THIS APP's DOCUMENT STRING FOLLOWS.")   
+    st.text(G.ThisModule_Docstring)
     
     
     # # +++ DEMONSTRATE AN EMPTY CONTAINER. ALLOWS REMOVAL OF ITEMS
@@ -759,7 +807,7 @@ def GUI_Build_And_Show():        # Build the GUI.
         
         # Create a textbox for displaying instructions and error messages.
         st.text_area(
-            key="MsgText",   # Value will be placed in Static['MsgText'].
+            key="MsgText",   # Value will be placed in S.MsgText'].
             label="INSTRUCTIONS",
             height=150,
             max_chars=None,
@@ -770,7 +818,7 @@ def GUI_Build_And_Show():        # Build the GUI.
 
         #  Have the user input an integer from a widget.
         st.number_input(
-            key="RowsToGenerate", # Value  linked to Static['RowsToGenerate'].
+            key="RowsToGenerate", # Value  linked to S.RowsToGenerate'].
             label="Table Rows To Generate",
             min_value=1,       # Be sure all values for this variable are
             max_value=1000,    # specified as integers.
@@ -784,7 +832,7 @@ def GUI_Build_And_Show():        # Build the GUI.
 
         #  Have the user input a float number from a widget.
         st.number_input(
-            key="AFloatNumber",  # Linked to placed in Static['AFloatNumber'].
+            key="AFloatNumber",  # Linked to placed in S.AFloatNumber'].
             label="A float number",
             min_value=0.00,         # Always add a number after the point
             max_value=80000000.0,   # since the variable is a float. 
@@ -840,7 +888,7 @@ def Msg_Set(TextString):
     ErrStr = TextString[0:5].upper()  
     if ErrStr == "ERROR":
         FormattedText = f"❌ There is an error in your input.    \n{FormattedText}   \nPlease correct and try again."
-    Static['MsgText'] = FormattedText
+    S.MsgText = FormattedText
     G.Msg_Current = FormattedText
     return()
 

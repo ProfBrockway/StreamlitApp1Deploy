@@ -8,13 +8,58 @@ def mainline():
 
 def test10():
     import plotly.express as px
+    import random
+    import pandas as pd
 
-    df = px.data.gapminder().query("country=='Canada'")
-    fig = px.line(df, x="year", y="lifeExp", title='Life expectancy in Canada')
-    fig.show()
-        
+    x = list(range(0, 100))
+    y1 = x
+    y2 = [item ** 1.2 for item in x]
+    y3 = [item * -1 for item in x]
+
+    # Create an example Pandas dataframe for plotting etc
+    # The values are meaningless.
+    df= pd.DataFrame()
+    i = -1
+    for  xvalue in (x):
+        i = i + 1
+        newrow = {'x' : xvalue,
+                  'y1':   y1[i],
+                  'y2':   y2[i],
+                  'y3':   y3[i],
+                  'random1': random.random(),
+                  'sum with a long name': y1[i] + y2[i],
+                  'sum with a longer name': y1[i] + y2[i] + + y3[i],
+                  'random2': random.randint(1,100) 
+                }
+        df = df.append(newrow, ignore_index=True)
     
+    x_slider = st.slider(label="How old are you?",
+                    key="mysliderval",
+                    min_value= 1.0,
+                    max_value=100.0,
+                    step=0.5,
+                    format=None,
+                    help="A help tooltip string",
+                    on_change=slider_onchange_event, 
+                    )
+    st.write("I'm ", x_slider, 'years old')
+      
+    Fig1 = px.line(df, 
+       x="x", 
+       y=["y1","y2","y3"],
+       color_discrete_map={"x":"red","y1":"blue","y2":"green","y3":"orange"},
+       template="simple_white"
+       )
+    Fig1.add_vline(x=x_slider, line_width=3, line_dash="dash", line_color="green")
+    st.plotly_chart(Fig1, use_container_width=True)   # Plot!
     return()
+
+
+def slider_onchange_event():
+    #Fig1.add_vline(x=G.PrevInt,line_dash="dash", line_color="red")
+
+    return()
+
 
 
 def test9():
@@ -259,7 +304,7 @@ def Text_MD02():
  
  
 def ConsoleClear():  # Clear all output in console.
-    try:     # This works regardless of Operating System prevailing.
+    try:     # This works regardless of Operating System prevailin
         from IPython import get_ipython
         get_ipython().magic("clear")
         get_ipython().magic("reset -f")
