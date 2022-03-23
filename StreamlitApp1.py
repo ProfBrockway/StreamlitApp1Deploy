@@ -493,11 +493,8 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
     st.markdown("#### DEMONSTRATE SHOWING A SIZED PICTURE .")
     urllib.request.urlretrieve(G.Link06,"img.jpg") # Get image from web.
     img = Image.open("img.jpg")
-    MAX_SIZE = (500, 500)         # Set the desired size
-    img.thumbnail((500, 500))
-    # creating thumbnail
-    #image.save('pythonthumb.png')
-    st.image(img)
+    img.thumbnail((500, 500)) # Set the desired size. Its one tuple parameter.
+    st.image(img)  # Show the resized image.
     
     
     # # +++ DEMONSTRATE DOWNLOADING A PICTURE USING A DOWNLOAD BUTTON.
