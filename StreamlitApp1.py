@@ -21,6 +21,10 @@ import os
 import pandas as pd
 import numpy as np
 import random
+
+import urllib.request
+from PIL import Image # Import Image class from Python PIL package.
+ 
 import openpyxl # Flagged as unused but required for excel behind the scenes.
 
 # Plotly imports. Some may be flagged as unused, but import them anyway.
@@ -486,6 +490,16 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
     st.write("You can enlarge the picture by clicking the pop up symbol "
              "that appears when you mouse near the top right of the image.")
      
+    st.markdown("#### DEMONSTRATE SHOWING A SIZED PICTURE .")
+    urllib.request.urlretrieve(G.Link06,"img.jpg") # Get image from web.
+    img = Image.open("img.jpg")
+    MAX_SIZE = (500, 500)         # Set the desired size
+    img.thumbnail((500, 500))
+    # creating thumbnail
+    #image.save('pythonthumb.png')
+    st.image(img)
+    
+    
     # # +++ DEMONSTRATE DOWNLOADING A PICTURE USING A DOWNLOAD BUTTON.
     # with open(G.Link06, "rb") as file:
     #  btn = st.download_button(
@@ -522,16 +536,16 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
     
 
     # +++ DEMONSTRATE EASY SHOWING A PYTHON DICTIONARY ON A STREAMLIT WEBPAGE.
-    people = {1: {'name': 'John', 'age': '27', 'sex': 'Male'},
+    df4 ={1: {'name': 'John', 'age': '27', 'sex': 'Male'},
           2: {'name': 'Marie', 'age': '22', 'sex': 'Female'},
           3: {'name': 'Luna', 'age': '24', 'sex': 'Female', 'married': 'No'}, 
           4: {'name': 'Peter', 'age': '29', 'sex': 'Male', 'married': 'Yes'}}
     
+      
     st.info("DEMONSTRATE SHOWING A PYTHON DICTIONARY ON A STREAMLIT WEBPAGE.")
     st.text("Pretty printing python dictionarys is easy using streamlit.  \n"
-            "Even nested dictionaries.  \n"
-            "We use the st.dataframe feature.")
-    st.dataframe(people)
+                 "We use the st.dataframe feature.")
+    st.dataframe(df4)
     
     #  +++ SHOW A PLOT USING PLOTLY WHICH HAS GREAT INTERACTIVE CONTROLS 
     st.info("DEMONSTRATE A 'PLOTLY' PLOT WITH GREAT INTERACTIVE CONTROLS.")
