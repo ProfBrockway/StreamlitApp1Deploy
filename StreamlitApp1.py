@@ -23,7 +23,7 @@ import numpy as np
 import random
 
 import urllib.request
-from PIL import Image # Import Image class from Python PIL package.
+from PIL import Image # Image class from Python PIL package. for 'PIL'.
  
 import openpyxl # Flagged as unused but required for excel behind the scenes.
 
@@ -369,7 +369,11 @@ def Process_Users_Data():
     return()  # End of function: Generate_Data_To_Be_Plotted
    
 def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
-      
+    
+
+    FullScreenIcon_Enlarge() # Make the streamlit full screen icon larger.
+
+
     # +++ CREATE A MATPLOTLIB FIGURE. 
     G.Fig1 = mpl.figure.Figure()
     
@@ -940,6 +944,18 @@ def StMarkdown(TextToBeFormated="", color="black",
                )
     return(md)  # End of function: StMarkdown
 
+def FullScreenIcon_Enlarge():
+    # This function increases the visibility of the Streamlit
+    # full page icon. It injects css code using markdown.
+    css = """
+         button[title="View fullscreen"] 
+         {background-color: #004170cc; left: 2; color: white; }
+    
+         button[title="View fullscreen"]:hover 
+         {background-color: #004170; color: white; } """
+    
+    st.markdown( "<style>" + css + "</styles>", unsafe_allow_html=True)
+    return() # End of function: FullScreenIcon_Enlarge
 
 
 MainLine()   # Start this program.
