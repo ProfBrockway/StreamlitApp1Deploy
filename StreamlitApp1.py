@@ -15,7 +15,7 @@ streamlit run "G:\My Drive\UConn\1-Subjects\Python\STAT476\CODE\StreamlitApp1Dep
 
 import streamlit as st
 from streamlit import session_state as S
-   # Writing S.VarName'] is easier than  st.session_state['VarName'] 
+   # Writing S.[VarName'] is easier than  st.session_state['VarName'] 
 import matplotlib as mpl  
 import os
 import pandas as pd
