@@ -23,9 +23,14 @@ import numpy as np
 import random
 
 import urllib.request
+import urllib
+
+
 from PIL import Image # Image class from Python PIL package. for 'PIL'.
  
 import openpyxl # Flagged as unused but required for excel behind the scenes.
+from io import BytesIO
+from pyxlsb import open_workbook as open_xlsb
 
 # Plotly imports. Some may be flagged as unused, but import them anyway.
 import scipy  # Used by plotly figure factory behind the scenes.
@@ -438,9 +443,9 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
                     "and horizontal scroll bars if required.")
        st.write("You can expand the datatable using the 'View fullscreen' "
                     "icon. The icon is above and to the right of the table.")       
-
-       
-   #  +++ ADD A "DOWNLOAD" DATAFRAME BUTTON.
+   
+        
+    #  +++ ADD A "DOWNLOAD TO CSV" DATAFRAME BUTTON.
        # - The dataframe is converted to a csv file.
        # - That file is downloaded to the browsers download location.
        #  - There is no "save as" menu. The file name is hard coded.
@@ -460,6 +465,85 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
             args=None,
             kwargs=None, 
             disabled=False)
+       
+
+   # +++ SHOW A PRETTYFIED PANDAS DATAFRAME +++++++++++++++++++++++++++++++++++ 
+    # https://towardsdatascience.com/style-pandas-dataframe-like-a-master-6b02bf6468b0
+    st.markdown("#### Here is the same dataframe Sorted descending on 'x', with titles and interesting data cells highlighted:")
+  
+    
+    # We do this by creating a pandas styling object.
+    # Styling should be performed after the data in a DataFrame has been processed. 
+    # https://pandas.pydata.org/pandas-docs/stable/user_guide/style.html
+    
+    def PdFormat_Align(s, props="text_align: center;"):
+        return props
+    
+    def PdFormat_Max(s):  # Highlight the maximum value in all cols
+        is_max = s == s.max()  # Create list of joint max vals.
+        return ['background-color: lightblue' if v else '' for v in is_max]
+    
+    def PdFormat_ByVal(v):
+        if v < 0 :    color="red"
+        if v == 0:    color="blue"
+        if v > 0:     color="green"
+        if v == 96:   color = "yellow"
+        style = f"color: {color};"  
+        return (style)
+  
+    # Sort and apply color styles to particular col and values of that col.
+    # Since this looks at each element in turn we use applymap
+    Styler1 = G.DataTable.sort_values(["x"], ascending=False).reset_index(drop=True).style.applymap(PdFormat_ByVal, subset=["x"]) 
+   
+    # Apply color styles to particular col and values of that col.
+    # Since this looks at each element in turn we use applymap
+    Styler2 = G.DataTable.style.applymap(PdFormat_ByVal, subset=["x"]) 
+        
+    # Apply color styles to all values.
+    # Since this looks at each element in turn we use applymap
+    Styler3 = G.DataTable.style.applymap(PdFormat_ByVal)
+    
+    st.dataframe(Styler1, width=None, height=None)
+    
+    #  +++ ADD A "DOWNLOAD TO EXCEL" DATAFRAME BUTTON.
+    def DataFrame_To_Excel(df):
+        output = BytesIO()
+        writer = pd.ExcelWriter(output, engine="xlsxwriter")
+        df.to_excel(writer, index=False, sheet_name="Sheet1")
+        workbook = writer.book
+        worksheet = writer.sheets["Sheet1"]
+        format1 = workbook.add_format({"num_format": '0.00'}) 
+        worksheet.set_column("A:A", None, format1)  
+        writer.save()
+        processed_data = output.getvalue()
+        return (processed_data)
+    
+    # NOTE !! If we use a styler on the grid we can pass that instead
+    #         of the dataframe and preserve all stylings in the excel file.
+    df_xlsx = DataFrame_To_Excel(Styler1)
+    st.download_button(label="📥 Download DataFrame To An Excel File",
+     data=df_xlsx ,
+     help="In an Excel file any cell highlighting or other "
+          "styling will be preserved.",  
+     file_name= "df_CSV_To_Excel.xlsx") 
+    
+    
+    # func = lambda s: 'STRING' if isinstance(s, str) else 'FLOAT'
+    # df.style.format({0: '{:.1f}', 2: func}, precision=4, na_rep='MISS')
+    
+    # Use a styler to format and alter value of columns.
+    Styler4 = G.DataTable.style.format(
+        na_rep='MISSING', thousands=",",
+        formatter={
+          ("y1", "random1")        : "{:.6f}",
+          ("sum with a long name" ): "{:.2f}",
+          ("y2")                   : lambda x: "$ {:,.1f}".format(x*1000),  
+          ("y3")                   : PdFormat_ByVal 
+                  })
+    
+    #Styler4.set_table_styles([cell_hover, index_names, headers])
+    st.dataframe(Styler4)
+      
 
        
        
@@ -469,7 +553,7 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
          fontsize=22,bold=True,color="blue")   
     st.markdown(MDText, unsafe_allow_html=True) 
   
-
+    
     
     # +++ DEMONSTRATE SHOWING A PICTURE FROM THE APPS GITHUB REPOSITORY.
     #   We must get our picture (and other resources) from a web address 
@@ -770,6 +854,17 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
     #         time.sleep(1)
     #     st.write("✔️ 1 minute over!")
        
+    ###########################################################################
+    # +++ SHOW A TEXT OR CODE FILE STORED ONLINE.
+    
+    st.info("🟢  DISPLAY A TEXT OR CODE FILE STORED ONLINE (Github).")   
+    # At github be sure to get the github 'raw' url for the target file note
+    # the regular url. You'll see the 'raw' option when at github.
+    CodeUrl ="https://raw.githubusercontent.com/ProfBrockway/StreamlitApp1Deploy/main/HelperFunctions.py"
+    file = urllib.request.urlopen(CodeUrl)
+    content =  file.read().decode(file.headers.get_content_charset())
+    st.text(content)    
+       
         
 
     return  # End of function: Right_Panel_Build
@@ -956,6 +1051,7 @@ def FullScreenIcon_Enlarge():
     
     st.markdown( "<style>" + css + "</styles>", unsafe_allow_html=True)
     return() # End of function: FullScreenIcon_Enlarge
+
 
 
 MainLine()   # Start this program.
