@@ -375,10 +375,19 @@ def Process_Users_Data():
    
 def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
     
-
+###############################################################################
     FullScreenIcon_Enlarge() # Make the streamlit full screen icon larger.
 
 
+###############################################################################    
+    #  +++ SHOW A CLICKABLE WEBLINK ON OUR WEBPAGE Static.
+    #   There are several ways to do this.
+    st.markdown("### LINK TO THIS APPS CODE. (DOWNLOADABLE). ")
+    st.markdown(f" [Link To Source Code]({G.Link08})"  )
+    # Also works: st.write("[Link To The Source Code](%s)" % G.Link08)
+
+
+###############################################################################
     # +++ CREATE A MATPLOTLIB FIGURE. 
     G.Fig1 = mpl.figure.Figure()
     
@@ -418,21 +427,21 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
             1. Great stuff ! 
             """
         st.info(temptext )
-        
-        
     else:
         st.subheader("The Values You Entered Are Not Displayed.")
  
     # Show the plot on the streamlit webpage.
     st.pyplot(G.Fig1)  # st.write(G.Fig1) also Displays a Matplotlib figure.
-     
+
+###############################################################################    
     # +++ PROVE EXTERIOR HELPER FUNCTIONS WORK IN STREAMLIT
     st.info("PROVE EXTERIOR HELPER FUNCTIONS WORK IN STREAMLIT")
     from HelperFunctions import Exterior_Helper_Function1
     from HelperFunctions import Exterior_Helper_Function2   
     st.text(Exterior_Helper_Function1())
     st.text(Exterior_Helper_Function2()) 
-        
+
+###############################################################################        
    # +++ SHOW A PANDAS DATAFRAME IF USER REQUESTED IT.
     if G.ShowData == True:
        st.markdown("#### The Pandas Data Table You Requested Follows:")
@@ -444,7 +453,7 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
        st.write("You can expand the datatable using the 'View fullscreen' "
                     "icon. The icon is above and to the right of the table.")       
    
-        
+###############################################################################        
     #  +++ ADD A "DOWNLOAD TO CSV" DATAFRAME BUTTON.
        # - The dataframe is converted to a csv file.
        # - That file is downloaded to the browsers download location.
@@ -466,12 +475,11 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
             kwargs=None, 
             disabled=False)
        
-
+###############################################################################
    # +++ SHOW A PRETTYFIED PANDAS DATAFRAME +++++++++++++++++++++++++++++++++++ 
     # https://towardsdatascience.com/style-pandas-dataframe-like-a-master-6b02bf6468b0
     st.markdown("#### Here is the same dataframe Sorted descending on 'x', with titles and interesting data cells highlighted:")
   
-    
     # We do this by creating a pandas styling object.
     # Styling should be performed after the data in a DataFrame has been processed. 
     # https://pandas.pydata.org/pandas-docs/stable/user_guide/style.html
@@ -505,7 +513,9 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
     
     st.dataframe(Styler1, width=None, height=None)
     
-    #  +++ ADD A "DOWNLOAD TO EXCEL" DATAFRAME BUTTON.
+###############################################################################    
+    #  +++ ADD A "DOWNLOAD TO EXCEL" DATAFRAME BUTTON. IT KEEPS FORMATING 
+    #      COLORS ETC.
     def DataFrame_To_Excel(df):
         output = BytesIO()
         writer = pd.ExcelWriter(output, engine="xlsxwriter")
@@ -528,9 +538,7 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
      file_name= "df_CSV_To_Excel.xlsx") 
     
     
-    # func = lambda s: 'STRING' if isinstance(s, str) else 'FLOAT'
-    # df.style.format({0: '{:.1f}', 2: func}, precision=4, na_rep='MISS')
-    
+###############################################################################
     # Use a styler to format and alter value of columns.
     Styler4 = G.DataTable.style.format(
         na_rep='MISSING', thousands=",",
@@ -544,9 +552,8 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
     #Styler4.set_table_styles([cell_hover, index_names, headers])
     st.dataframe(Styler4)
       
-
-       
-       
+     
+###############################################################################      
     #  +++ SHOW FONT CHANGES IN TEXT USING HTML.
     MDText = StMarkdown(
         "This Demonstrates That We Can Format Text Using HTML.",
@@ -554,7 +561,7 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
     st.markdown(MDText, unsafe_allow_html=True) 
   
     
-    
+###############################################################################    
     # +++ DEMONSTRATE SHOWING A PICTURE FROM THE APPS GITHUB REPOSITORY.
     #   We must get our picture (and other resources) from a web address 
     #   because streamlit does NOT have a full backend on its server from
@@ -577,14 +584,15 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
         "from github.")
     st.write("You can enlarge the picture by clicking the pop up symbol "
              "that appears when you mouse near the top right of the image.")
-     
+
+###############################################################################     
     st.markdown("#### DEMONSTRATE SHOWING A SIZED PICTURE .")
     urllib.request.urlretrieve(G.Link06,"img.jpg") # Get image from web.
     img = Image.open("img.jpg")
     img.thumbnail((500, 500)) # Set the desired size. Its one tuple parameter.
     st.image(img)  # Show the resized image.
     
-    
+###############################################################################   
     # # +++ DEMONSTRATE DOWNLOADING A PICTURE USING A DOWNLOAD BUTTON.
     # with open(G.Link06, "rb") as file:
     #  btn = st.download_button(
@@ -596,7 +604,7 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
     
     
     
-
+###############################################################################
     # +++ DEMONSTRATE SHOWING A VIDEO FROM YOUTUBE.
     #  Github basing of videos does not allow raw address of large files.
     #  Google basing of videos  does not work because it downloads too slowly.
@@ -604,7 +612,8 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
     st.markdown("#### DEMONSTRATE SHOWING A VIDEO FROM YOUTUBE.")
     FullURL = G.Link20
     st.video(FullURL)
-    
+
+###############################################################################    
     # +++ DEMONSTRATE SHOWING A VIDEO FROM AN ONLINE SOURCE OTHER THAN YOUTUBE.
     #  Github basing of videos does not allow raw address of large files.
     #  Google basing of videos  does not work because it downloads too slowly.    
@@ -612,6 +621,7 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
     st.write("The following video is just on a website somewhere.")
     st.video(G.Link24)
  
+###############################################################################    
     # # +++ DEMONSTRATE SHOWING A VIDEO FROM GOOGLE DRIVE.
     # #  Github does not allow raw address of large files.
     # #  Google basing of videos  does not work because it downloads too slowly.    
@@ -619,7 +629,7 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
     # st.write("")
     # st.video(G.Link30)
     
-
+###############################################################################
     # +++ DEMONSTRATE EASY SHOWING A PYTHON DICTIONARY ON A STREAMLIT WEBPAGE.
     df4 ={1: {'name': 'John', 'age': '27', 'sex': 'Male'},
           2: {'name': 'Marie', 'age': '22', 'sex': 'Female'},
@@ -631,7 +641,8 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
     st.text("Pretty printing python dictionarys is easy using streamlit.  \n"
                  "We use the st.dataframe feature.")
     st.dataframe(df4)
-    
+   
+###############################################################################    
     #  +++ SHOW A PLOT USING PLOTLY WHICH HAS GREAT INTERACTIVE CONTROLS 
     st.info("DEMONSTRATE A 'PLOTLY' PLOT WITH GREAT INTERACTIVE CONTROLS.")
     st.write("""See my program 'screening test' for a much better example 
@@ -650,13 +661,6 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
              hist_data, group_labels, bin_size=[.1, .25, .5])
     st.plotly_chart(fig, use_container_width=True)   # Plot!
         
-    
-    #  +++ SHOW A CLICKABLE WEBLINK ON OUR WEBPAGE Static.
-    #   There are several ways to do this.
-    st.markdown("### LINK TO THIS APPS CODE. (DOWNLOADABLE). ")
-    st.markdown(" [Link To Source Code](%s)" % G.Link08)
-    # Also works: st.write("[Link To The Source Code](%s)" % G.Link08)
-
 
     #  +++ SHOW A PDF AT GITHUB USING POP UP NEW WEB PAGE
     ###########################################################################
@@ -692,13 +696,14 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
         select 'GET HELP'. """) 
         st.button(label="Help", key="ButtonH1", help=tempstr )
    
+###############################################################################    
     # DEMONSTRATE HOW TO USE AN ICON
     # https://share.streamlit.io/streamlit/emoji-shortcodes
     # Just copy and paste the icon from the list. 
     # Not all of the :whatever: codes work so best avoid that method.
     st.write("✔️  ❌  How to include icons in any text",help="help text here" )    
     
-    
+###############################################################################    
     # +++ SHOW DEBUGGING INFORMATION.
     if G.Debug:
       st.subheader("Debugging Information Follows.")
@@ -706,7 +711,8 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
                     "variables follow.") 
       st.write(S)    #  Show all streamlit persistent variables.
                 # st.write(G)  # ?v fix so this works For debugging. Show global variables.
-    
+
+###############################################################################    
     # +++ DEMONSTRATE AN EXPANDER
     st.subheader("DEMONSTRATE AN EXPANDER.")
     with st.expander("An expanding section that shows debugging information"):
@@ -718,7 +724,7 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
         st.write(S)    #  Show all streamlit persistent variables.
         # st.write(G)  # ?v fix so this works For  Show global variables.
           
-        
+###############################################################################        
     # +++ DEMONSTRATE A CONTAINER, ALLOWS GROUPING OF ITEMS
     st.subheader("DEMONSTRATE A CONTAINER.")     
     with st.container():
@@ -729,7 +735,7 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
                  app out of order.""")
     st.write("This is outside the container")
    
-   
+###############################################################################   
     # +++ DEMONSTRATE COLUMN LAYOUT.  
     st.subheader("DEMONSTRATE COLUMN LAYOUT. ") 
     col1, col2, col3 = st.columns(3)
@@ -743,7 +749,9 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
         st.header("An owl")
         st.image("https://static.streamlit.io/examples/owl.jpg")
         
+###############################################################################        
     # +++ DEMONSTRATE HOW THE ST.TEXT FEATURE FORMATS TEXT..
+    st.info("Demonstrate using st.text with end of line characters")
     Anumber = 678.4325 
     helpstr = f"""
     This shows how st.text shows fixed width preformatted text.\r
@@ -766,8 +774,7 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
         
     # +++ DEMONSTRATE A STREAMLIT 'EXCEPTION' Box.    
     st.exception("This is a Streamlit 'exception' box.")   
-    
-    
+  
     # +++ DEMONSTRATE EMOJIS  
     # The emojis supported by streamlit
     #    https://share.streamlit.io/streamlit/emoji-shortcodes
@@ -775,24 +782,19 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
     st.info("The demonstates how easy it is to include emojis in any text:  \n"
             "  \n'white_check_mark ' :white_check_mark: "
             "  \n'pushpin ' :pushpin: " )
-              
+    
+###############################################################################          
     # DEMONSTRATE READING A CSV FILE FROM THE PROJECT'S GITHUB REPOSITORY.
     temptext = """
     ### DEMONSTRATE READING A CSV FILE FROM THE PROJECT'S GITHUB REPOSITORY.  \n 
           THIS ALLOWS YOU TO HAVE A DATABASE AVAILABLE TO THE DEPLOYED
           APP WITHOUT THE NEED OF A WEB HOSTING BACKEND.  \n
-        How To:
-        1. Add the csv file to the project's github repository.
-        1. Get the files github RAW url.    
-        1. Code:
-            1. url = 'the.url.of.the.RAW.file.a.tGithub'
-            2. df = pd.read_csv(url)
-        1. Your Done ! 
-        """
+            """
     st.info(temptext)    
     df2 = pd.read_csv(G.Link11)
     st.dataframe(data=df2, width=None, height=None)
-    
+
+###############################################################################    
     # +++ DEMONSTRATE A STREAMLIT FILE UPLOAD BUTTON.
     # https://pythonwife.com/file-upload-download-with-streamlit/     
     st.info("DEMONSTRATE A STREAMLIT FILE UPLOAD BUTTON")
@@ -824,18 +826,9 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
                i = i + 1
 
 
-    
-    # +++ DEMONSTRATE USING AN EXCEL FILE (Upload then make it a pandas dataframe.") 
-    # https://towardsdatascience.com/how-to-work-with-excel-files-in-pandas-c584abb67bfb
-    st.info("DEMONSTRATE USING AN EXCEL FILE BASED ONLINE IN THE GITHUB REPOSTIORY")
-    st.write("Be sure that that remote url of the excel file includes the 'raw' suffix ?raw=true")
-    st.write("For pandas to input an excel file you must install a pandas slave program xlrd. pip install xlrd  ")
-    xPath = r"https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/main/Resource_TestExcelFile.xlsx?raw=true"
-    df_sheet = pd.read_excel(xPath, sheet_name=0)
-    st.write("EXCEL FILE FOLLOWS:\n",df_sheet)
-    
-    
 
+    
+###############################################################################
     ###########################################################################
     # +++ SHOW THIS APPS DOCSTRING
     #  Github basing of videos does not allow raw address of large files.
@@ -844,7 +837,8 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
     st.info("🟢  THIS APP's DOCUMENT STRING FOLLOWS.")   
     st.text(G.ThisModule_Docstring)
     
-    
+
+###############################################################################    
     # # +++ DEMONSTRATE AN EMPTY CONTAINER. ALLOWS REMOVAL OF ITEMS
     # import time
     # st.subheader("DEMONSTRATE AN EMPTY CONTAINER.ALLOWS REMOVAL OF ITEMS.")     
@@ -854,7 +848,7 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
     #         time.sleep(1)
     #     st.write("✔️ 1 minute over!")
        
-    ###########################################################################
+################################################################################
     # +++ SHOW A TEXT OR CODE FILE STORED ONLINE.
     
     st.info("🟢  DISPLAY A TEXT OR CODE FILE STORED ONLINE (Github).")   
@@ -865,7 +859,247 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
     content =  file.read().decode(file.headers.get_content_charset())
     st.text(content)    
        
-        
+###############################################################################    
+    # +++ DEMONSTRATE USING AN EXCEL FILE (Upload then make it a pandas dataframe.") 
+    # https://towardsdatascience.com/how-to-work-with-excel-files-in-pandas-c584abb67bfb
+    st.info("DEMONSTRATE USING AN EXCEL FILE BASED ONLINE IN THE GITHUB REPOSTIORY")
+    st.write("Be sure that that remote url of the excel file includes the 'raw' suffix ?raw=true")
+    st.write("For pandas to input an excel file you must install a pandas slave program xlrd. pip install xlrd  ")
+    xPath = r"https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/main/Resource_TestExcelFile.xlsx?raw=true"
+    df_sheet = pd.read_excel(xPath, sheet_name=0)
+    st.write("EXCEL FILE FOLLOWS:\n",df_sheet)
+    
+
+    st.info("""########################################################   \r
+             STREAMLIT,  PANDAS DATAFRAMES AND EXCEL SECTION FOLLOWS. """)
+    #  FOR INSTRUCTION READ THIS LINK:
+        # https://coderzcolumn.com/tutorials/python/simple-guide-to-style-display-of-pandas-dataframes#3
+    # - set_table_styles(table_styles,axis=0,overwrite=True)  Format whole table
+    # - set_td_classes(classes_dataframe) Format individual cells
+    #   - set_td_classes works in combination with set_table_styles()
+    # - apply(func,axis=0,subset=None) - Well suited for row-wise or column-wise decoration.
+    # - applymap(func,subset=None) - Well suited for the decoration of individual cells based on some conditions.
+    #
+    # https://pandas.pydata.org/pandas-docs/stable/user_guide/style.html
+    # 
+    # - USING functions TO STYLE:  https://pandas.pydata.org/pandas-docs/version/0.25.1/user_guide/style.html
+    #     Styler.applymap: elementwise
+    #     Styler.apply: column-/row-/table-wise
+    
+    # - Using Styler to manipulate the display is a useful feature because
+    #   maintaining the indexing and datavalues for other purposes gives
+    #   greater control. You do NOT have to overwrite your DataFrame to 
+    #   display it how you like including sorting.
+
+###############################################################################    
+    # Get a local csv file and read it into a pandas dataframe.
+    fpath=r"G:\My Drive\UConn\1-Subjects\Python\STAT476\CODE\StreamlitApp1Deploy\TestData1.csv"
+    DFS1 = pd.read_csv (fpath)
+    # Show the freshly loaded dataframe.
+    st.info("DFS1: As read in from 'TestData1.csv'.")
+    st.dataframe(DFS1)
+    
+
+###############################################################################
+    st.info("DFS1: Lots of DIFFERENT FORMATTING APPLIED ALL AT ONCE.  \r"
+            "Highlight min/max/NaN. Also color by sign. Also color columns."
+            "Also apply precision. Also alter output eg decimal percent to percent.")
+    # Hide does not work.       .apply(PD_Col_Color)\ not working
+    StylerA = DFS1.style\
+      .hide_columns(["TP","TN"])\
+      .format({  # Format cells in each column.
+        "Country": "{:s}" ,
+        "Prevalence": lambda x: "{:.3f}%".format(x*100), # Alter val to %. 
+        "ColA": lambda x: "{:.5f}".format(abs(x)),  # Remove sign.
+        "ColC": "{:+.2f}",
+        "Column DDD": "{:-.2f}",
+        "TP": "{:.7f}",
+        "TN": "{:+4.0f}",  # integer
+            })\
+      .set_properties(subset=["Country"],**{"background-color": "red", "color": "white"})\
+      .set_properties(subset=["TN"],**{"background-color": "black", "color": "white"})\
+      .applymap(PDFormat_Numeric_By_Sign)\
+      .highlight_max(color = "lightgreen")\
+      .highlight_min(color = "coral")\
+      .highlight_null(null_color="yellow")
+    st.dataframe(StylerA)    
+ 
+###############################################################################
+    st.info("DFS1: DOWNLOAD CSV DATAFRAME TO EXCEL FILE  \r"
+            "This download will preserve the colors and stylings of the "
+            "displayed dataframe. Usefull if we have highlighted (say) "
+            "cells with errors.")
+    def to_excel(df):
+        output = BytesIO()
+        writer = pd.ExcelWriter(output, engine="xlsxwriter")
+        df.to_excel(writer, index=False, sheet_name="Sheet1")
+        workbook = writer.book
+        worksheet = writer.sheets["Sheet1"]
+        format1 = workbook.add_format({"num_format": '0.00'}) 
+        worksheet.set_column("A:A", None, format1)  
+        writer.save()
+        processed_data = output.getvalue()
+        return (processed_data)
+    
+    df_xlsx = to_excel(StylerA)
+    st.download_button(label="📥 Download DataFrame To An Excel File",
+                       data=df_xlsx ,
+                       file_name= "df_CSV_To_Excel.xlsx")    
+    
+###############################################################################       
+    st.info("DFS1: HIGHLIGHT ROW(S) ")
+    def highlight_rows(row):
+        f1 = ""
+        value = row.loc["Country"]
+        if value == "Canada":
+            backcolor = "blue"   
+            color = "white"
+        elif value == "Mexico":
+            backcolor = "green" 
+            color = "white"
+        else:
+            backcolor = "white"
+            color = "black"
+        f1 =[f"background-color:{backcolor};color:{color}" for col in row]   
+        return (f1)
+    
+    StylerP = DFS1.style.apply(highlight_rows, axis=1)
+    st.dataframe(StylerP)  
+
+###############################################################################       
+    st.info("DFS1: HIGHLIGHT COLUMNS(S) ")
+    def highlight_cols(currentcol):
+        f1 = ""
+        if currentcol.name == "Country":
+            backcolor = "blue"   
+            color = "white"
+        elif currentcol.name == "Prevalence":
+            backcolor = "green" 
+            color = "white"
+        else:
+            backcolor = "white"
+            color = "black"
+        f1 =[f"background-color:{backcolor};color:{color}" for row in currentcol]   
+        return (f1)
+    
+    StylerQ = DFS1.style.apply(highlight_cols, axis=0)
+    st.dataframe(StylerQ)   
+    
+###############################################################################       
+    st.info("DFS1: Save the styled dataframe above to a similarly styled xcel file. See 'styled.xlsx' in this programs project folder.")
+    StylerR = DFS1.style\
+      .applymap(PDFormat_Numeric_By_Sign)\
+      .highlight_max(color = "lightgreen")\
+      .highlight_min(color = "coral")\
+      .highlight_null(null_color="yellow")\
+      .to_excel("styled.xlsx", engine="openpyxl")
+    
+###############################################################################
+    st.info("DFS1: Highlight Pos/Neg/Zero. On JUST 'ColA' and 'ColC'.")
+    StylerC = DFS1.style.applymap(PDFormat_Numeric_By_Sign, subset=["ColA","ColC"])
+    st.dataframe(StylerC)   
+    
+###############################################################################    
+    st.info("DFS1: Highlight Pos/Neg/Zero. On ALL CELLS")
+    StylerD = DFS1.style.applymap(PDFormat_Numeric_By_Sign)
+    st.dataframe(StylerD) 
+
+###############################################################################
+    st.info("DFS1: Format cells by column membership.")
+    # ‘d’ for integers
+    # ‘f’ for floating-point numbers
+    # ‘b’ for binary numbers
+    # ‘o’ for octal numbers
+    # ‘x’ for octal hexadecimal numbers
+    # ‘s’ for string
+    # ‘e’ for floating-point in an exponent format
+    StylerF = DFS1.style.format(
+        {
+        "Country": "{:s} color:yellow",
+        "Prevalence": "{:> 0.5f}", 
+        "ColA": lambda x: "{:.5f}".format(abs(x)), # Apply a function to alter value.
+        "ColC": "{:+.2f}",
+        "Column DDD": "{:-.2f}",
+        "TP": "{:.7f}",
+        "TN": "{:+4.0f}",  # integer
+        })
+    st.dataframe(StylerF) 
+
+###############################################################################    
+    st.info("DFS1: READ AN ONLNE EXCEL FILE INTO A PANDAS DATAFRAME. USING NATIVE PANDAS") #
+    # The excel file is stored at github so we must use the github 'raw' url.
+    # Github does not offer the 'raw' url for all files. In that case
+    # use the files regular github page then add '?raw=true' to the end.
+    urlexcel = "https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/main/Resource_TestExcelFile.xlsx?raw=true"
+    df=pd.read_excel(urlexcel, sheet_name="Resource_TestExcelSheet")
+    st.dataframe(df)
+
+
+###############################################################################    
+    st.info("DFS1: READ A POORLY SUITED ONLNE EXCEL FILE INTO A PANDAS "
+         "DATAFRAME. USING NATIVE PANDAS AND openpyxl. "  
+         "We can specify where the header row is, the cols we want etc, etc.")
+    
+    
+    # Native pandas does a great job reading simple xcel files/worksheets.
+    # But in cases where the data is not a continuous table starting at 
+    # cell A1, the results may not be good.
+    # Details here:
+        # https://pbpython.com/pandas-excel-range.html
+    
+    # The excel file is stored at github so we must use the github 'raw' url.
+    # Github does not offer the 'raw' url for all files. In that case
+    # use the files regular github page then add '?raw=true' to the end.
+    urlexcel = "https://github.com/ProfBrockway/StreamlitApp1Deploy/blob/main/Resource_TestExcelFile.xlsx?raw=true"
+    df=pd.read_excel(
+        urlexcel,
+        sheet_name="Resource_TestExcelSheet",
+        header=0, # Specify row of the headers (Might not be the first row).
+        usecols=["x","y1","y2","y3","random2",]) # Pick cols.
+    st.dataframe(df)
+
+
+
+
+
+
+
+
+
+def PD_Col_Color (cols):
+    ForColor = "yellow"
+    BgColor = "pink"
+    formstring = ""
+    # for col in cols: #.iteritems():
+    #     columnSeriesObj = cols[col]
+    #     if col.name=="Country":
+    #         formstring = f"background-color:{BgColor};color:{ForColor}"
+    return (formstring) 
+                
+    # We do this by creating a pandas styling object.
+    # Styling should be performed after the data in a DataFrame has been processed. 
+    # https://pandas.pydata.org/pandas-docs/stable/user_guide/style.html
+    
+def PdFormat_Align(s, props="text_align: center;"):
+    return props
+
+def PdFormat_Max(s):  # Highlight the maximum value in all cols
+    is_max = s == s.max()  # Create list of joint max vals.
+    return ['background-color: lightblue' if v else '' for v in is_max]
+
+def PDFormat_Numeric_By_Sign(v):
+    # Style numeric cells depending on positive/negative/zero value.
+    # Each cell in the dataframe is passed as v, one by one.
+    style= "" # In case the item is not a number.
+    color=""  # In case the item is not a number.
+    if isinstance(v, (int, float)):
+        if v < 0.0 :     color="red"
+        if v == 0.0:     color="blue"
+        if v > 0.0:      color="green"
+        if v == -23.0:   color = "yellow"
+        style = f"color: {color};"  
+    return (style)
+         
 
     return  # End of function: Right_Panel_Build
 
