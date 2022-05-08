@@ -3,7 +3,7 @@ r"""
 EXAMPLE OF A MODULE "DOCSTRING"
    To run this app in a web browser undeployed on the development computer
    run the following command in the Anaconda console.
-streamlit run "G:\My Drive\UConn\1-Subjects\Python\STAT476\CODE\StreamlitApp1Deploy\StreamlitApp1.py"
+streamlit run "G:\My Drive\UConn\1-Subjects\Python\STAT476\CODE\StApp1Deploy\StreamlitApp1.py"
    
 # This code is a template for creating a python app to run in a streamlit
 # webpage.
@@ -893,7 +893,7 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
 
 ###############################################################################    
     # Get a local csv file and read it into a pandas dataframe.
-    fpath=r"G:\My Drive\UConn\1-Subjects\Python\STAT476\CODE\StreamlitApp1Deploy\TestData1.csv"
+    fpath=r"G:\My Drive\UConn\1-Subjects\Python\STAT476\CODE\StApp1Deploy\TestData1.csv"
     DFS1 = pd.read_csv (fpath)
     # Show the freshly loaded dataframe.
     st.info("DFS1: As read in from 'TestData1.csv'.")
@@ -1036,7 +1036,7 @@ def Right_Panel_Build():  # Build the main panel on the right. Plot, pics etc.
 
 
 ###############################################################################    
-    st.info("DFS1: READ A POORLY SUITED ONLNE EXCEL FILE INTO A PANDAS "
+    st.info("DFS1: READ A POORLY SUITED ONLINE EXCEL FILE INTO A PANDAS "
          "DATAFRAME. USING NATIVE PANDAS AND openpyxl. "  
          "We can specify where the header row is, the cols we want etc, etc.")
     
